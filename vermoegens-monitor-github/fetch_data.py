@@ -6,13 +6,13 @@ ASSETS=[
 {"name":"S&P 500","short":"SP","isin":"IE00B5BMR087","symbol":"SXR8.DE","category":"Aktien"},
 {"name":"Nasdaq 100", "short":"ND", "isin":"IE0032077012", "symbol":"SXRV.DE", "category":"Aktien"},
 {"name":"STOXX Europe 600","short":"EU","isin":"DE0002635307","symbol":"EXSA.DE","category":"Aktien"},
-{"name":"Emerging Markets","short":"EM","isin":"IE00BKM4GZ66","symbol":"EIMI.DE","category":"Aktien"},
+{"name":"Emerging Markets","short":"EM","isin":"IE00BKM4GZ66","symbol":"EUNM.DE","category":"Aktien"},
 {"name":"China","short":"CN","isin":"A2PGQN","symbol":"IQQC.DE","category":"Aktien"},
 {"name":"Indien","short":"IN","isin":"IE00BZCQB185","symbol":"QDV5.DE","category":"Aktien"},
-{"name":"Japan", "short":"JP", "isin":"IE00B4L5YX21", "symbol":"SJPA.DE", "category":"Aktien"},
+{"name":"Japan", "short":"JP", "isin":"IE00B4L5YX21", "symbol":"XDJP.DE", "category":"Aktien"},
 {"name":"Bitcoin","short":"₿","isin":"GB00BJYDH287","symbol":"BTC-EUR","category":"Bitcoin"},
 {"name":"Gold","short":"Au","isin":"DE000A0S9GB0","symbol":"4GLD.DE","category":"Rohstoffe"},
-{"name":"Silber","short":"Ag","isin":"JE00B1VS3333","symbol":"SSLV.DE","category":"Rohstoffe"},
+{"name":"Silber","short":"Ag","isin":"JE00B1VS3333","symbol":"XAAG.DE","category":"Rohstoffe"},
 {"name":"Brent Öl","short":"Oil","isin":"BZ=F","symbol":"BZ=F","category":"Rohstoffe"},
 {"name":"Kaffee","short":"☕","isin":"KC=F","symbol":"KC=F","category":"Rohstoffe"}]
 def clean(x):
