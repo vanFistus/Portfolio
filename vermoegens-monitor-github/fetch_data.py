@@ -4,6 +4,7 @@ import pandas as pd
 import yfinance as yf
 ASSETS=[
 {"name":"S&P 500","short":"SP","isin":"IE00B5BMR087","symbol":"CSPX.L","category":"Aktien"},
+{"name":"Nasdaq 100", "short":"ND", "isin":"IE0032077012", "symbol":"EQQQ.DE", "category":"Aktien"},
 {"name":"STOXX Europe 600","short":"EU","isin":"DE0002635307","symbol":"EXSA.DE","category":"Aktien"},
 {"name":"Emerging Markets","short":"EM","isin":"IE00BKM4GZ66","symbol":"EIMI.L","category":"Aktien"},
 {"name":"China","short":"CN","isin":"A2PGQN","symbol":"XCHA.DE","category":"Aktien"},
