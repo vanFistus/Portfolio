@@ -1,5 +1,5 @@
 {
-  "updated": "13.06.2026, 16:49",
+  "updated": "13.06.2026, 16:55",
   "assets": [
     {
       "name": "S&P 500",
@@ -137,14 +137,45 @@
       "name": "Emerging Markets",
       "short": "EM",
       "isin": "IE00BKM4GZ66",
-      "symbol": "EIMI.DE",
+      "symbol": "EUNM.DE",
       "category": "Aktien",
-      "price": null,
-      "currency": "",
-      "day_pct": null,
-      "ytd_pct": null,
-      "ma200_diff_pct": null,
-      "history_30d": []
+      "price": 56.236,
+      "currency": "EUR",
+      "day_pct": 3.16,
+      "ytd_pct": 23.45,
+      "ma200_diff_pct": 19.16,
+      "history_30d": [
+        52.462,
+        53.518,
+        54.732,
+        54.678,
+        55.042,
+        55.258,
+        53.278,
+        54.85,
+        55.302,
+        53.774,
+        53.346,
+        52.748,
+        53.786,
+        53.9,
+        54.508,
+        55.566,
+        56.028,
+        56.082,
+        56.312,
+        56.418,
+        57.52,
+        58.224,
+        57.63,
+        56.706,
+        54.7,
+        54.626,
+        54.22,
+        53.98,
+        54.512,
+        56.236
+      ]
     },
     {
       "name": "China",
@@ -238,14 +269,45 @@
       "name": "Japan",
       "short": "JP",
       "isin": "IE00B4L5YX21",
-      "symbol": "SJPA.DE",
+      "symbol": "XDJP.DE",
       "category": "Aktien",
-      "price": null,
-      "currency": "",
-      "day_pct": null,
-      "ytd_pct": null,
-      "ma200_diff_pct": null,
-      "history_30d": []
+      "price": 37.6,
+      "currency": "EUR",
+      "day_pct": 3.61,
+      "ytd_pct": 31.51,
+      "ma200_diff_pct": 23.8,
+      "history_30d": [
+        33.55,
+        33.93,
+        34.87,
+        35.22,
+        35.56,
+        35.23,
+        34.695,
+        35.435,
+        35.37,
+        34.855,
+        34.31,
+        33.845,
+        34.36,
+        34.58,
+        35.68,
+        36.635,
+        36.585,
+        36.285,
+        36.675,
+        36.925,
+        37.47,
+        37.505,
+        38.06,
+        37.515,
+        36.725,
+        36.865,
+        36.1,
+        35.64,
+        36.29,
+        37.6
+      ]
     },
     {
       "name": "Bitcoin",
@@ -253,11 +315,11 @@
       "isin": "GB00BJYDH287",
       "symbol": "BTC-EUR",
       "category": "Bitcoin",
-      "price": 55300.8008,
+      "price": 55324.4805,
       "currency": "EUR",
-      "day_pct": 0.72,
-      "ytd_pct": -26.76,
-      "ma200_diff_pct": -16.87,
+      "day_pct": 0.77,
+      "ytd_pct": -26.73,
+      "ma200_diff_pct": -16.83,
       "history_30d": [
         68028.1172,
         67198.2656,
@@ -288,7 +350,7 @@
         53270.6328,
         54909.3125,
         54904.0547,
-        55300.8008
+        55324.4805
       ]
     },
     {
@@ -339,14 +401,45 @@
       "name": "Silber",
       "short": "Ag",
       "isin": "JE00B1VS3333",
-      "symbol": "SSLV.DE",
+      "symbol": "XAAG.DE",
       "category": "Rohstoffe",
-      "price": null,
-      "currency": "",
-      "day_pct": null,
-      "ytd_pct": null,
-      "ma200_diff_pct": null,
-      "history_30d": []
+      "price": 39.085,
+      "currency": "EUR",
+      "day_pct": -0.81,
+      "ytd_pct": 25.17,
+      "ma200_diff_pct": 13.6,
+      "history_30d": [
+        41.2,
+        41.025,
+        40.295,
+        40.215,
+        40.59,
+        41.45,
+        41.83,
+        42.28,
+        41.99,
+        41.72,
+        42.04,
+        42.13,
+        41.67,
+        41.955,
+        41.355,
+        40.705,
+        40.97,
+        40.265,
+        40.59,
+        40.645,
+        41.175,
+        41.26,
+        41.435,
+        41.205,
+        40.435,
+        40.42,
+        39.66,
+        39.5,
+        39.405,
+        39.085
+      ]
     },
     {
       "name": "Brent Öl",
@@ -440,18 +533,18 @@
   "summary": [
     {
       "name": "Aktien",
-      "day": 2.13,
-      "ytd": 2.93
+      "day": 2.49,
+      "ytd": 9.94
     },
     {
       "name": "Rohstoffe",
-      "day": 0.28,
-      "ytd": 4.96
+      "day": 0.01,
+      "ytd": 10.01
     },
     {
       "name": "Bitcoin",
-      "day": 0.72,
-      "ytd": -26.76
+      "day": 0.77,
+      "ytd": -26.73
     }
   ]
 }
