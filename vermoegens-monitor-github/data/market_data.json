@@ -1,5 +1,5 @@
 {
-  "updated": "13.06.2026, 16:32",
+  "updated": "13.06.2026, 16:36",
   "assets": [
     {
       "name": "S&P 500",
@@ -225,14 +225,45 @@
       "name": "Japan",
       "short": "JP",
       "isin": "IE00B4L5YX21",
-      "symbol": "IJPA.DE",
+      "symbol": "XDJP.DE",
       "category": "Aktien",
-      "price": null,
-      "currency": "",
-      "day_pct": null,
-      "ytd_pct": null,
-      "ma200_diff_pct": null,
-      "history_30d": []
+      "price": 37.6,
+      "currency": "EUR",
+      "day_pct": 3.61,
+      "ytd_pct": 31.51,
+      "ma200_diff_pct": 23.8,
+      "history_30d": [
+        33.55,
+        33.93,
+        34.87,
+        35.22,
+        35.56,
+        35.23,
+        34.695,
+        35.435,
+        35.37,
+        34.855,
+        34.31,
+        33.845,
+        34.36,
+        34.58,
+        35.68,
+        36.635,
+        36.585,
+        36.285,
+        36.675,
+        36.925,
+        37.47,
+        37.505,
+        38.06,
+        37.515,
+        36.725,
+        36.865,
+        36.1,
+        35.64,
+        36.29,
+        37.6
+      ]
     },
     {
       "name": "Bitcoin",
@@ -458,8 +489,8 @@
   "summary": [
     {
       "name": "Aktien",
-      "day": 2.23,
-      "ytd": 6.91
+      "day": 2.46,
+      "ytd": 11.01
     },
     {
       "name": "Rohstoffe",
