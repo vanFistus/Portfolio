@@ -8,7 +8,7 @@ ASSETS=[
 {"name":"Emerging Markets","short":"EM","isin":"IE00BKM4GZ66","symbol":"EIMI.L","category":"Aktien"},
 {"name":"China","short":"CN","isin":"A2PGQN","symbol":"XCHA.DE","category":"Aktien"},
 {"name":"Indien","short":"IN","isin":"IE00BZCQB185","symbol":"IIND.L","category":"Aktien"},
-{"name":"Japan","short":"JP","isin":"IE00B4L5YX21","symbol":"IJPA.DE","category":"Aktien"},
+{"name":"Japan","short":"JP","isin":"IE00B4L5YX21","symbol":"XDJP.DE","category":"Aktien"},
 {"name":"Bitcoin","short":"₿","isin":"GB00BJYDH287","symbol":"BITC.SW","category":"Bitcoin"},
 {"name":"Gold","short":"Au","isin":"DE000A0S9GB0","symbol":"4GLD.DE","category":"Rohstoffe"},
 {"name":"Silber","short":"Ag","isin":"JE00B1VS3333","symbol":"PHAG.L","category":"Rohstoffe"},
