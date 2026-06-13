@@ -20,7 +20,9 @@ jobs:
 
       - run: pip install yfinance pandas
 
-      - run: python vermoegens-monitor-github/fetch_data.py
+      - run: |
+          cd vermoegens-monitor-github
+          python fetch_data.py
 
       - name: Commit updated market data
         run: |
