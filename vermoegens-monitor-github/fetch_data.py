@@ -28,29 +28,19 @@ def pct(a,b):
     return None if a is None or b in (None,0) else round((a/b-1)*100,2)
 
 def get_close(symbol, period="10y", interval="1d"):
-    # Für Tagesdaten laden wir bewusst MAX statt nur 10y.
-    # Wichtig: Diese Datei muss als fetch_data.py laufen, weil die GitHub Action meist genau diesen Dateinamen startet.
-    effective_period = "max" if interval == "1d" else period
-
     try:
-        hist = yf.download(symbol, period=effective_period, interval=interval, auto_adjust=False, progress=False, threads=False)
+        # Für Tagesdaten laden wir bewusst "max" statt nur "10y".
+        # Dadurch sind history_3y, history_5y und history_10y stabil befüllt,
+        # sofern Yahoo Finance für den jeweiligen Ticker genug Historie liefert.
+        effective_period = "max" if interval == "1d" else period
+        hist=yf.download(symbol,period=effective_period,interval=interval,auto_adjust=False,progress=False,threads=False)
     except Exception:
-        hist = pd.DataFrame()
-
-    # Fallback, falls yf.download leer zurückkommt
-    if hist.empty:
-        try:
-            hist = yf.Ticker(symbol).history(period=effective_period, interval=interval, auto_adjust=False)
-        except Exception:
-            hist = pd.DataFrame()
-
-    if hist.empty or "Close" not in hist:
         return pd.Series(dtype=float)
-
-    close = hist["Close"].dropna()
-    if isinstance(close, pd.DataFrame):
-        close = close.iloc[:,0]
-    close = close[close > 0]
+    if hist.empty:
+        return pd.Series(dtype=float)
+    close=hist["Close"].dropna()
+    if isinstance(close,pd.DataFrame):
+        close=close.iloc[:,0]
     return close
 
 def hist_list(series):
@@ -135,9 +125,3 @@ for cat in ["Aktien","Rohstoffe","Bitcoin"]:
 os.makedirs("data", exist_ok=True)
 with open("data/market_data.json","w",encoding="utf-8") as f:
     json.dump({"updated":datetime.now().strftime("%d.%m.%Y, %H:%M"),"assets":assets,"summary":summary},f,ensure_ascii=False,indent=2)
-
-
-print("market_data.json geschrieben")
-for a in assets:
-    hp = a.get("history_points", {})
-    print(f"{a.get('name')}: 3y={hp.get('3y', 0)} 5y={hp.get('5y', 0)} 10y={hp.get('10y', 0)} all={hp.get('all', 0)}")
