@@ -14,7 +14,7 @@ table{width:100%;border-collapse:collapse}th{color:#b8c9dc;font-size:13px;text-a
 .pos{color:var(--green)}.neg{color:var(--red)}.muted{color:var(--muted)}
 .heat{padding:18px;display:grid;grid-template-columns:repeat(12,1fr);gap:10px}.tile{min-height:104px;border-radius:12px;padding:14px;border:1px solid rgba(255,255,255,.08)}.tile .tname{font-weight:900;margin-bottom:8px}.tile .tpct{font-size:26px;font-weight:950}.tile .ytd{font-size:14px;margin-top:6px}.g2{background:linear-gradient(135deg,#107a42,#063d23)}.g1{background:linear-gradient(135deg,#155d3a,#123623)}.r1{background:linear-gradient(135deg,#64313b,#3a1820)}.r2{background:linear-gradient(135deg,#8a2437,#44121d)}.neutral{background:linear-gradient(135deg,#2b3a4e,#182435)}
 .chartbox{padding:16px;display:grid;gap:12px}.mini{background:#0b1726;border:1px solid rgba(91,126,160,.35);border-radius:14px;padding:14px}canvas{width:100%;height:110px}.footer{text-align:center;color:var(--muted);font-size:13px;margin-top:16px}
-.legendItem{display:flex;align-items:center;gap:8px}.legendDot{width:13px;height:13px;border-radius:50%;display:inline-block}.legendPerf{font-weight:900}.toggleBtn{background:#0b1726;color:#9eb4ca;border:1px solid #27435e;border-radius:8px;padding:6px 10px;font-weight:800;cursor:pointer}.toggleBtn.active{color:#fff;background:#10233a;border-color:#2eb6ff}
+.legendItem{display:flex;align-items:center;gap:8px}.legendDot{width:13px;height:13px;border-radius:50%;display:inline-block}.legendPerf{font-weight:900}
 @media(max-width:1100px){.grid,.cards{grid-template-columns:1fr}.heat{grid-template-columns:repeat(2,1fr)}}@media(max-width:620px){.wrap{padding:14px}.heat{grid-template-columns:1fr}.clock{display:none}h1{font-size:28px}}
 </style>
 </head>
@@ -35,9 +35,6 @@ table{width:100%;border-collapse:collapse}th{color:#b8c9dc;font-size:13px;text-a
 <div class="panel" style="margin-top:18px">
 <h2 style="display:flex;justify-content:space-between;align-items:center">
 <span>INDIZES VERGLEICH</span>
-<div style="display:flex;gap:10px;align-items:center">
-<button id="modeIndexed" class="toggleBtn active" onclick="setPortfolioMode('indexed')">Indexiert 100</button>
-<button id="modePerformance" class="toggleBtn" onclick="setPortfolioMode('performance')">Performance %</button>
 <select id="portfolioPeriodSelect" style="background:#0b1726;color:white;border:1px solid #27435e;border-radius:8px;padding:6px 10px">
 <option value="day">Tag</option>
 <option value="5d">1 Woche</option>
@@ -48,7 +45,6 @@ table{width:100%;border-collapse:collapse}th{color:#b8c9dc;font-size:13px;text-a
 <option value="5y">5 Jahre</option>
 <option value="10y">10 Jahre</option>
 </select>
-</div>
 </h2>
 <div style="padding:18px">
 <div id="portfolioLegend" style="display:flex;flex-wrap:wrap;gap:18px;margin-bottom:14px;color:#d9e7f5;font-weight:800"></div>
@@ -69,7 +65,6 @@ function clock(){document.getElementById('clock').textContent=new Date().toLocal
 let currentPeriod='ytd';
 let heatPeriod='day';
 let portfolioPeriod='ytd';
-let portfolioMode='indexed';
 let latestData=null;
 
 function perfByPeriod(a,p){
@@ -84,9 +79,8 @@ function seriesForPeriod(a,p){
 return p==='day'?a.history_1w:p==='5d'?a.history_1w:p==='1mo'?a.history_1m:p==='ytd'?a.history_ytd:p==='1y'?a.history_1y:p==='3y'?a.history_3y:p==='5y'?a.history_5y:p==='10y'?a.history_10y:a.history_ytd
 }
 
-function normalizeSeries(v,mode){
+function toPerformanceSeries(v){
 if(!v||v.length<2||!v[0])return[];
-if(mode==='indexed')return v.map(x=>x?x/v[0]*100:null).filter(x=>x!=null);
 return v.map(x=>x?((x/v[0]-1)*100):null).filter(x=>x!=null)
 }
 
@@ -120,13 +114,12 @@ let items=[
 {name:'Emerging Markets',asset:assets.find(a=>a.name==='Emerging Markets'),color:'#ffcc66'}
 ];
 
-let series=items.map(i=>({name:i.name,color:i.color,values:normalizeSeries(seriesForPeriod(i.asset||{},portfolioPeriod),portfolioMode)}));
+let series=items.map(i=>({name:i.name,color:i.color,values:toPerformanceSeries(seriesForPeriod(i.asset||{},portfolioPeriod))}));
 let legend=document.getElementById('portfolioLegend');
 if(legend){
 legend.innerHTML=series.map(s=>{
 let last=s.values.length?s.values[s.values.length-1]:null;
-let perf=portfolioMode==='indexed'&&last!=null?last-100:last;
-return `<span class="legendItem"><span class="legendDot" style="background:${s.color}"></span><span>${s.name}</span><span class="${cls(perf)} legendPerf">${sign(perf)}${fmt(perf,'%')}</span></span>`
+return `<span class="legendItem"><span class="legendDot" style="background:${s.color}"></span><span>${s.name}</span><span class="${cls(last)} legendPerf">${sign(last)}${fmt(last,'%')}</span></span>`
 }).join('');
 }
 
@@ -136,8 +129,7 @@ ctx.clearRect(0,0,w,h);
 let all=series.flatMap(s=>s.values);
 if(all.length<2)return;
 
-let axisValues=portfolioMode==='indexed'?all.map(v=>v-100):all;
-let rawMin=Math.min(...axisValues,0),rawMax=Math.max(...axisValues,0);
+let rawMin=Math.min(...all,0),rawMax=Math.max(...all,0);
 let step=niceStep(rawMax-rawMin);
 let yMin=Math.floor(rawMin/step)*step;
 let yMax=Math.ceil(rawMax/step)*step;
@@ -164,9 +156,8 @@ ctx.strokeStyle=s.color;
 ctx.lineWidth=2.8*devicePixelRatio;
 ctx.beginPath();
 s.values.forEach((v,i)=>{
-let axisVal=portfolioMode==='indexed'?v-100:v;
 let x=padL+i*(w-padL-padR)/(s.values.length-1);
-let y=h-padB-((axisVal-yMin)/(yMax-yMin))*(h-padT-padB);
+let y=h-padB-((v-yMin)/(yMax-yMin))*(h-padT-padB);
 i?ctx.lineTo(x,y):ctx.moveTo(x,y);
 });
 ctx.stroke();
@@ -217,13 +208,6 @@ load().catch(e=>{updated.textContent='Fehler beim Laden der Daten.';console.erro
 document.getElementById('periodSelect').addEventListener('change',e=>{currentPeriod=e.target.value;load()});
 document.getElementById('heatPeriodSelect').addEventListener('change',e=>{heatPeriod=e.target.value;load()});
 document.getElementById('portfolioPeriodSelect').addEventListener('change',e=>{portfolioPeriod=e.target.value;drawPortfolioChart(latestData)});
-
-function setPortfolioMode(mode){
-portfolioMode=mode;
-document.getElementById('modeIndexed').classList.toggle('active',mode==='indexed');
-document.getElementById('modePerformance').classList.toggle('active',mode==='performance');
-drawPortfolioChart(latestData)
-}
 
 function showTab(tab){
 document.getElementById('mainTab').style.display=tab==='main'?'block':'none';
