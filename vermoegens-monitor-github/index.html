@@ -16,7 +16,7 @@ table{width:100%;border-collapse:collapse}th{color:#b8c9dc;font-size:13px;text-a
 .chartbox{padding:16px;display:grid;gap:12px}.mini{background:#0b1726;border:1px solid rgba(91,126,160,.35);border-radius:14px;padding:14px}canvas{width:100%;height:110px}.footer{text-align:center;color:var(--muted);font-size:13px;margin-top:16px}
 .legendItem{display:flex;align-items:center;gap:8px}.legendDot{width:13px;height:13px;border-radius:50%;display:inline-block}.legendPerf{font-weight:900}
 
-.metricTable td,.metricTable th{white-space:nowrap}.metric{display:inline-flex;align-items:center;gap:7px;justify-content:flex-end}.dot{width:10px;height:10px;border-radius:50%;display:inline-block;box-shadow:0 0 10px rgba(255,255,255,.12)}.dot.good{background:var(--green)}.dot.mid{background:#ffcc66}.dot.bad{background:var(--red)}.snapshot{padding:18px}.snapshotRow{display:grid;grid-template-columns:180px 1fr 110px;gap:14px;align-items:center;padding:14px 4px;border-top:1px solid rgba(91,126,160,.35)}.snapshotRow:first-child{border-top:0}.marketName{font-weight:900}.stars{text-align:right;color:#ffcc66;font-size:18px;letter-spacing:1px}.note{color:var(--muted);font-size:13px;margin-top:12px;line-height:1.45}@media(max-width:760px){.snapshotRow{grid-template-columns:1fr}.stars{text-align:left}.metricTableWrap{overflow-x:auto}}
+ .metricTable{width:100%;table-layout:fixed}.metricTable th,.metricTable td{white-space:nowrap;text-align:center}.metricTable th:first-child,.metricTable td:first-child{width:18%;text-align:left}.metricTable th:not(:first-child),.metricTable td:not(:first-child){width:13.666%}.metric{display:inline-flex;align-items:center;gap:7px;justify-content:center}.dot{width:10px;height:10px;border-radius:50%;display:inline-block;box-shadow:0 0 10px rgba(255,255,255,.12)}.dot.good{background:var(--green)}.dot.mid{background:#ffcc66}.dot.bad{background:var(--red)}.snapshot{padding:18px}.snapshotRow{display:grid;grid-template-columns:20% 60% 20%;gap:0;align-items:center;padding:14px 4px;border-top:1px solid rgba(91,126,160,.35)}.snapshotRow:first-child{border-top:0}.marketName{font-weight:900;text-align:left}.snapshotText{text-align:center}.stars{text-align:right;color:#ffcc66;font-size:18px;letter-spacing:1px}.note{color:var(--muted);font-size:13px;margin-top:12px;line-height:1.45}.fundamentalDate{font-size:13px;color:var(--muted);font-weight:700} @media(max-width:760px){.snapshotRow{grid-template-columns:1fr;gap:8px}.snapshotText{text-align:left}.stars{text-align:left}.metricTableWrap{overflow-x:auto}.metricTable{min-width:900px}}
 @media(max-width:1100px){.grid,.cards{grid-template-columns:1fr}.heat{grid-template-columns:repeat(2,1fr)}}@media(max-width:620px){.wrap{padding:14px}.heat{grid-template-columns:1fr}.clock{display:none}h1{font-size:28px}}
 </style>
 </head>
@@ -55,14 +55,14 @@ table{width:100%;border-collapse:collapse}th{color:#b8c9dc;font-size:13px;text-a
 </div>
 
 <div class="panel" style="margin-top:18px">
-<h2>BEWERTUNG &amp; QUALITÄT DER REGIONEN</h2>
+<h2 style="display:flex;justify-content:space-between;align-items:center;gap:16px"><span>BEWERTUNG &amp; QUALITÄT DER REGIONEN</span><span class="fundamentalDate" id="fundamentalsUpdated">Fundamentaldaten Stand: —</span></h2>
 <div class="metricTableWrap">
 <table class="metricTable">
 <thead><tr><th>Markt</th><th>KGV</th><th>Fwd. KGV</th><th>KBV</th><th>Div.%</th><th>ROE</th><th>EPS Wachstum</th></tr></thead>
 <tbody id="valuationRows"></tbody>
 </table>
 </div>
-<div class="note">Ampellogik: Grün = attraktiv/stark, Gelb = neutral, Rot = teuer/schwach. KGV = aktuelles/trailing KGV, Fwd. KGV = erwartetes KGV. Fundamentaldaten werden täglich dynamisch über Yahoo Finance Proxy-ETFs abgerufen; fehlende Werte werden als — angezeigt.</div>
+<div class="note">Ampellogik: Grün = attraktiv/stark, Gelb = neutral, Rot = teuer/schwach. KGV = aktuelles/trailing KGV, Fwd. KGV = erwartetes KGV. Fundamentaldaten werden aus data/fundamentals.json geladen; fehlende Werte werden als — angezeigt.</div>
 </div>
 
 <div class="panel" style="margin-top:18px">
@@ -166,18 +166,50 @@ if(growth>=10 && pe<=20)return 'Gutes Wachstum bei fairer Bewertung';
 return 'Solide Bewertung, ausgewogenes Chance-Risiko-Profil';
 }
 
-function renderValuation(data){
-let fundamentals=data.fundamentals||data.valuation_regions||[];
+function normalizeFundamentals(payload){
+let updated='—', regions=[];
+if(Array.isArray(payload)){regions=payload}
+else if(payload){updated=payload.updated||payload.as_of||'—';regions=payload.regions||payload.fundamentals||payload.markets||[]}
+const order=['USA','Europa','Emerging Markets','China','Indien','Japan'];
+regions=regions.map(r=>({
+market:r.market||r.region||r.name,
+pe:r.pe??r.kgv,
+forward_pe:r.forward_pe??r.forwardPe??r.fwd_pe,
+pb:r.pb??r.kbv,
+dividend_yield:r.dividend_yield??r.dividendYield??r.div_yield,
+roe:r.roe,
+earnings_growth:r.earnings_growth??r.eps_growth??r.epsGrowth,
+source:r.source||r.source_label||''
+})).filter(r=>r.market);
+regions.sort((a,b)=>{let ia=order.indexOf(a.market),ib=order.indexOf(b.market);return (ia<0?999:ia)-(ib<0?999:ib)});
+return {updated,regions};
+}
+
+function renderValuation(payload){
+let {updated,regions:fundamentals}=normalizeFundamentals(payload);
 let valuationRows=document.getElementById('valuationRows');
 let snapshotRows=document.getElementById('snapshotRows');
+let fundamentalsUpdated=document.getElementById('fundamentalsUpdated');
+if(fundamentalsUpdated)fundamentalsUpdated.textContent='Fundamentaldaten Stand: '+updated;
 if(!valuationRows||!snapshotRows)return;
 if(!fundamentals.length){
-valuationRows.innerHTML='<tr><td colspan="7" class="muted">Keine Bewertungsdaten vorhanden.</td></tr>';
-snapshotRows.innerHTML='<div class="muted">Keine Bewertungsdaten vorhanden.</div>';
+valuationRows.innerHTML='<tr><td colspan="7" class="muted">Keine Bewertungsdaten vorhanden. Bitte data/fundamentals.json prüfen.</td></tr>';
+snapshotRows.innerHTML='<div class="muted">Keine Bewertungsdaten vorhanden. Bitte data/fundamentals.json prüfen.</div>';
 return;
 }
-valuationRows.innerHTML=fundamentals.map(r=>`<tr><td title="Quelle: ${r.source_symbol||'—'} ${r.source_label||''}"><b>${r.market}</b></td><td>${metricHtml('pe',r.pe)}</td><td>${metricHtml('pe',r.forward_pe)}</td><td>${metricHtml('pb',r.pb)}</td><td>${metricHtml('dividend',r.dividend_yield,'%')}</td><td>${metricHtml('roe',r.roe,'%')}</td><td>${metricHtml('growth',r.earnings_growth,'%')}</td></tr>`).join('');
-snapshotRows.innerHTML=fundamentals.map(r=>`<div class="snapshotRow"><div class="marketName">${r.market}</div><div>${valuationComment(r)}</div><div class="stars">${starRating(r)}</div></div>`).join('');
+valuationRows.innerHTML=fundamentals.map(r=>`<tr><td title="Quelle: ${r.source||'—'}"><b>${r.market}</b></td><td>${metricHtml('pe',r.pe)}</td><td>${metricHtml('pe',r.forward_pe)}</td><td>${metricHtml('pb',r.pb)}</td><td>${metricHtml('dividend',r.dividend_yield,'%')}</td><td>${metricHtml('roe',r.roe,'%')}</td><td>${metricHtml('growth',r.earnings_growth,'%')}</td></tr>`).join('');
+snapshotRows.innerHTML=fundamentals.map(r=>`<div class="snapshotRow"><div class="marketName">${r.market}</div><div class="snapshotText">${valuationComment(r)}</div><div class="stars">${starRating(r)}</div></div>`).join('');
+}
+
+async function loadFundamentals(){
+try{
+const res=await fetch('data/fundamentals.json?ts='+Date.now());
+if(!res.ok)throw new Error('fundamentals.json nicht gefunden');
+return await res.json();
+}catch(e){
+console.warn(e);
+return {updated:'—',regions:[]};
+}
 }
 
 function drawPortfolioChart(data){
@@ -250,7 +282,7 @@ ctx.stroke();
 }
 
 async function load(){
-const res=await fetch('data/market_data.json?ts='+Date.now());
+const [res,fundamentalsPayload]=await Promise.all([fetch('data/market_data.json?ts='+Date.now()),loadFundamentals()]);
 const data=await res.json();
 latestData=data;
 document.getElementById('updated').textContent='Zuletzt aktualisiert: '+(data.updated||'—');
@@ -286,7 +318,7 @@ charts.innerHTML+=`<div class="mini"><b style="display:flex;justify-content:spac
 setTimeout(()=>drawSpark(document.getElementById(id),vals,(perf||0)>=0?'#20d37a':'#ff4d6d'),0)
 });
 
-renderValuation(data);
+renderValuation(fundamentalsPayload);
 drawPortfolioChart(data);
 }
 
