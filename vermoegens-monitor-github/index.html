@@ -76,13 +76,16 @@ return null
 }
 
 function seriesForPeriod(a,p){
-let v=p==='day'?a.history_intraday:p==='5d'?a.history_1w:p==='1mo'?a.history_1m:p==='ytd'?a.history_ytd:p==='1y'?a.history_1y:p==='3y'?a.history_3y:p==='5y'?a.history_5y:p==='10y'?a.history_10y:a.history_ytd;
-return Array.isArray(v)?v:[]
+return p==='day'?a.history_1w:p==='5d'?a.history_1w:p==='1mo'?a.history_1m:p==='ytd'?a.history_ytd:p==='1y'?a.history_1y:p==='3y'?a.history_3y:p==='5y'?a.history_5y:p==='10y'?a.history_10y:a.history_ytd
 }
 
 function toPerformanceSeries(v){
 if(!v||v.length<2||!v[0])return[];
 return v.map(x=>x?((x/v[0]-1)*100):null).filter(x=>x!=null)
+}
+
+function periodLabel(p){
+return p==='day'?'Tag':p==='5d'?'1 Woche':p==='1mo'?'1 Monat':p==='ytd'?'YTD':p==='1y'?'1 Jahr':p==='3y'?'3 Jahre':p==='5y'?'5 Jahre':p==='10y'?'10 Jahre':p==='ma200'?'200 days':p;
 }
 
 function drawSpark(c,values,color){
@@ -128,16 +131,17 @@ const ctx=c.getContext('2d'),w=c.width=c.offsetWidth*devicePixelRatio,h=c.height
 ctx.clearRect(0,0,w,h);
 
 let all=series.flatMap(s=>s.values);
-if(all.length<2){
+if(series.every(s=>s.values.length<2)){
 ctx.fillStyle='#9eb4ca';
-ctx.font=`${16*devicePixelRatio}px Inter, Segoe UI, Arial`;
+ctx.font=`${18*devicePixelRatio}px Inter, Segoe UI, Arial`;
 ctx.textAlign='center';
-ctx.fillText('Keine ausreichenden Daten für diesen Zeitraum vorhanden',w/2,h/2);
+ctx.fillText('Keine Daten für '+periodLabel(portfolioPeriod),w/2,h/2);
 return;
 }
 
 let rawMin=Math.min(...all,0),rawMax=Math.max(...all,0);
 let step=niceStep(rawMax-rawMin);
+
 let yMin=Math.floor(rawMin/step)*step;
 let yMax=Math.ceil(rawMax/step)*step;
 if(yMax===yMin){yMax=yMin+step}
