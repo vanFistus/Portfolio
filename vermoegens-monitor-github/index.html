@@ -15,6 +15,8 @@ table{width:100%;border-collapse:collapse}th{color:#b8c9dc;font-size:13px;text-a
 .heat{padding:18px;display:grid;grid-template-columns:repeat(12,1fr);gap:10px}.tile{min-height:104px;border-radius:12px;padding:14px;border:1px solid rgba(255,255,255,.08)}.tile .tname{font-weight:900;margin-bottom:8px}.tile .tpct{font-size:26px;font-weight:950}.tile .ytd{font-size:14px;margin-top:6px}.g2{background:linear-gradient(135deg,#107a42,#063d23)}.g1{background:linear-gradient(135deg,#155d3a,#123623)}.r1{background:linear-gradient(135deg,#64313b,#3a1820)}.r2{background:linear-gradient(135deg,#8a2437,#44121d)}.neutral{background:linear-gradient(135deg,#2b3a4e,#182435)}
 .chartbox{padding:16px;display:grid;gap:12px}.mini{background:#0b1726;border:1px solid rgba(91,126,160,.35);border-radius:14px;padding:14px}canvas{width:100%;height:110px}.footer{text-align:center;color:var(--muted);font-size:13px;margin-top:16px}
 .legendItem{display:flex;align-items:center;gap:8px}.legendDot{width:13px;height:13px;border-radius:50%;display:inline-block}.legendPerf{font-weight:900}
+
+.metricTable td,.metricTable th{white-space:nowrap}.metric{display:inline-flex;align-items:center;gap:7px;justify-content:flex-end}.dot{width:10px;height:10px;border-radius:50%;display:inline-block;box-shadow:0 0 10px rgba(255,255,255,.12)}.dot.good{background:var(--green)}.dot.mid{background:#ffcc66}.dot.bad{background:var(--red)}.snapshot{padding:18px}.snapshotRow{display:grid;grid-template-columns:180px 1fr 110px;gap:14px;align-items:center;padding:14px 4px;border-top:1px solid rgba(91,126,160,.35)}.snapshotRow:first-child{border-top:0}.marketName{font-weight:900}.stars{text-align:right;color:#ffcc66;font-size:18px;letter-spacing:1px}.note{color:var(--muted);font-size:13px;margin-top:12px;line-height:1.45}@media(max-width:760px){.snapshotRow{grid-template-columns:1fr}.stars{text-align:left}.metricTableWrap{overflow-x:auto}}
 @media(max-width:1100px){.grid,.cards{grid-template-columns:1fr}.heat{grid-template-columns:repeat(2,1fr)}}@media(max-width:620px){.wrap{padding:14px}.heat{grid-template-columns:1fr}.clock{display:none}h1{font-size:28px}}
 </style>
 </head>
@@ -49,6 +51,36 @@ table{width:100%;border-collapse:collapse}th{color:#b8c9dc;font-size:13px;text-a
 <div style="padding:18px">
 <div id="portfolioLegend" style="display:flex;flex-wrap:wrap;gap:18px;margin-bottom:14px;color:#d9e7f5;font-weight:800"></div>
 <canvas id="portfolioChart" style="width:100%;height:420px"></canvas>
+</div>
+</div>
+
+<div class="panel" style="margin-top:18px">
+<h2>BEWERTUNG &amp; QUALITÄT DER REGIONEN</h2>
+<div class="metricTableWrap">
+<table class="metricTable">
+<thead><tr><th>Markt</th><th>Fwd. KGV</th><th>KBV</th><th>Div.%</th><th>ROE</th><th>EPS Wachstum</th></tr></thead>
+<tbody>
+<tr><td><b>USA</b></td><td><span class="metric"><span class="dot mid"></span>22,4</span></td><td><span class="metric"><span class="dot bad"></span>4,8</span></td><td><span class="metric"><span class="dot bad"></span>1,4%</span></td><td><span class="metric"><span class="dot good"></span>19,8%</span></td><td><span class="metric"><span class="dot good"></span>11,2%</span></td></tr>
+<tr><td><b>Europa</b></td><td><span class="metric"><span class="dot good"></span>14,2</span></td><td><span class="metric"><span class="dot good"></span>2,0</span></td><td><span class="metric"><span class="dot good"></span>3,3%</span></td><td><span class="metric"><span class="dot mid"></span>12,7%</span></td><td><span class="metric"><span class="dot mid"></span>7,1%</span></td></tr>
+<tr><td><b>Emerging Markets</b></td><td><span class="metric"><span class="dot good"></span>12,8</span></td><td><span class="metric"><span class="dot good"></span>1,7</span></td><td><span class="metric"><span class="dot mid"></span>2,8%</span></td><td><span class="metric"><span class="dot mid"></span>11,8%</span></td><td><span class="metric"><span class="dot good"></span>9,5%</span></td></tr>
+<tr><td><b>China</b></td><td><span class="metric"><span class="dot good"></span>10,9</span></td><td><span class="metric"><span class="dot good"></span>1,3</span></td><td><span class="metric"><span class="dot mid"></span>2,5%</span></td><td><span class="metric"><span class="dot mid"></span>10,2%</span></td><td><span class="metric"><span class="dot mid"></span>8,4%</span></td></tr>
+<tr><td><b>Indien</b></td><td><span class="metric"><span class="dot bad"></span>25,8</span></td><td><span class="metric"><span class="dot bad"></span>4,4</span></td><td><span class="metric"><span class="dot bad"></span>1,1%</span></td><td><span class="metric"><span class="dot good"></span>16,3%</span></td><td><span class="metric"><span class="dot good"></span>14,8%</span></td></tr>
+<tr><td><b>Japan</b></td><td><span class="metric"><span class="dot mid"></span>15,7</span></td><td><span class="metric"><span class="dot good"></span>1,5</span></td><td><span class="metric"><span class="dot mid"></span>2,1%</span></td><td><span class="metric"><span class="dot mid"></span>10,8%</span></td><td><span class="metric"><span class="dot mid"></span>6,5%</span></td></tr>
+</tbody>
+</table>
+</div>
+<div class="note">Ampellogik: Grün = attraktiv/stark, Gelb = neutral, Rot = teuer/schwach. Werte sind als manuell gepflegte Fundamentaldaten im Dashboard hinterlegt.</div>
+</div>
+
+<div class="panel" style="margin-top:18px">
+<h2>AKTUELLE EINSCHÄTZUNG</h2>
+<div class="snapshot">
+<div class="snapshotRow"><div class="marketName">USA</div><div>Hohe Qualität, hohe Bewertung</div><div class="stars">★★★</div></div>
+<div class="snapshotRow"><div class="marketName">Europa</div><div>Attraktiv bewertet, solide Qualität</div><div class="stars">★★★★★</div></div>
+<div class="snapshotRow"><div class="marketName">Emerging Markets</div><div>Attraktive Bewertung mit Wachstum</div><div class="stars">★★★★</div></div>
+<div class="snapshotRow"><div class="marketName">China</div><div>Sehr günstig bewertet, erhöhte Risiken</div><div class="stars">★★★★</div></div>
+<div class="snapshotRow"><div class="marketName">Indien</div><div>Starkes Wachstum, sehr hohe Bewertung</div><div class="stars">★★</div></div>
+<div class="snapshotRow"><div class="marketName">Japan</div><div>Solide Bewertung, ausgewogenes Chance-Risiko-Profil</div><div class="stars">★★★★</div></div>
 </div>
 </div>
 </div>
