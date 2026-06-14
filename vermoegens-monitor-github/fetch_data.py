@@ -3,6 +3,21 @@ from datetime import datetime
 import pandas as pd
 import yfinance as yf
 
+
+FUNDAMENTAL_MARKETS=[
+    # Proxy-ETFs/Indizes für die dynamischen Fundamentaldaten.
+    # Yahoo Finance liefert die Kennzahlen je nach Ticker unterschiedlich vollständig.
+    # Fehlende Werte werden im Dashboard als "—" angezeigt und fließen neutral in die Sterne ein.
+    {"market":"USA","symbol":"SPY","label":"SPDR S&P 500 ETF Trust"},
+    {"market":"Europa","symbol":"VGK","label":"Vanguard FTSE Europe ETF"},
+    {"market":"Emerging Markets","symbol":"EEM","label":"iShares MSCI Emerging Markets ETF"},
+    {"market":"China","symbol":"MCHI","label":"iShares MSCI China ETF"},
+    {"market":"Indien","symbol":"INDA","label":"iShares MSCI India ETF"},
+    {"market":"Japan","symbol":"EWJ","label":"iShares MSCI Japan ETF"}
+]
+
+
+
 ASSETS=[
 {"name":"S&P 500","short":"SP","isin":"IE00B5BMR087","symbol":"SXR8.DE","category":"Aktien"},
 {"name":"Nasdaq 100","short":"ND","isin":"IE0032077012","symbol":"SXRV.DE","category":"Aktien"},
@@ -23,6 +38,48 @@ def clean(x):
         return None if math.isnan(x) else round(x,4)
     except Exception:
         return None
+
+def as_pct(x):
+    x=clean(x)
+    if x is None:
+        return None
+    # Yahoo liefert manche Kennzahlen als Dezimalwert (0.014), andere als Prozentwert (1.4).
+    return round(x*100,2) if abs(x) <= 1 else round(x,2)
+
+def pick(info, keys, percent=False):
+    for k in keys:
+        if k in info and info.get(k) not in (None, ""):
+            return as_pct(info.get(k)) if percent else clean(info.get(k))
+    return None
+
+def get_fundamentals(row):
+    market=row["market"]
+    symbol=row["symbol"]
+    try:
+        t=yf.Ticker(symbol)
+        info=t.get_info() or {}
+    except Exception:
+        info={}
+
+    trailing_pe=pick(info,["trailingPE","trailingPe","peRatio","priceEpsCurrentYear"])
+    forward_pe=pick(info,["forwardPE","forwardPe"])
+    pb=pick(info,["priceToBook","priceToBookRatio"])
+    dividend_yield=pick(info,["yield","dividendYield","trailingAnnualDividendYield"],percent=True)
+    roe=pick(info,["returnOnEquity"],percent=True)
+    earnings_growth=pick(info,["earningsGrowth","earningsQuarterlyGrowth"],percent=True)
+
+    return {
+        "market": market,
+        "source_symbol": symbol,
+        "source_label": row.get("label",""),
+        "pe": trailing_pe,
+        "forward_pe": forward_pe,
+        "pb": pb,
+        "dividend_yield": dividend_yield,
+        "roe": roe,
+        "earnings_growth": earnings_growth
+    }
+
 
 def pct(a,b):
     return None if a is None or b in (None,0) else round((a/b-1)*100,2)
@@ -112,6 +169,7 @@ def get(asset):
     return a
 
 assets=[get(a) for a in ASSETS]
+fundamentals=[get_fundamentals(x) for x in FUNDAMENTAL_MARKETS]
 
 def avg(items,field):
     vals=[x[field] for x in items if x.get(field) is not None]
@@ -124,4 +182,4 @@ for cat in ["Aktien","Rohstoffe","Bitcoin"]:
 
 os.makedirs("data", exist_ok=True)
 with open("data/market_data.json","w",encoding="utf-8") as f:
-    json.dump({"updated":datetime.now().strftime("%d.%m.%Y, %H:%M"),"assets":assets,"summary":summary},f,ensure_ascii=False,indent=2)
+    json.dump({"updated":datetime.now().strftime("%d.%m.%Y, %H:%M"),"assets":assets,"summary":summary,"fundamentals":fundamentals},f,ensure_ascii=False,indent=2)
