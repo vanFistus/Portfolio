@@ -58,30 +58,16 @@ table{width:100%;border-collapse:collapse}th{color:#b8c9dc;font-size:13px;text-a
 <h2>BEWERTUNG &amp; QUALITÄT DER REGIONEN</h2>
 <div class="metricTableWrap">
 <table class="metricTable">
-<thead><tr><th>Markt</th><th>Fwd. KGV</th><th>KBV</th><th>Div.%</th><th>ROE</th><th>EPS Wachstum</th></tr></thead>
-<tbody>
-<tr><td><b>USA</b></td><td><span class="metric"><span class="dot mid"></span>22,4</span></td><td><span class="metric"><span class="dot bad"></span>4,8</span></td><td><span class="metric"><span class="dot bad"></span>1,4%</span></td><td><span class="metric"><span class="dot good"></span>19,8%</span></td><td><span class="metric"><span class="dot good"></span>11,2%</span></td></tr>
-<tr><td><b>Europa</b></td><td><span class="metric"><span class="dot good"></span>14,2</span></td><td><span class="metric"><span class="dot good"></span>2,0</span></td><td><span class="metric"><span class="dot good"></span>3,3%</span></td><td><span class="metric"><span class="dot mid"></span>12,7%</span></td><td><span class="metric"><span class="dot mid"></span>7,1%</span></td></tr>
-<tr><td><b>Emerging Markets</b></td><td><span class="metric"><span class="dot good"></span>12,8</span></td><td><span class="metric"><span class="dot good"></span>1,7</span></td><td><span class="metric"><span class="dot mid"></span>2,8%</span></td><td><span class="metric"><span class="dot mid"></span>11,8%</span></td><td><span class="metric"><span class="dot good"></span>9,5%</span></td></tr>
-<tr><td><b>China</b></td><td><span class="metric"><span class="dot good"></span>10,9</span></td><td><span class="metric"><span class="dot good"></span>1,3</span></td><td><span class="metric"><span class="dot mid"></span>2,5%</span></td><td><span class="metric"><span class="dot mid"></span>10,2%</span></td><td><span class="metric"><span class="dot mid"></span>8,4%</span></td></tr>
-<tr><td><b>Indien</b></td><td><span class="metric"><span class="dot bad"></span>25,8</span></td><td><span class="metric"><span class="dot bad"></span>4,4</span></td><td><span class="metric"><span class="dot bad"></span>1,1%</span></td><td><span class="metric"><span class="dot good"></span>16,3%</span></td><td><span class="metric"><span class="dot good"></span>14,8%</span></td></tr>
-<tr><td><b>Japan</b></td><td><span class="metric"><span class="dot mid"></span>15,7</span></td><td><span class="metric"><span class="dot good"></span>1,5</span></td><td><span class="metric"><span class="dot mid"></span>2,1%</span></td><td><span class="metric"><span class="dot mid"></span>10,8%</span></td><td><span class="metric"><span class="dot mid"></span>6,5%</span></td></tr>
-</tbody>
+<thead><tr><th>Markt</th><th>KGV</th><th>Fwd. KGV</th><th>KBV</th><th>Div.%</th><th>ROE</th><th>EPS Wachstum</th></tr></thead>
+<tbody id="valuationRows"></tbody>
 </table>
 </div>
-<div class="note">Ampellogik: Grün = attraktiv/stark, Gelb = neutral, Rot = teuer/schwach. Werte sind als manuell gepflegte Fundamentaldaten im Dashboard hinterlegt.</div>
+<div class="note">Ampellogik: Grün = attraktiv/stark, Gelb = neutral, Rot = teuer/schwach. KGV = aktuelles/trailing KGV, Fwd. KGV = erwartetes KGV. Fundamentaldaten werden täglich dynamisch über Yahoo Finance Proxy-ETFs abgerufen; fehlende Werte werden als — angezeigt.</div>
 </div>
 
 <div class="panel" style="margin-top:18px">
 <h2>AKTUELLE EINSCHÄTZUNG</h2>
-<div class="snapshot">
-<div class="snapshotRow"><div class="marketName">USA</div><div>Hohe Qualität, hohe Bewertung</div><div class="stars">★★★</div></div>
-<div class="snapshotRow"><div class="marketName">Europa</div><div>Attraktiv bewertet, solide Qualität</div><div class="stars">★★★★★</div></div>
-<div class="snapshotRow"><div class="marketName">Emerging Markets</div><div>Attraktive Bewertung mit Wachstum</div><div class="stars">★★★★</div></div>
-<div class="snapshotRow"><div class="marketName">China</div><div>Sehr günstig bewertet, erhöhte Risiken</div><div class="stars">★★★★</div></div>
-<div class="snapshotRow"><div class="marketName">Indien</div><div>Starkes Wachstum, sehr hohe Bewertung</div><div class="stars">★★</div></div>
-<div class="snapshotRow"><div class="marketName">Japan</div><div>Solide Bewertung, ausgewogenes Chance-Risiko-Profil</div><div class="stars">★★★★</div></div>
-</div>
+<div class="snapshot" id="snapshotRows"></div>
 </div>
 </div>
 
@@ -136,6 +122,62 @@ if(range<=25)return 5;
 if(range<=60)return 10;
 if(range<=120)return 20;
 return 50
+}
+
+function dotClass(metric,value){
+if(value==null)return 'mid';
+if(metric==='pe')return value<15?'good':value<=22?'mid':'bad';
+if(metric==='pb')return value<2.1?'good':value<=3?'mid':'bad';
+if(metric==='dividend')return value>=3?'good':value>=2?'mid':'bad';
+if(metric==='roe')return value>=15?'good':value>=10?'mid':'bad';
+if(metric==='growth')return value>=9?'good':value>=5?'mid':'bad';
+return 'mid';
+}
+
+function metricHtml(metric,value,suffix=''){
+return `<span class="metric"><span class="dot ${dotClass(metric,value)}"></span>${fmt(value,suffix,metric==='pe'||metric==='pb'?1:1)}</span>`;
+}
+
+function scorePe(pe){if(pe==null)return 3;if(pe<12)return 5;if(pe<15)return 4;if(pe<20)return 3;if(pe<25)return 2;return 1}
+function scorePb(pb){if(pb==null)return 3;if(pb<1.5)return 5;if(pb<2.1)return 4;if(pb<3)return 3;if(pb<4)return 2;return 1}
+function scoreRoe(roe){if(roe==null)return 3;if(roe>=20)return 5;if(roe>=15)return 4;if(roe>=10)return 3;if(roe>=5)return 2;return 1}
+function scoreGrowth(g){if(g==null)return 3;if(g>=15)return 5;if(g>=10)return 4;if(g>=5)return 3;if(g>=0)return 2;return 1}
+
+function starRating(r){
+let total=scorePe(r.forward_pe)+scorePb(r.pb)+scoreRoe(r.roe)+scoreGrowth(r.earnings_growth);
+if(total>=18)return '★★★★★';
+if(total>=15)return '★★★★';
+if(total>=11)return '★★★';
+if(total>=8)return '★★';
+return '★';
+}
+
+function valuationComment(r){
+let pe=r.forward_pe, roe=r.roe, growth=r.earnings_growth, pb=r.pb, name=r.market||'';
+if(pe==null||roe==null||growth==null)return 'Bewertung derzeit nicht vollständig verfügbar';
+if(pe>24 && growth>=12)return 'Starkes Wachstum, sehr hohe Bewertung';
+if(pe>20 && roe>=15)return 'Hohe Qualität, hohe Bewertung';
+if(pe<12 && name.toLowerCase().includes('china'))return 'Sehr günstig bewertet, erhöhte Risiken';
+if(pe<15 && growth>=8)return 'Attraktive Bewertung mit Wachstum';
+if(pe<15 && roe>=10)return 'Attraktiv bewertet, solide Qualität';
+if(pe<15 && roe<10)return 'Günstig bewertet, aber schwächere Qualität';
+if(pe>=15 && pe<=20 && pb<=2 && roe>=10)return 'Solide Bewertung, ausgewogenes Chance-Risiko-Profil';
+if(growth>=10 && pe<=20)return 'Gutes Wachstum bei fairer Bewertung';
+return 'Solide Bewertung, ausgewogenes Chance-Risiko-Profil';
+}
+
+function renderValuation(data){
+let fundamentals=data.fundamentals||data.valuation_regions||[];
+let valuationRows=document.getElementById('valuationRows');
+let snapshotRows=document.getElementById('snapshotRows');
+if(!valuationRows||!snapshotRows)return;
+if(!fundamentals.length){
+valuationRows.innerHTML='<tr><td colspan="7" class="muted">Keine Bewertungsdaten vorhanden.</td></tr>';
+snapshotRows.innerHTML='<div class="muted">Keine Bewertungsdaten vorhanden.</div>';
+return;
+}
+valuationRows.innerHTML=fundamentals.map(r=>`<tr><td title="Quelle: ${r.source_symbol||'—'} ${r.source_label||''}"><b>${r.market}</b></td><td>${metricHtml('pe',r.pe)}</td><td>${metricHtml('pe',r.forward_pe)}</td><td>${metricHtml('pb',r.pb)}</td><td>${metricHtml('dividend',r.dividend_yield,'%')}</td><td>${metricHtml('roe',r.roe,'%')}</td><td>${metricHtml('growth',r.earnings_growth,'%')}</td></tr>`).join('');
+snapshotRows.innerHTML=fundamentals.map(r=>`<div class="snapshotRow"><div class="marketName">${r.market}</div><div>${valuationComment(r)}</div><div class="stars">${starRating(r)}</div></div>`).join('');
 }
 
 function drawPortfolioChart(data){
@@ -244,6 +286,7 @@ charts.innerHTML+=`<div class="mini"><b style="display:flex;justify-content:spac
 setTimeout(()=>drawSpark(document.getElementById(id),vals,(perf||0)>=0?'#20d37a':'#ff4d6d'),0)
 });
 
+renderValuation(data);
 drawPortfolioChart(data);
 }
 
