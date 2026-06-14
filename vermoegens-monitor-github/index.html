@@ -18,8 +18,9 @@ table{width:100%;border-collapse:collapse}th{color:#b8c9dc;font-size:13px;text-a
 </style>
 </head>
 <body>
-<div class="wrap"><div id="mainTab">
+<div class="wrap">
 <header><div><h1>Vermögens-Monitor</h1><div class="sub">     <span class="navtab active" onclick="showTab('main')">Marktübersicht</span>     <span class="navtab" onclick="showTab('portfolio')">Portfolio Analytics</span> </div></div><div><div class="clock" id="clock">--:--:--</div><div class="updated" id="updated">Daten werden geladen …</div></div></header>
+<div id="mainTab">
 <section class="cards" id="summary"></section>
 <section class="grid">
 <div class="panel"><h2>MARKTÜBERSICHT</h2><table><thead><tr><th>Name</th><th>ACT</th><th>Tag</th><th>YTD</th><th>1 Jahr</th><th>200 days</th></tr></thead><tbody id="rows"></tbody></table></div>
@@ -69,7 +70,11 @@ function showTab(tab){
         x.classList.remove('active');
     });
 
-    function showTab(tab){      document.getElementById('mainTab').style.display =         tab==='main' ? 'block' : 'none';      document.getElementById('portfolioTab').style.display =         tab==='portfolio' ? 'block' : 'none';      document.querySelectorAll('.navtab').forEach(x=>{         x.classList.remove('active');     });      if(tab==='main'){         document.querySelectorAll('.navtab')[0].classList.add('active');     }else{         document.querySelectorAll('.navtab')[1].classList.add('active');     } }
+    if(tab==='main'){
+        document.querySelectorAll('.navtab')[0].classList.add('active');
+    }else{
+        document.querySelectorAll('.navtab')[1].classList.add('active');
+    }
 }
 setInterval(load,30000);
 </script>
