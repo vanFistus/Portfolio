@@ -31,9 +31,24 @@ table{width:100%;border-collapse:collapse}th{color:#b8c9dc;font-size:13px;text-a
 
 <div id="portfolioTab" style="display:none">
     <div class="panel" style="margin-top:18px">
-        <h2>PORTFOLIO ANALYTICS</h2>
-        <div style="padding:40px;text-align:center;color:#9eb4ca">
-            Coming Soon
+        <h2 style="display:flex;justify-content:space-between;align-items:center">
+            <span>PORTFOLIO ANALYTICS</span>
+            <select id="portfolioPeriodSelect" style="background:#0b1726;color:white;border:1px solid #27435e;border-radius:8px;padding:6px 10px">
+                <option value="day">Tag</option>
+                <option value="5d">1 Woche</option>
+                <option value="1mo">1 Monat</option>
+                <option value="ytd" selected>YTD</option>
+                <option value="1y">1 Jahr</option>
+            </select>
+        </h2>
+
+        <div style="padding:18px">
+            <div style="display:flex;gap:18px;margin-bottom:14px;color:#9eb4ca;font-weight:800">
+                <span>S&P 500</span>
+                <span>STOXX Europe 600</span>
+                <span>Emerging Markets</span>
+            </div>
+            <canvas id="portfolioChart" style="width:100%;height:420px"></canvas>
         </div>
     </div>
 </div><div class="footer">Datenquelle: Yahoo Finance via GitHub Action. Kurse können verzögert sein. Keine Anlageberatung.</div>
@@ -42,10 +57,60 @@ table{width:100%;border-collapse:collapse}th{color:#b8c9dc;font-size:13px;text-a
 function fmt(n,s='',d=2){if(n==null||Number.isNaN(n))return '—';return new Intl.NumberFormat('de-DE',{minimumFractionDigits:d,maximumFractionDigits:d}).format(n)+s}
 function cls(n){return n>0?'pos':n<0?'neg':'muted'}function sign(n){return n>0?'+':''}function heatClass(n){if(n==null)return'neutral';if(n>2)return'g2';if(n>0)return'g1';if(n<-2)return'r2';if(n<0)return'r1';return'neutral'}
 function clock(){document.getElementById('clock').textContent=new Date().toLocaleTimeString('de-DE')}setInterval(clock,1000);clock();
-let currentPeriod='ytd';let heatPeriod='day';
+let currentPeriod='ytd';let heatPeriod='day';let portfolioPeriod='ytd';let latestData=null;
 function perfByPeriod(a,p){let v=p==='1d'?a.history_intraday:p==='5d'?a.history_1w:p==='1mo'?a.history_1m:p==='ytd'?a.history_ytd:p==='1y'?a.history_1y:null;if(p==='day')return a.day_pct;if(p==='ma200')return a.ma200_diff_pct;if(v&&v.length>1&&v[0])return(v[v.length-1]/v[0]-1)*100;return null}
-function drawSpark(c,values,color){const ctx=c.getContext('2d'),w=c.width=c.offsetWidth*devicePixelRatio,h=c.height=c.offsetHeight*devicePixelRatio;ctx.clearRect(0,0,w,h);if(!values||values.length<2)return;const min=Math.min(...values),max=Math.max(...values),pad=10*devicePixelRatio;ctx.lineWidth=2.2*devicePixelRatio;ctx.strokeStyle=color;ctx.beginPath();values.forEach((v,i)=>{const x=pad+i*(w-2*pad)/(values.length-1),y=h-pad-((v-min)/(max-min||1))*(h-2*pad);i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.stroke()}
-async function load(){const res=await fetch('data/market_data.json?ts='+Date.now());const data=await res.json();document.getElementById('updated').textContent='Zuletzt aktualisiert: '+(data.updated||'—');
+function drawSpark(c,values,color){const ctx=c.getContext('2d'),w=c.width=c.offsetWidth*devicePixelRatio,h=c.height=c.offsetHeight*devicePixelRatio;ctx.clearRect(0,0,w,h);if(!values||values.length<2)return;const min=Math.min(...values),max=Math.max(...values),pad=10*devicePixelRatio;ctx.lineWidth=2.2*devicePixelRatio;ctx.strokeStyle=color;ctx.beginPath();values.forEach((v,i)=>{const x=pad+i*(w-2*pad)/(values.length-1),y=h-pad-((v-min)/(max-min||1))*(h-2*pad);i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.stroke()}function seriesForPeriod(a,p){return p==='day'?a.history_1w:p==='5d'?a.history_1w:p==='1mo'?a.history_1m:p==='ytd'?a.history_ytd:p==='1y'?a.history_1y:a.history_ytd}
+
+function normalizeSeries(v){if(!v||v.length<2||!v[0])return[];return v.map(x=>x?x/v[0]*100:null).filter(x=>x!=null)}
+
+function drawPortfolioChart(data){
+    if(!data)return;
+    let c=document.getElementById('portfolioChart');
+    if(!c)return;
+
+    let assets=data.assets||[];
+    let items=[
+        {name:'S&P 500',asset:assets.find(a=>a.name==='S&P 500'),color:'#2eb6ff'},
+        {name:'STOXX Europe 600',asset:assets.find(a=>a.name==='STOXX Europe 600'),color:'#20d37a'},
+        {name:'Emerging Markets',asset:assets.find(a=>a.name==='Emerging Markets'),color:'#ffcc66'}
+    ];
+
+    let series=items.map(i=>({
+        name:i.name,
+        color:i.color,
+        values:normalizeSeries(seriesForPeriod(i.asset||{},portfolioPeriod))
+    }));
+
+    if(c.offsetWidth===0)return;
+    const ctx=c.getContext('2d'),w=c.width=c.offsetWidth*devicePixelRatio,h=c.height=c.offsetHeight*devicePixelRatio;
+    ctx.clearRect(0,0,w,h);
+
+    let all=series.flatMap(s=>s.values);
+    if(all.length<2)return;
+
+    let min=Math.min(...all),max=Math.max(...all),pad=42*devicePixelRatio;
+    ctx.strokeStyle='rgba(255,255,255,.12)';
+    ctx.lineWidth=1*devicePixelRatio;
+
+    for(let i=0;i<5;i++){
+        let y=pad+i*(h-2*pad)/4;
+        ctx.beginPath();ctx.moveTo(pad,y);ctx.lineTo(w-pad,y);ctx.stroke();
+    }
+
+    series.forEach(s=>{
+        if(s.values.length<2)return;
+        ctx.strokeStyle=s.color;
+        ctx.lineWidth=2.5*devicePixelRatio;
+        ctx.beginPath();
+        s.values.forEach((v,i)=>{
+            let x=pad+i*(w-2*pad)/(s.values.length-1);
+            let y=h-pad-((v-min)/(max-min||1))*(h-2*pad);
+            i?ctx.lineTo(x,y):ctx.moveTo(x,y);
+        });
+        ctx.stroke();
+    });
+}
+async function load(){const res=await fetch('data/market_data.json?ts='+Date.now());const data=await res.json();latestData=data;document.getElementById('updated').textContent='Zuletzt aktualisiert: '+(data.updated||'—');
 summary.innerHTML='';function fa(n){return(data.assets||[]).find(a=>a.name===n)}let sp=fa('S&P 500'),eu=fa('STOXX Europe 600'),em=fa('Emerging Markets'),oil=fa('Brent Öl'),gold=fa('Gold'),silber=fa('Silber'),btc=fa('Bitcoin');
 function groupCard(title,items){return`<div class="card">${title?`<h3>${title}</h3>`:''}<div style="display:grid;grid-template-columns:repeat(${items.length},1fr);gap:14px">${items.map(i=>`<div><div style="font-weight:800;font-size:14px;margin-bottom:8px;white-space:nowrap">${i.name}</div><div class="${cls(i.day)}" style="font-size:24px;font-weight:950">${sign(i.day)}${fmt(i.day,'%')}</div><div class="${cls(i.ytd)}" style="font-size:13px;font-weight:800;margin-top:6px">YTD ${sign(i.ytd)}${fmt(i.ytd,'%')}</div></div>`).join('')}</div></div>`}
 summary.innerHTML+=groupCard('',[{name:'Amerika',day:sp?.day_pct,ytd:sp?.ytd_pct},{name:'Europa',day:eu?.day_pct,ytd:eu?.ytd_pct},{name:'Emerging Markets',day:em?.day_pct,ytd:em?.ytd_pct}]);
@@ -54,10 +119,12 @@ summary.innerHTML+=groupCard('',[{name:'Bitcoin',day:btc?.day_pct,ytd:btc?.ytd_p
 rows.innerHTML='';(data.assets||[]).forEach(a=>{const ma=a.ma200_diff_pct,arrow=ma==null?'':ma>=0?'▲ ':'▼ ',y1=perfByPeriod(a,'1y');rows.innerHTML+=`<tr><td><div class="name"><span class="badge">${a.short}</span><div>${a.name}<span class="isin">${a.isin||a.symbol}</span></div></div></td><td>${fmt(a.price,a.currency?' '+a.currency:'')}</td><td class="${cls(a.day_pct)}">${sign(a.day_pct)}${fmt(a.day_pct,'%')}</td><td class="${cls(a.ytd_pct)}">${sign(a.ytd_pct)}${fmt(a.ytd_pct,'%')}</td><td class="${cls(y1)}">${sign(y1)}${fmt(y1,'%')}</td><td class="${cls(ma)}">${arrow}${sign(ma)}${fmt(ma,'%')}</td></tr>`});
 heat.innerHTML='';let heatAssets=[...(data.assets||[])].map(a=>({asset:a,p:perfByPeriod(a,heatPeriod)})).sort((x,y)=>(y.p??-999)-(x.p??-999));let maxAbs=Math.max(...heatAssets.map(x=>Math.abs(x.p||0)),1);heatAssets.forEach(x=>{let a=x.asset;let p=x.p;let y1=perfByPeriod(a,'1y');let factor=Math.abs(p||0)/maxAbs;let colSpan=Math.max(2,Math.round(2+factor*4));let h=Math.round(118+factor*44);let titleSize=Math.round(13+factor*5);let valueSize=Math.round(22+factor*14);let detailSize=Math.round(11+factor*2);heat.innerHTML+=`<div class="tile ${heatClass(p)}" style="grid-column:span ${colSpan};min-height:${h}px"><div class="tname" style="font-size:${titleSize}px">${a.name}</div><div class="tpct" style="font-size:${valueSize}px">${sign(p)}${fmt(p,'%')}</div><div class="ytd ${cls(a.ytd_pct)}" style="font-size:${detailSize}px">YTD ${sign(a.ytd_pct)}${fmt(a.ytd_pct,'%')}</div><div class="ytd ${cls(y1)}" style="font-size:${detailSize}px">1 Jahr ${sign(y1)}${fmt(y1,'%')}</div></div>`;});
 charts.innerHTML='';(data.assets||[]).slice(0,6).forEach((a,i)=>{let id='c'+i,vals=currentPeriod==='day'?a.history_1w:currentPeriod==='5d'?a.history_1w:currentPeriod==='1mo'?a.history_1m:currentPeriod==='ytd'?a.history_ytd:currentPeriod==='1y'?a.history_1y:a.history_1y,perf=perfByPeriod(a,currentPeriod);charts.innerHTML+=`<div class="mini"><b style="display:flex;justify-content:space-between;gap:10px"><span>${a.name}</span><span class="${cls(perf)}">${sign(perf)}${fmt(perf,'%')}</span></b><canvas id="${id}"></canvas></div>`;setTimeout(()=>drawSpark(document.getElementById(id),vals,(perf||0)>=0?'#20d37a':'#ff4d6d'),0)});
+drawPortfolioChart(data);
 }
 load().catch(e=>{updated.textContent='Fehler beim Laden der Daten.';console.error(e)});
 document.getElementById('periodSelect').addEventListener('change',e=>{currentPeriod=e.target.value;load();});
 document.getElementById('heatPeriodSelect').addEventListener('change',e=>{heatPeriod=e.target.value;load();});
+document.getElementById('portfolioPeriodSelect').addEventListener('change',e=>{portfolioPeriod=e.target.value;drawPortfolioChart(latestData);});
 function showTab(tab){
 
     document.getElementById('mainTab').style.display =
@@ -74,6 +141,7 @@ function showTab(tab){
         document.querySelectorAll('.navtab')[0].classList.add('active');
     }else{
         document.querySelectorAll('.navtab')[1].classList.add('active');
+        setTimeout(()=>drawPortfolioChart(latestData),50);
     }
 }
 setInterval(load,30000);
