@@ -1,4 +1,4 @@
-import json, math
+import json, math, os
 from datetime import datetime
 import pandas as pd
 import yfinance as yf
@@ -29,9 +29,17 @@ def pct(a,b):
 
 def get_close(symbol, period="10y", interval="1d"):
     try:
+        # Für lange Zeiträume möglichst robust laden: period=10y kann bei einzelnen Yahoo-Tickern
+        # manchmal zu wenig Historie zurückgeben. max als Fallback stellt sicher, dass 3/5/10 Jahre
+        # befüllt werden, sofern Yahoo dafür Daten hat.
         hist=yf.download(symbol,period=period,interval=interval,auto_adjust=False,progress=False,threads=False)
     except Exception:
         return pd.Series(dtype=float)
+    if hist.empty and interval == "1d":
+        try:
+            hist=yf.download(symbol,period="max",interval=interval,auto_adjust=False,progress=False,threads=False)
+        except Exception:
+            hist=pd.DataFrame()
     if hist.empty:
         return pd.Series(dtype=float)
     close=hist["Close"].dropna()
@@ -108,5 +116,6 @@ for cat in ["Aktien","Rohstoffe","Bitcoin"]:
     items=[a for a in assets if a["category"]==cat]
     summary.append({"name":cat,"day":avg(items,"day_pct"),"ytd":avg(items,"ytd_pct")})
 
+os.makedirs("data", exist_ok=True)
 with open("data/market_data.json","w",encoding="utf-8") as f:
     json.dump({"updated":datetime.now().strftime("%d.%m.%Y, %H:%M"),"assets":assets,"summary":summary},f,ensure_ascii=False,indent=2)
