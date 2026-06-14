@@ -7,10 +7,10 @@ ASSETS=[
 {"name":"S&P 500","short":"SP","isin":"IE00B5BMR087","symbol":"SXR8.DE","category":"Aktien"},
 {"name":"Nasdaq 100","short":"ND","isin":"IE0032077012","symbol":"SXRV.DE","category":"Aktien"},
 {"name":"STOXX Europe 600","short":"EU","isin":"DE0002635307","symbol":"EXSA.DE","category":"Aktien"},
-{"name":"Emerging Markets","short":"EM","isin":"IE00BKM4GZ66","symbol":"EUNM.DE","category":"Aktien"},
+{"name":"Emerging Markets","short":"EM","isin":"IE00BKM4GZ66","symbol":"IQQE.DE","category":"Aktien"},
 {"name":"China","short":"CN","isin":"A2PGQN","symbol":"IQQC.DE","category":"Aktien"},
 {"name":"Indien","short":"IN","isin":"IE00BZCQB185","symbol":"QDV5.DE","category":"Aktien"},
-{"name":"Japan","short":"JP","isin":"IE00B4L5YX21","symbol":"XDJP.DE","category":"Aktien"},
+{"name":"Japan","short":"JP","isin":"IE00B4L5YX21","symbol":"SJPA.L","category":"Aktien"},
 {"name":"Bitcoin","short":"₿","isin":"GB00BJYDH287","symbol":"BTC-EUR","category":"Bitcoin"},
 {"name":"Gold","short":"Au","isin":"DE000A0S9GB0","symbol":"4GLD.DE","category":"Rohstoffe"},
 {"name":"Silber","short":"Ag","isin":"JE00B1VS3333","symbol":"XAAG.DE","category":"Rohstoffe"},
@@ -27,29 +27,50 @@ def clean(x):
 def pct(a,b):
     return None if a is None or b in (None,0) else round((a/b-1)*100,2)
 
-def get_close(symbol, period="1y", interval="1d"):
-    hist=yf.download(symbol,period=period,interval=interval,auto_adjust=False,progress=False,threads=False)
-    if hist.empty: return pd.Series(dtype=float)
+def get_close(symbol, period="10y", interval="1d"):
+    try:
+        hist=yf.download(symbol,period=period,interval=interval,auto_adjust=False,progress=False,threads=False)
+    except Exception:
+        return pd.Series(dtype=float)
+    if hist.empty:
+        return pd.Series(dtype=float)
     close=hist["Close"].dropna()
-    if isinstance(close,pd.DataFrame): close=close.iloc[:,0]
+    if isinstance(close,pd.DataFrame):
+        close=close.iloc[:,0]
     return close
 
 def hist_list(series):
     return [clean(x) for x in series.dropna().tolist()]
 
+def from_date(series, years=None, months=None, days=None):
+    if series.empty:
+        return series
+    end=series.index[-1]
+    if years:
+        start=end-pd.DateOffset(years=years)
+    elif months:
+        start=end-pd.DateOffset(months=months)
+    elif days:
+        start=end-pd.DateOffset(days=days)
+    else:
+        return series
+    return series[series.index>=start]
+
 def get(asset):
     a=dict(asset)
-    close=get_close(a["symbol"],"1y","1d")
+    close=get_close(a["symbol"],"10y","1d")
     intra=get_close(a["symbol"],"1d","5m")
 
     if close.empty:
         a.update(price=None,currency="",day_pct=None,ytd_pct=None,ma200_diff_pct=None,
-                 history_intraday=[],history_1w=[],history_1m=[],history_ytd=[],history_1y=[],history_30d=[])
+                 history_intraday=[],history_1w=[],history_1m=[],history_ytd=[],history_1y=[],history_3y=[],history_5y=[],history_10y=[],history_30d=[])
         return a
 
     price=clean(close.iloc[-1])
     prev=clean(close.iloc[-2]) if len(close)>1 else None
-    ytd=close[close.index>=pd.Timestamp("2026-01-01",tz=close.index.tz if close.index.tz else None)]
+
+    idx_tz = close.index.tz if getattr(close.index, "tz", None) else None
+    ytd=close[close.index>=pd.Timestamp("2026-01-01",tz=idx_tz)]
     ytd_base=clean(ytd.iloc[0]) if not ytd.empty else None
     ma200=clean(close.tail(200).mean()) if len(close)>=200 else None
 
@@ -65,11 +86,14 @@ def get(asset):
         ytd_pct=pct(price,ytd_base),
         ma200_diff_pct=pct(price,ma200),
         history_intraday=hist_list(intra),
-        history_1w=hist_list(close.tail(7)),
-        history_1m=hist_list(close.tail(31)),
+        history_1w=hist_list(from_date(close,days=7)),
+        history_1m=hist_list(from_date(close,months=1)),
         history_ytd=hist_list(ytd),
-        history_1y=hist_list(close),
-        history_30d=hist_list(close.tail(30))
+        history_1y=hist_list(from_date(close,years=1)),
+        history_3y=hist_list(from_date(close,years=3)),
+        history_5y=hist_list(from_date(close,years=5)),
+        history_10y=hist_list(from_date(close,years=10)),
+        history_30d=hist_list(from_date(close,days=30))
     )
     return a
 
@@ -85,5 +109,4 @@ for cat in ["Aktien","Rohstoffe","Bitcoin"]:
     summary.append({"name":cat,"day":avg(items,"day_pct"),"ytd":avg(items,"ytd_pct")})
 
 with open("data/market_data.json","w",encoding="utf-8") as f:
-    json.dump({"updated":datetime.now().strftime("%d.%m.%Y, %H:%M"),
-               "assets":assets,"summary":summary},f,ensure_ascii=False,indent=2)
+    json.dump({"updated":datetime.now().strftime("%d.%m.%Y, %H:%M"),"assets":assets,"summary":summary},f,ensure_ascii=False,indent=2)
