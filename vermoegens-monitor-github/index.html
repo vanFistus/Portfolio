@@ -26,9 +26,9 @@ table{width:100%;border-collapse:collapse}th{color:#b8c9dc;font-size:13px;text-a
 <section class="cards" id="summary"></section>
 <section class="grid">
 <div class="panel"><h2>MARKTÜBERSICHT</h2><table><thead><tr><th>Name</th><th>ACT</th><th>Tag</th><th>YTD</th><th>1 Jahr</th><th>200 days</th></tr></thead><tbody id="rows"></tbody></table></div>
-<div class="panel"><h2 style="display:flex;justify-content:space-between;align-items:center"><span>MARKT-CHARTS</span><select id="periodSelect" style="background:#0b1726;color:white;border:1px solid #27435e;border-radius:8px;padding:6px 10px"><option value="day">Tag</option><option value="5d">1 Woche</option><option value="1mo">1 Monat</option><option value="ytd" selected>YTD</option><option value="1y">1 Jahr</option><option value="ma200">200 days</option></select></h2><div class="chartbox" id="charts"></div></div>
+<div class="panel"><h2 style="display:flex;justify-content:space-between;align-items:center"><span>MARKT-CHARTS</span><select id="periodSelect" style="background:#0b1726;color:white;border:1px solid #27435e;border-radius:8px;padding:6px 10px"><option value="day">Tag</option><option value="5d">1 Woche</option><option value="1mo">1 Monat</option><option value="ytd" selected>YTD</option><option value="1y">1 Jahr</option><option value="3y">3 Jahre</option><option value="5y">5 Jahre</option><option value="10y">10 Jahre</option><option value="ma200">200 days</option></select></h2><div class="chartbox" id="charts"></div></div>
 </section>
-<section class="panel" style="margin-top:18px"><h2 style="display:flex;justify-content:space-between;align-items:center"><span>PERFORMANCE HEATMAP</span><select id="heatPeriodSelect" style="background:#0b1726;color:white;border:1px solid #27435e;border-radius:8px;padding:6px 10px"><option value="day" selected>Tag</option><option value="5d">1 Woche</option><option value="1mo">1 Monat</option><option value="ytd">YTD</option><option value="1y">1 Jahr</option><option value="ma200">200 days</option></select></h2><div class="heat" id="heat"></div></section>
+<section class="panel" style="margin-top:18px"><h2 style="display:flex;justify-content:space-between;align-items:center"><span>PERFORMANCE HEATMAP</span><select id="heatPeriodSelect" style="background:#0b1726;color:white;border:1px solid #27435e;border-radius:8px;padding:6px 10px"><option value="day" selected>Tag</option><option value="5d">1 Woche</option><option value="1mo">1 Monat</option><option value="ytd">YTD</option><option value="1y">1 Jahr</option><option value="3y">3 Jahre</option><option value="5y">5 Jahre</option><option value="10y">10 Jahre</option><option value="ma200">200 days</option></select></h2><div class="heat" id="heat"></div></section>
 </div>
 
 <div id="portfolioTab" style="display:none">
@@ -76,7 +76,8 @@ return null
 }
 
 function seriesForPeriod(a,p){
-return p==='day'?a.history_1w:p==='5d'?a.history_1w:p==='1mo'?a.history_1m:p==='ytd'?a.history_ytd:p==='1y'?a.history_1y:p==='3y'?a.history_3y:p==='5y'?a.history_5y:p==='10y'?a.history_10y:a.history_ytd
+let v=p==='day'?a.history_intraday:p==='5d'?a.history_1w:p==='1mo'?a.history_1m:p==='ytd'?a.history_ytd:p==='1y'?a.history_1y:p==='3y'?a.history_3y:p==='5y'?a.history_5y:p==='10y'?a.history_10y:a.history_ytd;
+return Array.isArray(v)?v:[]
 }
 
 function toPerformanceSeries(v){
@@ -127,7 +128,13 @@ const ctx=c.getContext('2d'),w=c.width=c.offsetWidth*devicePixelRatio,h=c.height
 ctx.clearRect(0,0,w,h);
 
 let all=series.flatMap(s=>s.values);
-if(all.length<2)return;
+if(all.length<2){
+ctx.fillStyle='#9eb4ca';
+ctx.font=`${16*devicePixelRatio}px Inter, Segoe UI, Arial`;
+ctx.textAlign='center';
+ctx.fillText('Keine ausreichenden Daten für diesen Zeitraum vorhanden',w/2,h/2);
+return;
+}
 
 let rawMin=Math.min(...all,0),rawMax=Math.max(...all,0);
 let step=niceStep(rawMax-rawMin);
@@ -196,7 +203,7 @@ heat.innerHTML+=`<div class="tile ${heatClass(p)}" style="grid-column:span ${col
 
 charts.innerHTML='';
 (data.assets||[]).slice(0,6).forEach((a,i)=>{
-let id='c'+i,vals=currentPeriod==='day'?a.history_1w:currentPeriod==='5d'?a.history_1w:currentPeriod==='1mo'?a.history_1m:currentPeriod==='ytd'?a.history_ytd:currentPeriod==='1y'?a.history_1y:a.history_1y,perf=perfByPeriod(a,currentPeriod);
+let id='c'+i,vals=seriesForPeriod(a,currentPeriod),perf=perfByPeriod(a,currentPeriod);
 charts.innerHTML+=`<div class="mini"><b style="display:flex;justify-content:space-between;gap:10px"><span>${a.name}</span><span class="${cls(perf)}">${sign(perf)}${fmt(perf,'%')}</span></b><canvas id="${id}"></canvas></div>`;
 setTimeout(()=>drawSpark(document.getElementById(id),vals,(perf||0)>=0?'#20d37a':'#ff4d6d'),0)
 });
