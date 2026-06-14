@@ -29,17 +29,13 @@ def pct(a,b):
 
 def get_close(symbol, period="10y", interval="1d"):
     try:
-        # Für lange Zeiträume möglichst robust laden: period=10y kann bei einzelnen Yahoo-Tickern
-        # manchmal zu wenig Historie zurückgeben. max als Fallback stellt sicher, dass 3/5/10 Jahre
-        # befüllt werden, sofern Yahoo dafür Daten hat.
-        hist=yf.download(symbol,period=period,interval=interval,auto_adjust=False,progress=False,threads=False)
+        # Für Tagesdaten laden wir bewusst "max" statt nur "10y".
+        # Dadurch sind history_3y, history_5y und history_10y stabil befüllt,
+        # sofern Yahoo Finance für den jeweiligen Ticker genug Historie liefert.
+        effective_period = "max" if interval == "1d" else period
+        hist=yf.download(symbol,period=effective_period,interval=interval,auto_adjust=False,progress=False,threads=False)
     except Exception:
         return pd.Series(dtype=float)
-    if hist.empty and interval == "1d":
-        try:
-            hist=yf.download(symbol,period="max",interval=interval,auto_adjust=False,progress=False,threads=False)
-        except Exception:
-            hist=pd.DataFrame()
     if hist.empty:
         return pd.Series(dtype=float)
     close=hist["Close"].dropna()
@@ -49,6 +45,9 @@ def get_close(symbol, period="10y", interval="1d"):
 
 def hist_list(series):
     return [clean(x) for x in series.dropna().tolist()]
+
+def hist_count(series):
+    return int(series.dropna().shape[0])
 
 def from_date(series, years=None, months=None, days=None):
     if series.empty:
@@ -101,7 +100,14 @@ def get(asset):
         history_3y=hist_list(from_date(close,years=3)),
         history_5y=hist_list(from_date(close,years=5)),
         history_10y=hist_list(from_date(close,years=10)),
-        history_30d=hist_list(from_date(close,days=30))
+        history_30d=hist_list(from_date(close,days=30)),
+        history_points={
+            "1y": hist_count(from_date(close,years=1)),
+            "3y": hist_count(from_date(close,years=3)),
+            "5y": hist_count(from_date(close,years=5)),
+            "10y": hist_count(from_date(close,years=10)),
+            "all": hist_count(close)
+        }
     )
     return a
 
