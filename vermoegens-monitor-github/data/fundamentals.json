@@ -5,71 +5,234 @@
       "market": "USA",
       "pe": 24.1,
       "forward_pe": 22.4,
-      "pb": 0.2,
+      "pb": null,
       "dividend_yield": 1.4,
       "roe": 38.4,
       "earnings_growth": 40.5,
-      "source": "Yahoo Finance: SXR8.DE; ROE/EPS: Top-Holdings-Proxy; fehlende Felder: Vorwert",
+      "source": "Vorwerte aus fundamentals.json",
       "as_of": "15.09.2026",
       "field_sources": {
-        "pb": "Yahoo Finance (SXR8.DE)",
-        "roe": "Yahoo Finance Top-Holdings-Proxy (SXR8.DE; 8 Titel)",
-        "earnings_growth": "Yahoo Finance Top-Holdings-Proxy (SXR8.DE; 8 Titel)",
         "pe": "Vorwert aus fundamentals.json",
         "forward_pe": "Vorwert aus fundamentals.json",
-        "dividend_yield": "Vorwert aus fundamentals.json"
+        "pb": "Vorwert aus fundamentals.json",
+        "dividend_yield": "Vorwert aus fundamentals.json",
+        "earnings_growth": "Vorwert aus fundamentals.json",
+        "roe": "Vorwert aus fundamentals.json"
+      },
+      "quality": {
+        "pe": "carried_forward",
+        "forward_pe": "carried_forward",
+        "pb": "carried_forward",
+        "dividend_yield": "carried_forward",
+        "earnings_growth": "carried_forward",
+        "roe": "carried_forward"
       },
       "carried_forward": [
         "pe",
         "forward_pe",
-        "dividend_yield"
-      ]
+        "pb",
+        "dividend_yield",
+        "earnings_growth",
+        "roe"
+      ],
+      "raw_candidates": {
+        "pe": [
+          {
+            "symbol": "SXR8.DE",
+            "value": 0.0
+          },
+          {
+            "symbol": "SPY",
+            "value": 0.0
+          },
+          {
+            "symbol": "IVV",
+            "value": 0.0
+          }
+        ],
+        "forward_pe": [],
+        "pb": [
+          {
+            "symbol": "SXR8.DE",
+            "value": 0.2
+          },
+          {
+            "symbol": "SPY",
+            "value": 0.2
+          },
+          {
+            "symbol": "IVV",
+            "value": 0.2
+          }
+        ],
+        "dividend_yield": [
+          {
+            "symbol": "SPY",
+            "value": 98.0
+          },
+          {
+            "symbol": "IVV",
+            "value": 106.0
+          }
+        ],
+        "earnings_growth": []
+      }
     },
     {
       "market": "Europa",
       "pe": 14.2,
       "forward_pe": 13.6,
-      "pb": 0.4,
-      "dividend_yield": 2.4,
+      "pb": null,
+      "dividend_yield": 2.8,
       "roe": 30.4,
       "earnings_growth": 12.1,
-      "source": "Yahoo Finance: EXSA.DE; ROE/EPS: Top-Holdings-Proxy; fehlende Felder: Vorwert",
+      "source": "Yahoo Finance ETF/FundData; mehrere Regional-Proxies mit Plausibilitätsprüfung",
       "as_of": "15.09.2026",
       "field_sources": {
-        "pb": "Yahoo Finance (EXSA.DE)",
-        "dividend_yield": "Yahoo Finance (EXSA.DE)",
-        "roe": "Yahoo Finance Top-Holdings-Proxy (EXSA.DE; 8 Titel)",
-        "earnings_growth": "Yahoo Finance Top-Holdings-Proxy (EXSA.DE; 8 Titel)",
         "pe": "Vorwert aus fundamentals.json",
-        "forward_pe": "Vorwert aus fundamentals.json"
+        "forward_pe": "Vorwert aus fundamentals.json",
+        "pb": "Vorwert aus fundamentals.json",
+        "dividend_yield": "Yahoo Finance ETF quote data (VGK=2.8, IEUR=3.1)",
+        "earnings_growth": "Vorwert aus fundamentals.json",
+        "roe": "Vorwert aus fundamentals.json"
+      },
+      "quality": {
+        "pe": "carried_forward",
+        "forward_pe": "carried_forward",
+        "pb": "carried_forward",
+        "dividend_yield": "proxy_median",
+        "earnings_growth": "carried_forward",
+        "roe": "carried_forward"
       },
       "carried_forward": [
         "pe",
-        "forward_pe"
-      ]
+        "forward_pe",
+        "pb",
+        "earnings_growth",
+        "roe"
+      ],
+      "raw_candidates": {
+        "pe": [
+          {
+            "symbol": "EXSA.DE",
+            "value": 0.1
+          },
+          {
+            "symbol": "VGK",
+            "value": 0.1
+          },
+          {
+            "symbol": "IEUR",
+            "value": 0.1
+          }
+        ],
+        "forward_pe": [],
+        "pb": [
+          {
+            "symbol": "EXSA.DE",
+            "value": 0.4
+          },
+          {
+            "symbol": "VGK",
+            "value": 0.4
+          },
+          {
+            "symbol": "IEUR",
+            "value": 0.4
+          }
+        ],
+        "dividend_yield": [
+          {
+            "symbol": "EXSA.DE",
+            "value": 2.4
+          },
+          {
+            "symbol": "VGK",
+            "value": 2.8
+          },
+          {
+            "symbol": "IEUR",
+            "value": 3.1
+          }
+        ],
+        "earnings_growth": []
+      }
     },
     {
       "market": "Emerging Markets",
       "pe": 12.8,
       "forward_pe": 12.1,
-      "pb": 0.4,
-      "dividend_yield": 2.2,
+      "pb": null,
+      "dividend_yield": 1.9,
       "roe": 33.0,
       "earnings_growth": 48.2,
-      "source": "Yahoo Finance: IQQE.DE, IEMG; ROE/EPS: Top-Holdings-Proxy; fehlende Felder: Vorwert",
+      "source": "Yahoo Finance ETF/FundData; mehrere Regional-Proxies mit Plausibilitätsprüfung",
       "as_of": "15.09.2026",
       "field_sources": {
-        "pb": "Yahoo Finance (IQQE.DE)",
-        "dividend_yield": "Yahoo Finance (IEMG)",
-        "roe": "Yahoo Finance Top-Holdings-Proxy (IQQE.DE; 5 Titel)",
-        "earnings_growth": "Yahoo Finance Top-Holdings-Proxy (IQQE.DE; 5 Titel)",
         "pe": "Vorwert aus fundamentals.json",
-        "forward_pe": "Vorwert aus fundamentals.json"
+        "forward_pe": "Vorwert aus fundamentals.json",
+        "pb": "Vorwert aus fundamentals.json",
+        "dividend_yield": "Yahoo Finance ETF quote data (IEMG=2.2, EEM=1.7)",
+        "earnings_growth": "Vorwert aus fundamentals.json",
+        "roe": "Vorwert aus fundamentals.json"
+      },
+      "quality": {
+        "pe": "carried_forward",
+        "forward_pe": "carried_forward",
+        "pb": "carried_forward",
+        "dividend_yield": "proxy_median",
+        "earnings_growth": "carried_forward",
+        "roe": "carried_forward"
       },
       "carried_forward": [
         "pe",
-        "forward_pe"
-      ]
+        "forward_pe",
+        "pb",
+        "earnings_growth",
+        "roe"
+      ],
+      "raw_candidates": {
+        "pe": [
+          {
+            "symbol": "IQQE.DE",
+            "value": 0.1
+          },
+          {
+            "symbol": "IEMG",
+            "value": 0.1
+          },
+          {
+            "symbol": "EEM",
+            "value": 0.1
+          }
+        ],
+        "forward_pe": [],
+        "pb": [
+          {
+            "symbol": "IQQE.DE",
+            "value": 0.4
+          },
+          {
+            "symbol": "IEMG",
+            "value": 0.5
+          },
+          {
+            "symbol": "EEM",
+            "value": 0.4
+          }
+        ],
+        "dividend_yield": [
+          {
+            "symbol": "IEMG",
+            "value": 2.2
+          },
+          {
+            "symbol": "EEM",
+            "value": 1.7
+          }
+        ],
+        "earnings_growth": []
+      }
     },
     {
       "market": "China",
@@ -77,68 +240,226 @@
       "forward_pe": 10.2,
       "pb": 0.9,
       "dividend_yield": 2.0,
-      "roe": 7.3,
+      "roe": 8.2,
       "earnings_growth": -29.6,
-      "source": "Yahoo Finance: IQQC.DE, MCHI; ROE/EPS: Top-Holdings-Proxy; fehlende Felder: Vorwert",
+      "source": "Yahoo Finance ETF/FundData; mehrere Regional-Proxies mit Plausibilitätsprüfung",
       "as_of": "15.09.2026",
       "field_sources": {
-        "pb": "Yahoo Finance (IQQC.DE)",
-        "dividend_yield": "Yahoo Finance (MCHI)",
-        "roe": "Yahoo Finance Top-Holdings-Proxy (IQQC.DE; 4 Titel)",
-        "earnings_growth": "Yahoo Finance Top-Holdings-Proxy (IQQC.DE; 4 Titel)",
         "pe": "Vorwert aus fundamentals.json",
-        "forward_pe": "Vorwert aus fundamentals.json"
+        "forward_pe": "Vorwert aus fundamentals.json",
+        "pb": "Yahoo Finance FundData (IQQC.DE=0.9, FXI=0.9)",
+        "dividend_yield": "Yahoo Finance ETF quote data (MCHI=2.0, FXI=1.9)",
+        "earnings_growth": "Vorwert aus fundamentals.json",
+        "roe": "Berechnet aus Yahoo FundData: 100 × KBV / KGV"
+      },
+      "quality": {
+        "pe": "carried_forward",
+        "forward_pe": "carried_forward",
+        "pb": "proxy_median",
+        "dividend_yield": "proxy_median",
+        "earnings_growth": "carried_forward",
+        "roe": "implied_from_pb_pe"
       },
       "carried_forward": [
         "pe",
-        "forward_pe"
-      ]
+        "forward_pe",
+        "earnings_growth"
+      ],
+      "raw_candidates": {
+        "pe": [
+          {
+            "symbol": "IQQC.DE",
+            "value": 0.1
+          },
+          {
+            "symbol": "MCHI",
+            "value": 0.1
+          },
+          {
+            "symbol": "FXI",
+            "value": 0.1
+          }
+        ],
+        "forward_pe": [],
+        "pb": [
+          {
+            "symbol": "IQQC.DE",
+            "value": 0.9
+          },
+          {
+            "symbol": "MCHI",
+            "value": 0.7
+          },
+          {
+            "symbol": "FXI",
+            "value": 0.9
+          }
+        ],
+        "dividend_yield": [
+          {
+            "symbol": "MCHI",
+            "value": 2.0
+          },
+          {
+            "symbol": "FXI",
+            "value": 1.9
+          }
+        ],
+        "earnings_growth": []
+      }
     },
     {
       "market": "Indien",
       "pe": 27.4,
       "forward_pe": 25.8,
-      "pb": 0.3,
-      "dividend_yield": 0.0,
+      "pb": null,
+      "dividend_yield": null,
       "roe": 17.9,
       "earnings_growth": 11.6,
-      "source": "Yahoo Finance: QDV5.DE, INDA; ROE/EPS: Top-Holdings-Proxy; fehlende Felder: Vorwert",
+      "source": "Vorwerte aus fundamentals.json",
       "as_of": "15.09.2026",
       "field_sources": {
-        "pb": "Yahoo Finance (QDV5.DE)",
-        "dividend_yield": "Yahoo Finance (INDA)",
-        "roe": "Yahoo Finance Top-Holdings-Proxy (QDV5.DE; 8 Titel)",
-        "earnings_growth": "Yahoo Finance Top-Holdings-Proxy (QDV5.DE; 8 Titel)",
         "pe": "Vorwert aus fundamentals.json",
-        "forward_pe": "Vorwert aus fundamentals.json"
+        "forward_pe": "Vorwert aus fundamentals.json",
+        "pb": "Vorwert aus fundamentals.json",
+        "dividend_yield": "Vorwert aus fundamentals.json",
+        "earnings_growth": "Vorwert aus fundamentals.json",
+        "roe": "Vorwert aus fundamentals.json"
+      },
+      "quality": {
+        "pe": "carried_forward",
+        "forward_pe": "carried_forward",
+        "pb": "carried_forward",
+        "dividend_yield": "carried_forward",
+        "earnings_growth": "carried_forward",
+        "roe": "carried_forward"
       },
       "carried_forward": [
         "pe",
-        "forward_pe"
-      ]
+        "forward_pe",
+        "pb",
+        "dividend_yield",
+        "earnings_growth",
+        "roe"
+      ],
+      "raw_candidates": {
+        "pe": [
+          {
+            "symbol": "QDV5.DE",
+            "value": 0.0
+          },
+          {
+            "symbol": "INDA",
+            "value": 0.0
+          },
+          {
+            "symbol": "FLIN",
+            "value": 0.0
+          }
+        ],
+        "forward_pe": [],
+        "pb": [
+          {
+            "symbol": "QDV5.DE",
+            "value": 0.3
+          },
+          {
+            "symbol": "INDA",
+            "value": 0.3
+          },
+          {
+            "symbol": "FLIN",
+            "value": 0.3
+          }
+        ],
+        "dividend_yield": [
+          {
+            "symbol": "INDA",
+            "value": 0.0
+          },
+          {
+            "symbol": "FLIN",
+            "value": 42.0
+          }
+        ],
+        "earnings_growth": []
+      }
     },
     {
       "market": "Japan",
       "pe": 16.8,
       "forward_pe": 15.7,
-      "pb": 0.6,
-      "dividend_yield": 3.7,
+      "pb": null,
+      "dividend_yield": 4.1,
       "roe": 22.8,
       "earnings_growth": 54.5,
-      "source": "Yahoo Finance: SJPA.L, EWJ; ROE/EPS: Top-Holdings-Proxy; fehlende Felder: Vorwert",
+      "source": "Yahoo Finance ETF/FundData; mehrere Regional-Proxies mit Plausibilitätsprüfung",
       "as_of": "15.09.2026",
       "field_sources": {
-        "pb": "Yahoo Finance (SJPA.L)",
-        "dividend_yield": "Yahoo Finance (EWJ)",
-        "roe": "Yahoo Finance Top-Holdings-Proxy (SJPA.L; 8 Titel)",
-        "earnings_growth": "Yahoo Finance Top-Holdings-Proxy (SJPA.L; 8 Titel)",
         "pe": "Vorwert aus fundamentals.json",
-        "forward_pe": "Vorwert aus fundamentals.json"
+        "forward_pe": "Vorwert aus fundamentals.json",
+        "pb": "Vorwert aus fundamentals.json",
+        "dividend_yield": "Yahoo Finance ETF quote data (EWJ=3.7, BBJP=4.6)",
+        "earnings_growth": "Vorwert aus fundamentals.json",
+        "roe": "Vorwert aus fundamentals.json"
+      },
+      "quality": {
+        "pe": "carried_forward",
+        "forward_pe": "carried_forward",
+        "pb": "carried_forward",
+        "dividend_yield": "proxy_median",
+        "earnings_growth": "carried_forward",
+        "roe": "carried_forward"
       },
       "carried_forward": [
         "pe",
-        "forward_pe"
-      ]
+        "forward_pe",
+        "pb",
+        "earnings_growth",
+        "roe"
+      ],
+      "raw_candidates": {
+        "pe": [
+          {
+            "symbol": "SJPA.L",
+            "value": 0.1
+          },
+          {
+            "symbol": "EWJ",
+            "value": 0.1
+          },
+          {
+            "symbol": "BBJP",
+            "value": 0.1
+          }
+        ],
+        "forward_pe": [],
+        "pb": [
+          {
+            "symbol": "SJPA.L",
+            "value": 0.6
+          },
+          {
+            "symbol": "EWJ",
+            "value": 0.5
+          },
+          {
+            "symbol": "BBJP",
+            "value": 0.5
+          }
+        ],
+        "dividend_yield": [
+          {
+            "symbol": "EWJ",
+            "value": 3.7
+          },
+          {
+            "symbol": "BBJP",
+            "value": 4.6
+          }
+        ],
+        "earnings_growth": []
+      }
     }
   ]
 }
