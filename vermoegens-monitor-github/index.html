@@ -1,20 +1,11 @@
 <!doctype html>
 <html lang="de">
-
 <head>
-
 <meta charset="utf-8">
-
-<meta
-  name="viewport"
-  content="width=device-width,initial-scale=1"
->
-
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Vermögens-Monitor</title>
 
-
 <style>
-
 :root{
   --bg:#07111f;
   --panel:#0f1d2e;
@@ -26,31 +17,14 @@
   --blue:#2eb6ff;
 }
 
-
-*{
-  box-sizing:border-box;
-}
-
+*{box-sizing:border-box}
 
 body{
   margin:0;
-  background:
-    radial-gradient(
-      circle at top left,
-      #10233a,
-      #06101d 45%,
-      #030812
-    );
-
+  background:radial-gradient(circle at top left,#10233a,#06101d 45%,#030812);
   color:var(--text);
-
-  font-family:
-    Inter,
-    Segoe UI,
-    Arial,
-    sans-serif;
+  font-family:Inter,Segoe UI,Arial,sans-serif;
 }
-
 
 .wrap{
   max-width:1500px;
@@ -58,26 +32,22 @@ body{
   padding:26px;
 }
 
-
 header{
   display:flex;
   justify-content:space-between;
   margin-bottom:22px;
 }
 
-
 h1{
   margin:0;
   font-size:34px;
 }
-
 
 .sub{
   margin-top:8px;
   display:flex;
   gap:12px;
 }
-
 
 .navtab{
   color:#56a9ff;
@@ -88,17 +58,14 @@ h1{
   border:1px solid transparent;
 }
 
-
 .navtab:hover{
   border-color:#27435e;
 }
-
 
 .navtab.active{
   background:#10233a;
   border-color:#27435e;
 }
-
 
 .clock{
   text-align:right;
@@ -106,13 +73,11 @@ h1{
   font-weight:800;
 }
 
-
 .updated{
   font-size:14px;
   color:var(--muted);
   margin-top:5px;
 }
-
 
 .cards{
   display:grid;
@@ -121,33 +86,23 @@ h1{
   margin-bottom:18px;
 }
 
-
 .card,
 .panel{
-  background:
-    linear-gradient(
-      180deg,
-      var(--panel),
-      #091625
-    );
-
+  background:linear-gradient(180deg,var(--panel),#091625);
   border:1px solid var(--line);
   border-radius:18px;
   overflow:hidden;
 }
 
-
 .card{
   padding:18px 20px;
 }
-
 
 .grid{
   display:grid;
   grid-template-columns:2.15fr 1fr;
   gap:16px;
 }
-
 
 .panel h2{
   font-size:24px;
@@ -156,12 +111,10 @@ h1{
   border-bottom:1px solid var(--line);
 }
 
-
 table{
   width:100%;
   border-collapse:collapse;
 }
-
 
 th{
   color:#b8c9dc;
@@ -171,26 +124,20 @@ th{
   background:#0d1a2a;
 }
 
-
 th:first-child{
   text-align:left;
 }
 
-
 td{
   padding:13px 14px;
-  border-top:
-    1px solid rgba(91,126,160,.35);
-
+  border-top:1px solid rgba(91,126,160,.35);
   text-align:right;
   font-weight:750;
 }
 
-
 td:first-child{
   text-align:left;
 }
-
 
 .name{
   display:flex;
@@ -198,26 +145,18 @@ td:first-child{
   align-items:center;
 }
 
-
 .badge{
   width:28px;
   height:28px;
-
   border-radius:50%;
-
   background:var(--blue);
-
   display:grid;
   place-items:center;
-
   color:#001726;
-
   font-weight:900;
   font-size:12px;
-
   flex:none;
 }
-
 
 .isin{
   display:block;
@@ -227,57 +166,33 @@ td:first-child{
   font-weight:600;
 }
 
-
-.pos{
-  color:var(--green);
-}
-
-
-.neg{
-  color:var(--red);
-}
-
-
-.muted{
-  color:var(--muted);
-}
-
+.pos{color:var(--green)}
+.neg{color:var(--red)}
+.muted{color:var(--muted)}
 
 .heat{
   padding:18px;
-
   display:grid;
-
-  grid-template-columns:
-    repeat(12,1fr);
-
+  grid-template-columns:repeat(12,1fr);
   gap:10px;
 }
 
-
 .tile{
   min-height:104px;
-
   border-radius:12px;
-
   padding:14px;
-
-  border:
-    1px solid rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.08);
 }
-
 
 .tile .tname{
   font-weight:900;
   margin-bottom:8px;
 }
 
-
 .tile .tpct{
   font-size:26px;
   font-weight:950;
 }
-
 
 .tpctRow{
   display:flex;
@@ -286,70 +201,22 @@ td:first-child{
   flex-wrap:wrap;
 }
 
-
 .absoluteValue{
-  font-size:.53em;
   font-weight:800;
   color:rgba(255,255,255,.78);
   white-space:nowrap;
 }
-
 
 .tile .ytd{
   font-size:14px;
   margin-top:6px;
 }
 
-
-.g2{
-  background:
-    linear-gradient(
-      135deg,
-      #107a42,
-      #063d23
-    );
-}
-
-
-.g1{
-  background:
-    linear-gradient(
-      135deg,
-      #155d3a,
-      #123623
-    );
-}
-
-
-.r1{
-  background:
-    linear-gradient(
-      135deg,
-      #64313b,
-      #3a1820
-    );
-}
-
-
-.r2{
-  background:
-    linear-gradient(
-      135deg,
-      #8a2437,
-      #44121d
-    );
-}
-
-
-.neutral{
-  background:
-    linear-gradient(
-      135deg,
-      #2b3a4e,
-      #182435
-    );
-}
-
+.g2{background:linear-gradient(135deg,#107a42,#063d23)}
+.g1{background:linear-gradient(135deg,#155d3a,#123623)}
+.r1{background:linear-gradient(135deg,#64313b,#3a1820)}
+.r2{background:linear-gradient(135deg,#8a2437,#44121d)}
+.neutral{background:linear-gradient(135deg,#2b3a4e,#182435)}
 
 .chartbox{
   padding:16px;
@@ -357,24 +224,17 @@ td:first-child{
   gap:12px;
 }
 
-
 .mini{
   background:#0b1726;
-
-  border:
-    1px solid rgba(91,126,160,.35);
-
+  border:1px solid rgba(91,126,160,.35);
   border-radius:14px;
-
   padding:14px;
 }
-
 
 canvas{
   width:100%;
   height:110px;
 }
-
 
 .footer{
   text-align:center;
@@ -383,13 +243,11 @@ canvas{
   margin-top:16px;
 }
 
-
 .legendItem{
   display:flex;
   align-items:center;
   gap:8px;
 }
-
 
 .legendDot{
   width:13px;
@@ -398,17 +256,17 @@ canvas{
   display:inline-block;
 }
 
-
 .legendPerf{
   font-weight:900;
 }
 
 
+/* ================= FUNDAMENTALTABELLE ================= */
+
 .metricTable{
   width:100%;
   table-layout:fixed;
 }
-
 
 .metricTable th,
 .metricTable td{
@@ -416,19 +274,16 @@ canvas{
   text-align:center;
 }
 
-
 .metricTable th:first-child,
 .metricTable td:first-child{
   width:18%;
   text-align:left;
 }
 
-
 .metricTable th:not(:first-child),
 .metricTable td:not(:first-child){
   width:13.666%;
 }
-
 
 .metric{
   display:inline-flex;
@@ -437,71 +292,43 @@ canvas{
   justify-content:center;
 }
 
-
 .dot{
   width:10px;
   height:10px;
   border-radius:50%;
-
   display:inline-block;
-
-  box-shadow:
-    0 0 10px rgba(255,255,255,.12);
+  box-shadow:0 0 10px rgba(255,255,255,.12);
 }
 
-
-.dot.good{
-  background:var(--green);
-}
-
-
-.dot.mid{
-  background:#ffcc66;
-}
-
-
-.dot.bad{
-  background:var(--red);
-}
-
+.dot.good{background:var(--green)}
+.dot.mid{background:#ffcc66}
+.dot.bad{background:var(--red)}
 
 .snapshot{
   padding:18px;
 }
 
-
 .snapshotRow{
   display:grid;
-
-  grid-template-columns:
-    20% 60% 20%;
-
+  grid-template-columns:20% 60% 20%;
   gap:0;
-
   align-items:center;
-
   padding:14px 4px;
-
-  border-top:
-    1px solid rgba(91,126,160,.35);
+  border-top:1px solid rgba(91,126,160,.35);
 }
-
 
 .snapshotRow:first-child{
   border-top:0;
 }
-
 
 .marketName{
   font-weight:900;
   text-align:left;
 }
 
-
 .snapshotText{
   text-align:center;
 }
-
 
 .stars{
   text-align:right;
@@ -510,7 +337,6 @@ canvas{
   letter-spacing:1px;
 }
 
-
 .fundamentalDate{
   font-size:13px;
   color:var(--muted);
@@ -518,84 +344,64 @@ canvas{
 }
 
 
-/* ==========================================================
-   FUNDAMENTAL TOOLTIP
-   ========================================================== */
-
+/* ================= HOVER-BOX ================= */
 
 .metric.hasTooltip{
   cursor:help;
 }
 
-
 .metric.hasTooltip:hover{
   filter:brightness(1.15);
 }
 
-
 #metricTooltip{
   position:fixed;
-
   z-index:99999;
-
   display:none;
-
   pointer-events:none;
 
-  min-width:220px;
-  max-width:340px;
+  min-width:245px;
+  max-width:360px;
 
   padding:12px 14px;
 
   background:#16283b;
-
-  border:
-    1px solid #45637f;
-
+  border:1px solid #45637f;
   border-radius:9px;
 
   color:#f4f7fb;
-
   font-size:12px;
   font-weight:500;
-  line-height:1.45;
+  line-height:1.5;
 
   box-shadow:
     0 10px 30px rgba(0,0,0,.45),
     0 0 0 1px rgba(255,255,255,.03);
 }
 
-
 #metricTooltip .tooltipTitle{
   color:#9eb4ca;
-
   font-size:11px;
-
   font-weight:800;
-
   text-transform:uppercase;
-
   letter-spacing:.4px;
-
   margin-bottom:4px;
 }
 
-
 #metricTooltip .tooltipSource{
-  font-weight:700;
+  font-weight:800;
   color:#f4f7fb;
 }
 
-
-#metricTooltip .tooltipDate{
+#metricTooltip .tooltipDetails{
   margin-top:8px;
-
-  padding-top:7px;
-
-  border-top:
-    1px solid rgba(158,180,202,.2);
-
+  padding-top:8px;
+  border-top:1px solid rgba(158,180,202,.2);
   color:#b8c9dc;
+}
+
+#metricTooltip .tooltipDetails strong{
+  color:#dce8f3;
 }
 
 
@@ -621,9 +427,7 @@ canvas{
   .metricTable{
     min-width:900px;
   }
-
 }
-
 
 @media(max-width:1100px){
 
@@ -633,12 +437,9 @@ canvas{
   }
 
   .heat{
-    grid-template-columns:
-      repeat(2,1fr);
+    grid-template-columns:repeat(2,1fr);
   }
-
 }
-
 
 @media(max-width:620px){
 
@@ -657,27 +458,20 @@ canvas{
   h1{
     font-size:28px;
   }
-
 }
 
 </style>
-
 </head>
-
 
 <body>
 
-
 <div class="wrap">
-
 
 <header>
 
   <div>
 
-    <h1>
-      Vermögens-Monitor
-    </h1>
+    <h1>Vermögens-Monitor</h1>
 
     <div class="sub">
 
@@ -721,14 +515,9 @@ canvas{
 </header>
 
 
-
-<!-- =========================================================
-     MARKTÜBERSICHT
-     ========================================================= -->
-
+<!-- ================= MARKTÜBERSICHT ================= -->
 
 <div id="mainTab">
-
 
 <section
   class="cards"
@@ -738,36 +527,24 @@ canvas{
 
 <section class="grid">
 
-
 <div class="panel">
 
-  <h2>
-    MARKTÜBERSICHT
-  </h2>
-
+  <h2>MARKTÜBERSICHT</h2>
 
   <table>
 
     <thead>
 
       <tr>
-
         <th>Name</th>
-
         <th>ACT</th>
-
         <th>Tag</th>
-
         <th>YTD</th>
-
         <th>1 Jahr</th>
-
         <th>200 days</th>
-
       </tr>
 
     </thead>
-
 
     <tbody id="rows"></tbody>
 
@@ -776,76 +553,28 @@ canvas{
 </div>
 
 
-
 <div class="panel">
 
-  <h2
-    style="
-      display:flex;
-      justify-content:space-between;
-      align-items:center
-    "
-  >
+  <h2 style="display:flex;justify-content:space-between;align-items:center">
 
-    <span>
-      MARKT-CHARTS
-    </span>
-
+    <span>MARKT-CHARTS</span>
 
     <select
       id="periodSelect"
-      style="
-        background:#0b1726;
-        color:white;
-        border:1px solid #27435e;
-        border-radius:8px;
-        padding:6px 10px
-      "
+      style="background:#0b1726;color:white;border:1px solid #27435e;border-radius:8px;padding:6px 10px"
     >
-
-      <option value="day">
-        Tag
-      </option>
-
-      <option value="5d">
-        1 Woche
-      </option>
-
-      <option value="1mo">
-        1 Monat
-      </option>
-
-      <option
-        value="ytd"
-        selected
-      >
-        YTD
-      </option>
-
-      <option value="1y">
-        1 Jahr
-      </option>
-
-      <option value="3y">
-        3 Jahre
-      </option>
-
-      <option value="5y">
-        5 Jahre
-      </option>
-
-      <option value="10y">
-        10 Jahre
-      </option>
-
-      <option value="ma200">
-        200 days
-      </option>
-
+      <option value="day">Tag</option>
+      <option value="5d">1 Woche</option>
+      <option value="1mo">1 Monat</option>
+      <option value="ytd" selected>YTD</option>
+      <option value="1y">1 Jahr</option>
+      <option value="3y">3 Jahre</option>
+      <option value="5y">5 Jahre</option>
+      <option value="10y">10 Jahre</option>
+      <option value="ma200">200 days</option>
     </select>
 
   </h2>
-
 
   <div
     class="chartbox"
@@ -854,9 +583,7 @@ canvas{
 
 </div>
 
-
 </section>
-
 
 
 <section
@@ -864,92 +591,38 @@ canvas{
   style="margin-top:18px"
 >
 
+<h2 style="display:flex;justify-content:space-between;align-items:center">
 
-<h2
-  style="
-    display:flex;
-    justify-content:space-between;
-    align-items:center
-  "
->
-
-  <span>
-    PERFORMANCE HEATMAP
-  </span>
-
+  <span>PERFORMANCE HEATMAP</span>
 
   <select
     id="heatPeriodSelect"
-    style="
-      background:#0b1726;
-      color:white;
-      border:1px solid #27435e;
-      border-radius:8px;
-      padding:6px 10px
-    "
+    style="background:#0b1726;color:white;border:1px solid #27435e;border-radius:8px;padding:6px 10px"
   >
-
-    <option
-      value="day"
-      selected
-    >
-      Tag
-    </option>
-
-    <option value="5d">
-      1 Woche
-    </option>
-
-    <option value="1mo">
-      1 Monat
-    </option>
-
-    <option value="ytd">
-      YTD
-    </option>
-
-    <option value="1y">
-      1 Jahr
-    </option>
-
-    <option value="3y">
-      3 Jahre
-    </option>
-
-    <option value="5y">
-      5 Jahre
-    </option>
-
-    <option value="10y">
-      10 Jahre
-    </option>
-
-    <option value="ma200">
-      200 days
-    </option>
-
+    <option value="day" selected>Tag</option>
+    <option value="5d">1 Woche</option>
+    <option value="1mo">1 Monat</option>
+    <option value="ytd">YTD</option>
+    <option value="1y">1 Jahr</option>
+    <option value="3y">3 Jahre</option>
+    <option value="5y">5 Jahre</option>
+    <option value="10y">10 Jahre</option>
+    <option value="ma200">200 days</option>
   </select>
 
 </h2>
-
 
 <div
   class="heat"
   id="heat"
 ></div>
 
-
 </section>
-
 
 </div>
 
 
-
-<!-- =========================================================
-     PORTFOLIO ANALYTICS
-     ========================================================= -->
-
+<!-- ================= PORTFOLIO ANALYTICS ================= -->
 
 <div
   id="portfolioTab"
@@ -962,128 +635,56 @@ canvas{
   style="margin-top:18px"
 >
 
+<h2 style="display:flex;justify-content:space-between;align-items:center">
 
-<h2
-  style="
-    display:flex;
-    justify-content:space-between;
-    align-items:center
-  "
->
-
-  <span>
-    INDIZES VERGLEICH
-  </span>
-
+  <span>INDIZES VERGLEICH</span>
 
   <select
     id="portfolioPeriodSelect"
-    style="
-      background:#0b1726;
-      color:white;
-      border:1px solid #27435e;
-      border-radius:8px;
-      padding:6px 10px
-    "
+    style="background:#0b1726;color:white;border:1px solid #27435e;border-radius:8px;padding:6px 10px"
   >
-
-    <option value="day">
-      Tag
-    </option>
-
-    <option value="5d">
-      1 Woche
-    </option>
-
-    <option value="1mo">
-      1 Monat
-    </option>
-
-    <option
-      value="ytd"
-      selected
-    >
-      YTD
-    </option>
-
-    <option value="1y">
-      1 Jahr
-    </option>
-
-    <option value="3y">
-      3 Jahre
-    </option>
-
-    <option value="5y">
-      5 Jahre
-    </option>
-
-    <option value="10y">
-      10 Jahre
-    </option>
-
+    <option value="day">Tag</option>
+    <option value="5d">1 Woche</option>
+    <option value="1mo">1 Monat</option>
+    <option value="ytd" selected>YTD</option>
+    <option value="1y">1 Jahr</option>
+    <option value="3y">3 Jahre</option>
+    <option value="5y">5 Jahre</option>
+    <option value="10y">10 Jahre</option>
   </select>
 
 </h2>
 
 
-
 <div style="padding:18px">
 
+  <div
+    id="portfolioLegend"
+    style="display:flex;flex-wrap:wrap;gap:18px;margin-bottom:14px;color:#d9e7f5;font-weight:800"
+  ></div>
 
-<div
-  id="portfolioLegend"
-  style="
-    display:flex;
-    flex-wrap:wrap;
-    gap:18px;
-    margin-bottom:14px;
-    color:#d9e7f5;
-    font-weight:800
-  "
-></div>
+  <canvas
+    id="portfolioChart"
+    style="width:100%;height:420px"
+  ></canvas>
 
-
-<canvas
-  id="portfolioChart"
-  style="
-    width:100%;
-    height:420px
-  "
-></canvas>
-
+</div>
 
 </div>
 
 
-</div>
-
-
-
-<!-- =========================================================
-     FUNDAMENTALDATEN
-     ========================================================= -->
-
+<!-- ================= FUNDAMENTALDATEN ================= -->
 
 <div
   class="panel"
   style="margin-top:18px"
 >
 
-
-<h2
-  style="
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:16px
-  "
->
+<h2 style="display:flex;justify-content:space-between;align-items:center;gap:16px">
 
   <span>
     BEWERTUNG &amp; QUALITÄT DER REGIONEN
   </span>
-
 
   <span
     class="fundamentalDate"
@@ -1095,130 +696,73 @@ canvas{
 </h2>
 
 
-
 <div class="metricTableWrap">
 
-
 <table class="metricTable">
-
 
 <thead>
 
 <tr>
-
-  <th>
-    Markt
-  </th>
-
-  <th>
-    KGV
-  </th>
-
-  <th>
-    Fwd. KGV
-  </th>
-
-  <th>
-    KBV
-  </th>
-
-  <th>
-    Div.%
-  </th>
-
-  <th>
-    ROE
-  </th>
-
-  <th>
-    EPS Wachstum (proj.)
-  </th>
-
+  <th>Markt</th>
+  <th>KGV</th>
+  <th>Fwd. KGV</th>
+  <th>KBV</th>
+  <th>Div.%</th>
+  <th>ROE</th>
+  <th>EPS Wachstum (proj.)</th>
 </tr>
 
 </thead>
 
-
 <tbody id="valuationRows"></tbody>
-
 
 </table>
 
+</div>
 
 </div>
 
 
-</div>
-
-
-
-<!-- =========================================================
-     AKTUELLE EINSCHÄTZUNG
-     ========================================================= -->
-
+<!-- ================= AKTUELLE EINSCHÄTZUNG ================= -->
 
 <div
   class="panel"
   style="margin-top:18px"
 >
 
-
 <h2>
   AKTUELLE EINSCHÄTZUNG
 </h2>
-
 
 <div
   class="snapshot"
   id="snapshotRows"
 ></div>
 
-
 </div>
 
-
 </div>
-
 
 
 <div class="footer">
-
-  Datenquellen:
-  Yahoo Finance,
-  iShares,
-  State Street,
-  Morningstar und MSCI via GitHub Actions.
+  Datenquellen: Yahoo Finance, iShares, State Street, Morningstar und MSCI via GitHub Actions.
   Kurse und Fundamentaldaten können verzögert sein.
   Keine Anlageberatung.
+</div>
 
 </div>
 
 
-</div>
-
-
-
-<!-- Tooltip wird außerhalb der Panels gerendert,
-     damit overflow:hidden ihn nicht abschneidet -->
-
+<!-- Außerhalb der Panels, damit die Box nicht abgeschnitten wird -->
 
 <div id="metricTooltip"></div>
 
 
-
 <script>
 
+/* ================= FORMATIERUNG ================= */
 
-/* ==========================================================
-   FORMATIERUNG
-   ========================================================== */
-
-
-function fmt(
-  n,
-  s='',
-  d=2
-){
+function fmt(n,s='',d=2){
 
   if(
     n==null ||
@@ -1227,80 +771,39 @@ function fmt(
     return '—';
   }
 
-
-  return (
-    new Intl.NumberFormat(
-      'de-DE',
-      {
-        minimumFractionDigits:d,
-        maximumFractionDigits:d
-      }
-    ).format(n)
-    + s
-  );
-
+  return new Intl.NumberFormat(
+    'de-DE',
+    {
+      minimumFractionDigits:d,
+      maximumFractionDigits:d
+    }
+  ).format(n)+s;
 }
-
 
 
 function cls(n){
-
-  return (
-    n>0
-    ? 'pos'
-    : n<0
-      ? 'neg'
-      : 'muted'
-  );
-
+  return n>0?'pos':n<0?'neg':'muted';
 }
-
 
 
 function sign(n){
-
-  return (
-    n>0
-    ? '+'
-    : ''
-  );
-
+  return n>0?'+':'';
 }
-
 
 
 function heatClass(n){
 
-  if(n==null){
-    return 'neutral';
-  }
+  if(n==null)return'neutral';
+  if(n>2)return'g2';
+  if(n>0)return'g1';
+  if(n<-2)return'r2';
+  if(n<0)return'r1';
 
-  if(n>2){
-    return 'g2';
-  }
-
-  if(n>0){
-    return 'g1';
-  }
-
-  if(n<-2){
-    return 'r2';
-  }
-
-  if(n<0){
-    return 'r1';
-  }
-
-  return 'neutral';
-
+  return'neutral';
 }
 
 
-
-/* ==========================================================
-   ABSOLUTER WERT FÜR HEATMAP
-   ========================================================== */
-
+/* ================= HEATMAP ABSOLUTER WERT ================= */
 
 function formatAbsoluteValue(asset){
 
@@ -1311,7 +814,6 @@ function formatAbsoluteValue(asset){
     return '';
   }
 
-
   const value=
     new Intl.NumberFormat(
       'de-DE',
@@ -1319,29 +821,22 @@ function formatAbsoluteValue(asset){
         minimumFractionDigits:2,
         maximumFractionDigits:2
       }
-    ).format(
-      asset.price
-    );
-
+    ).format(asset.price);
 
   const currency=
     asset.currency || '';
-
 
   if(currency==='USD'){
     return '$'+value;
   }
 
-
   if(currency==='EUR'){
     return value+' €';
   }
 
-
   if(currency==='GBP'){
     return '£'+value;
   }
-
 
   if(
     currency==='GBp' ||
@@ -1350,26 +845,17 @@ function formatAbsoluteValue(asset){
     return value+' GBp';
   }
 
-
   if(currency==='JPY'){
     return '¥'+value;
   }
 
-
-  return (
-    currency
+  return currency
     ? value+' '+currency
-    : value
-  );
-
+    : value;
 }
 
 
-
-/* ==========================================================
-   UHR
-   ========================================================== */
-
+/* ================= UHR ================= */
 
 function clock(){
 
@@ -1377,136 +863,70 @@ function clock(){
     .getElementById('clock')
     .textContent=
       new Date()
-      .toLocaleTimeString(
-        'de-DE'
-      );
-
+      .toLocaleTimeString('de-DE');
 }
 
-
-setInterval(
-  clock,
-  1000
-);
-
+setInterval(clock,1000);
 
 clock();
 
 
-
 let currentPeriod='ytd';
-
 let heatPeriod='day';
-
 let portfolioPeriod='ytd';
-
 let latestData=null;
 
 
+/* ================= PERFORMANCE ================= */
 
-/* ==========================================================
-   PERFORMANCE
-   ========================================================== */
-
-
-function perfByPeriod(
-  a,
-  p
-){
+function perfByPeriod(a,p){
 
   let v=
-
-    p==='5d'
-    ? a.history_1w
-
-    : p==='1mo'
-      ? a.history_1m
-
-    : p==='ytd'
-      ? a.history_ytd
-
-    : p==='1y'
-      ? a.history_1y
-
-    : p==='3y'
-      ? a.history_3y
-
-    : p==='5y'
-      ? a.history_5y
-
-    : p==='10y'
-      ? a.history_10y
-
-    : null;
-
+    p==='5d'?a.history_1w:
+    p==='1mo'?a.history_1m:
+    p==='ytd'?a.history_ytd:
+    p==='1y'?a.history_1y:
+    p==='3y'?a.history_3y:
+    p==='5y'?a.history_5y:
+    p==='10y'?a.history_10y:
+    null;
 
   if(p==='day'){
     return a.day_pct;
   }
 
-
   if(p==='ma200'){
     return a.ma200_diff_pct;
   }
-
 
   if(
     v &&
     v.length>1 &&
     v[0]
   ){
-
-    return (
-      v[v.length-1] /
-      v[0] -
-      1
-    ) * 100;
-
+    return(
+      v[v.length-1]/v[0]-1
+    )*100;
   }
 
-
   return null;
-
 }
 
 
+function seriesForPeriod(a,p){
 
-function seriesForPeriod(
-  a,
-  p
-){
-
-  return (
-
-    p==='day'
-      ? a.history_1w
-
-    : p==='5d'
-      ? a.history_1w
-
-    : p==='1mo'
-      ? a.history_1m
-
-    : p==='ytd'
-      ? a.history_ytd
-
-    : p==='1y'
-      ? a.history_1y
-
-    : p==='3y'
-      ? a.history_3y
-
-    : p==='5y'
-      ? a.history_5y
-
-    : p==='10y'
-      ? a.history_10y
-
-    : a.history_ytd
+  return(
+    p==='day'?a.history_1w:
+    p==='5d'?a.history_1w:
+    p==='1mo'?a.history_1m:
+    p==='ytd'?a.history_ytd:
+    p==='1y'?a.history_1y:
+    p==='3y'?a.history_3y:
+    p==='5y'?a.history_5y:
+    p==='10y'?a.history_10y:
+    a.history_ytd
   );
-
 }
-
 
 
 function toPerformanceSeries(v){
@@ -1516,98 +936,54 @@ function toPerformanceSeries(v){
     v.length<2 ||
     !v[0]
   ){
-
-    return [];
-
+    return[];
   }
 
-
-  return (
-    v
+  return v
     .map(
-      x=>
-        x
-        ? (
-            (x/v[0]-1)
-            *100
-          )
+      x=>x
+        ? ((x/v[0]-1)*100)
         : null
     )
     .filter(
       x=>x!=null
-    )
-  );
-
+    );
 }
-
 
 
 function periodLabel(p){
 
-  return (
-
-    p==='day'
-      ? 'Tag'
-
-    : p==='5d'
-      ? '1 Woche'
-
-    : p==='1mo'
-      ? '1 Monat'
-
-    : p==='ytd'
-      ? 'YTD'
-
-    : p==='1y'
-      ? '1 Jahr'
-
-    : p==='3y'
-      ? '3 Jahre'
-
-    : p==='5y'
-      ? '5 Jahre'
-
-    : p==='10y'
-      ? '10 Jahre'
-
-    : p==='ma200'
-      ? '200 days'
-
-    : p
+  return(
+    p==='day'?'Tag':
+    p==='5d'?'1 Woche':
+    p==='1mo'?'1 Monat':
+    p==='ytd'?'YTD':
+    p==='1y'?'1 Jahr':
+    p==='3y'?'3 Jahre':
+    p==='5y'?'5 Jahre':
+    p==='10y'?'10 Jahre':
+    p==='ma200'?'200 days':
+    p
   );
-
 }
 
 
+/* ================= SPARKLINE ================= */
 
-/* ==========================================================
-   SPARKLINE
-   ========================================================== */
-
-
-function drawSpark(
-  c,
-  values,
-  color
-){
+function drawSpark(c,values,color){
 
   const ctx=
-    c.getContext(
-      '2d'
-    );
-
+    c.getContext('2d');
 
   const w=
     c.width=
-      c.offsetWidth
-      * devicePixelRatio;
-
+      c.offsetWidth*
+      devicePixelRatio;
 
   const h=
     c.height=
-      c.offsetHeight
-      * devicePixelRatio;
-
+      c.offsetHeight*
+      devicePixelRatio;
 
   ctx.clearRect(
     0,
@@ -1616,7 +992,6 @@ function drawSpark(
     h
   );
 
-
   if(
     !values ||
     values.length<2
@@ -1624,458 +999,585 @@ function drawSpark(
     return;
   }
 
-
   const min=
-    Math.min(
-      ...values
-    );
-
+    Math.min(...values);
 
   const max=
-    Math.max(
-      ...values
-    );
-
+    Math.max(...values);
 
   const pad=
-    10
-    * devicePixelRatio;
-
+    10*devicePixelRatio;
 
   ctx.lineWidth=
-    2.2
-    * devicePixelRatio;
-
+    2.2*devicePixelRatio;
 
   ctx.strokeStyle=
     color;
 
-
   ctx.beginPath();
-
 
   values.forEach(
     (v,i)=>{
 
       const x=
-        pad +
-        i *
-        (w-2*pad) /
+        pad+
+        i*
+        (w-2*pad)/
         (values.length-1);
 
-
       const y=
-        h -
-        pad -
-        (
-          (v-min) /
-          (max-min || 1)
-        ) *
+        h-
+        pad-
+        ((v-min)/(max-min||1))*
         (h-2*pad);
 
-
       if(i){
-        ctx.lineTo(
-          x,
-          y
-        );
+        ctx.lineTo(x,y);
       }
       else{
-        ctx.moveTo(
-          x,
-          y
-        );
+        ctx.moveTo(x,y);
       }
 
     }
   );
 
-
   ctx.stroke();
-
 }
 
 
-
-/* ==========================================================
-   CHART SKALIERUNG
-   ========================================================== */
-
+/* ================= CHART SKALIERUNG ================= */
 
 function niceStep(range){
 
-  if(range<=10){
-    return 2;
-  }
-
-  if(range<=25){
-    return 5;
-  }
-
-  if(range<=60){
-    return 10;
-  }
-
-  if(range<=120){
-    return 20;
-  }
+  if(range<=10)return 2;
+  if(range<=25)return 5;
+  if(range<=60)return 10;
+  if(range<=120)return 20;
 
   return 50;
-
 }
 
 
+/* ================= AMPEL ================= */
 
-/* ==========================================================
-   FUNDAMENTAL-AMPEL
-   ========================================================== */
-
-
-function dotClass(
-  metric,
-  value
-){
+function dotClass(metric,value){
 
   if(value==null){
     return 'mid';
   }
 
-
   if(metric==='pe'){
-
-    return (
-      value<15
-      ? 'good'
-      : value<=22
-        ? 'mid'
-        : 'bad'
-    );
-
+    return value<15?'good':value<=22?'mid':'bad';
   }
-
 
   if(metric==='pb'){
-
-    return (
-      value<2.1
-      ? 'good'
-      : value<=3
-        ? 'mid'
-        : 'bad'
-    );
-
+    return value<2.1?'good':value<=3?'mid':'bad';
   }
-
 
   if(metric==='dividend'){
-
-    return (
-      value>=3
-      ? 'good'
-      : value>=2
-        ? 'mid'
-        : 'bad'
-    );
-
+    return value>=3?'good':value>=2?'mid':'bad';
   }
-
 
   if(metric==='roe'){
-
-    return (
-      value>=15
-      ? 'good'
-      : value>=10
-        ? 'mid'
-        : 'bad'
-    );
-
+    return value>=15?'good':value>=10?'mid':'bad';
   }
-
 
   if(metric==='growth'){
-
-    return (
-      value>=9
-      ? 'good'
-      : value>=5
-        ? 'mid'
-        : 'bad'
-    );
-
+    return value>=9?'good':value>=5?'mid':'bad';
   }
 
-
   return 'mid';
-
 }
 
 
-
-/* ==========================================================
-   TOOLTIP-DATEN IN ZAHL EINBAUEN
-   ========================================================== */
-
+/* ================= TOOLTIP HILFSFUNKTIONEN ================= */
 
 function escapeAttr(value){
 
-  return String(
-    value ?? '—'
-  )
-
-  .replace(
-    /&/g,
-    '&amp;'
-  )
-
-  .replace(
-    /"/g,
-    '&quot;'
-  )
-
-  .replace(
-    /</g,
-    '&lt;'
-  )
-
-  .replace(
-    />/g,
-    '&gt;'
-  );
-
+  return String(value ?? '—')
+    .replace(/&/g,'&amp;')
+    .replace(/"/g,'&quot;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;');
 }
 
 
+function escapeHtml(value){
+
+  return String(value ?? '—')
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#039;');
+}
+
+
+/* Datum immer möglichst TT.MM.JJJJ */
+
+function formatSourceDate(value){
+
+  if(!value){
+    return '—';
+  }
+
+  let text=
+    String(value).trim();
+
+
+  /* bereits deutsches Format */
+
+  let german=
+    text.match(
+      /^(\d{1,2})\.(\d{1,2})\.(\d{4})$/
+    );
+
+  if(german){
+
+    return(
+      german[1].padStart(2,'0')
+      +'.'
+      +german[2].padStart(2,'0')
+      +'.'
+      +german[3]
+    );
+  }
+
+
+  /* z.B. 15/09/2026 */
+
+  let slash=
+    text.match(
+      /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/
+    );
+
+  if(slash){
+
+    return(
+      slash[1].padStart(2,'0')
+      +'.'
+      +slash[2].padStart(2,'0')
+      +'.'
+      +slash[3]
+    );
+  }
+
+
+  const months={
+    jan:'01',
+    feb:'02',
+    mar:'03',
+    apr:'04',
+    may:'05',
+    jun:'06',
+    jul:'07',
+    aug:'08',
+    sep:'09',
+    oct:'10',
+    nov:'11',
+    dec:'12'
+  };
+
+
+  /* Sep 14, 2026 / AUG 31, 2026 */
+
+  let english=
+    text.match(
+      /^([A-Za-z]{3,9})\.?\s+(\d{1,2}),?\s+(\d{4})$/
+    );
+
+  if(english){
+
+    let month=
+      months[
+        english[1]
+        .slice(0,3)
+        .toLowerCase()
+      ];
+
+    if(month){
+
+      return(
+        english[2].padStart(2,'0')
+        +'.'
+        +month
+        +'.'
+        +english[3]
+      );
+    }
+  }
+
+
+  /* 14 Sep 2026 */
+
+  let reverse=
+    text.match(
+      /^(\d{1,2})\s+([A-Za-z]{3,9})\.?\s+(\d{4})$/
+    );
+
+  if(reverse){
+
+    let month=
+      months[
+        reverse[2]
+        .slice(0,3)
+        .toLowerCase()
+      ];
+
+    if(month){
+
+      return(
+        reverse[1].padStart(2,'0')
+        +'.'
+        +month
+        +'.'
+        +reverse[3]
+      );
+    }
+  }
+
+
+  return text;
+}
+
+
+/* Art der Quelle + Methode anhand quality */
+
+function sourceInfo(quality,source){
+
+  quality=
+    quality || '';
+
+  source=
+    source || '';
+
+  switch(quality){
+
+
+    case 'primary_ishares':
+
+      return{
+        type:
+          'Offizielle Internet-Datenquelle / iShares',
+
+        method:
+          'Direkt veröffentlichter Wert'
+      };
+
+
+    case 'yahoo_quote':
+
+      return{
+        type:
+          'Internet-Datenquelle / Yahoo Finance',
+
+        method:
+          'Automatisch abgerufener Datenwert'
+      };
+
+
+    case 'state_street_fy1':
+
+      return{
+        type:
+          'Offizielle Internet-Datenquelle / State Street',
+
+        method:
+          'Direkt veröffentlichter FY1-Wert'
+      };
+
+
+    case 'msci_forward_pe_pdf':
+
+      return{
+        type:
+          'Offizielles Index-Factsheet (PDF)',
+
+        method:
+          'Direkt veröffentlichter Indexwert'
+      };
+
+
+    case 'regional_index_msci_pdf':
+
+      return{
+        type:
+          'Offizielles Index-Factsheet (PDF)',
+
+        method:
+          'Direkt veröffentlichter Indexwert'
+      };
+
+
+    case 'implied_from_pb_pe':
+
+      return{
+        type:
+          'Berechneter Wert',
+
+        method:
+          'Aus KBV und KGV abgeleitet'
+      };
+
+
+    case 'projected_3_5y_state_street':
+
+      return{
+        type:
+          'Offizielle Internet-Datenquelle / State Street',
+
+        method:
+          'Veröffentlichte 3–5-Jahres-Wachstumsprognose'
+      };
+
+
+    case 'long_term_projected_morningstar_benchmark':
+
+      return{
+        type:
+          'Internet-Datenquelle / Morningstar',
+
+        method:
+          'Langfristige Wachstumsprognose des Benchmarks'
+      };
+
+
+    case 'carried_forward':
+
+      return{
+        type:
+          'Vorwert aus lokalem Datenbestand',
+
+        method:
+          'Letzter gültiger Wert wurde übernommen'
+      };
+
+
+    case 'unavailable':
+
+      return{
+        type:
+          'Keine aktuelle Datenquelle',
+
+        method:
+          'Wert derzeit nicht verfügbar'
+      };
+  }
+
+
+  /* zusätzliche Sicherheitslogik */
+
+  const lower=
+    source.toLowerCase();
+
+
+  if(lower.includes('factsheet')){
+
+    return{
+      type:
+        'Offizielles Factsheet (PDF)',
+
+      method:
+        'Direkt veröffentlichter Wert'
+    };
+  }
+
+
+  if(lower.includes('ishares')){
+
+    return{
+      type:
+        'Offizielle Internet-Datenquelle / iShares',
+
+      method:
+        'Direkt veröffentlichter Wert'
+    };
+  }
+
+
+  if(lower.includes('state street')){
+
+    return{
+      type:
+        'Offizielle Internet-Datenquelle / State Street',
+
+      method:
+        'Direkt veröffentlichter Wert'
+    };
+  }
+
+
+  if(lower.includes('morningstar')){
+
+    return{
+      type:
+        'Internet-Datenquelle / Morningstar',
+
+      method:
+        'Veröffentlichte Benchmark-/Fundamentaldaten'
+    };
+  }
+
+
+  if(lower.includes('yahoo')){
+
+    return{
+      type:
+        'Internet-Datenquelle / Yahoo Finance',
+
+      method:
+        'Automatisch abgerufener Datenwert'
+    };
+  }
+
+
+  if(lower.includes('implizit')){
+
+    return{
+      type:
+        'Berechneter Wert',
+
+      method:
+        'Aus anderen Fundamentalkennzahlen abgeleitet'
+    };
+  }
+
+
+  return{
+    type:
+      'Internet-/Datenquelle',
+
+    method:
+      'Automatisch geladener Wert'
+  };
+}
+
+
+/* ================= ZAHL MIT TOOLTIP ================= */
 
 function metricHtml(
   metric,
   value,
   suffix='',
   source='—',
-  date='—'
+  date='—',
+  quality=''
 ){
 
-  return `
+  const info=
+    sourceInfo(
+      quality,
+      source
+    );
 
+  return`
     <span
-
       class="metric hasTooltip"
-
       data-source="${escapeAttr(source || '—')}"
-
-      data-date="${escapeAttr(date || '—')}"
-
+      data-date="${escapeAttr(formatSourceDate(date))}"
+      data-type="${escapeAttr(info.type)}"
+      data-method="${escapeAttr(info.method)}"
     >
 
       <span
         class="dot ${dotClass(metric,value)}"
       ></span>
 
-      ${fmt(
-        value,
-        suffix,
-        1
-      )}
+      ${fmt(value,suffix,1)}
 
     </span>
-
   `;
-
 }
 
 
-
-/* ==========================================================
-   RATING
-   ========================================================== */
-
+/* ================= RATINGS ================= */
 
 function scorePe(pe){
 
-  if(pe==null){
-    return 3;
-  }
-
-  if(pe<12){
-    return 5;
-  }
-
-  if(pe<15){
-    return 4;
-  }
-
-  if(pe<20){
-    return 3;
-  }
-
-  if(pe<25){
-    return 2;
-  }
+  if(pe==null)return 3;
+  if(pe<12)return 5;
+  if(pe<15)return 4;
+  if(pe<20)return 3;
+  if(pe<25)return 2;
 
   return 1;
-
 }
-
 
 
 function scorePb(pb){
 
-  if(pb==null){
-    return 3;
-  }
-
-  if(pb<1.5){
-    return 5;
-  }
-
-  if(pb<2.1){
-    return 4;
-  }
-
-  if(pb<3){
-    return 3;
-  }
-
-  if(pb<4){
-    return 2;
-  }
+  if(pb==null)return 3;
+  if(pb<1.5)return 5;
+  if(pb<2.1)return 4;
+  if(pb<3)return 3;
+  if(pb<4)return 2;
 
   return 1;
-
 }
-
 
 
 function scoreRoe(roe){
 
-  if(roe==null){
-    return 3;
-  }
-
-  if(roe>=20){
-    return 5;
-  }
-
-  if(roe>=15){
-    return 4;
-  }
-
-  if(roe>=10){
-    return 3;
-  }
-
-  if(roe>=5){
-    return 2;
-  }
+  if(roe==null)return 3;
+  if(roe>=20)return 5;
+  if(roe>=15)return 4;
+  if(roe>=10)return 3;
+  if(roe>=5)return 2;
 
   return 1;
-
 }
-
 
 
 function scoreGrowth(g){
 
-  if(g==null){
-    return 3;
-  }
-
-  if(g>=15){
-    return 5;
-  }
-
-  if(g>=10){
-    return 4;
-  }
-
-  if(g>=5){
-    return 3;
-  }
-
-  if(g>=0){
-    return 2;
-  }
+  if(g==null)return 3;
+  if(g>=15)return 5;
+  if(g>=10)return 4;
+  if(g>=5)return 3;
+  if(g>=0)return 2;
 
   return 1;
-
 }
-
 
 
 function starRating(r){
 
   let total=
-
-    scorePe(
-      r.forward_pe
-    )
-
+    scorePe(r.forward_pe)
     +
-
-    scorePb(
-      r.pb
-    )
-
+    scorePb(r.pb)
     +
-
-    scoreRoe(
-      r.roe
-    )
-
+    scoreRoe(r.roe)
     +
+    scoreGrowth(r.earnings_growth);
 
-    scoreGrowth(
-      r.earnings_growth
-    );
-
-
-  if(total>=18){
-    return '★★★★★';
-  }
-
-  if(total>=15){
-    return '★★★★';
-  }
-
-  if(total>=11){
-    return '★★★';
-  }
-
-  if(total>=8){
-    return '★★';
-  }
+  if(total>=18)return '★★★★★';
+  if(total>=15)return '★★★★';
+  if(total>=11)return '★★★';
+  if(total>=8)return '★★';
 
   return '★';
-
 }
 
 
-
-/* ==========================================================
-   BEWERTUNGSKOMMENTAR
-   ========================================================== */
-
+/* ================= BEWERTUNGSTEXT ================= */
 
 function valuationComment(r){
 
   let pe=
     r.forward_pe;
 
-
   let roe=
     r.roe;
-
 
   let growth=
     r.earnings_growth;
 
-
   let pb=
     r.pb;
 
-
   let name=
-    r.market || '';
+    r.market||'';
 
 
   if(
@@ -2083,12 +1585,7 @@ function valuationComment(r){
     roe==null ||
     growth==null
   ){
-
-    return (
-      'Bewertung derzeit '
-      +'nicht vollständig verfügbar'
-    );
-
+    return 'Bewertung derzeit nicht vollständig verfügbar';
   }
 
 
@@ -2096,12 +1593,7 @@ function valuationComment(r){
     pe>24 &&
     growth>=12
   ){
-
-    return (
-      'Starkes Wachstum, '
-      +'sehr hohe Bewertung'
-    );
-
+    return 'Starkes Wachstum, sehr hohe Bewertung';
   }
 
 
@@ -2109,27 +1601,15 @@ function valuationComment(r){
     pe>20 &&
     roe>=15
   ){
-
-    return (
-      'Hohe Qualität, '
-      +'hohe Bewertung'
-    );
-
+    return 'Hohe Qualität, hohe Bewertung';
   }
 
 
   if(
     pe<12 &&
-    name
-      .toLowerCase()
-      .includes('china')
+    name.toLowerCase().includes('china')
   ){
-
-    return (
-      'Sehr günstig bewertet, '
-      +'erhöhte Risiken'
-    );
-
+    return 'Sehr günstig bewertet, erhöhte Risiken';
   }
 
 
@@ -2137,12 +1617,7 @@ function valuationComment(r){
     pe<15 &&
     growth>=8
   ){
-
-    return (
-      'Attraktive Bewertung '
-      +'mit Wachstum'
-    );
-
+    return 'Attraktive Bewertung mit Wachstum';
   }
 
 
@@ -2150,12 +1625,7 @@ function valuationComment(r){
     pe<15 &&
     roe>=10
   ){
-
-    return (
-      'Attraktiv bewertet, '
-      +'solide Qualität'
-    );
-
+    return 'Attraktiv bewertet, solide Qualität';
   }
 
 
@@ -2163,12 +1633,7 @@ function valuationComment(r){
     pe<15 &&
     roe<10
   ){
-
-    return (
-      'Günstig bewertet, '
-      +'aber schwächere Qualität'
-    );
-
+    return 'Günstig bewertet, aber schwächere Qualität';
   }
 
 
@@ -2178,13 +1643,7 @@ function valuationComment(r){
     pb<=2 &&
     roe>=10
   ){
-
-    return (
-      'Solide Bewertung, '
-      +'ausgewogenes '
-      +'Chance-Risiko-Profil'
-    );
-
+    return 'Solide Bewertung, ausgewogenes Chance-Risiko-Profil';
   }
 
 
@@ -2192,49 +1651,27 @@ function valuationComment(r){
     growth>=10 &&
     pe<=20
   ){
-
-    return (
-      'Gutes Wachstum '
-      +'bei fairer Bewertung'
-    );
-
+    return 'Gutes Wachstum bei fairer Bewertung';
   }
 
 
-  return (
-    'Solide Bewertung, '
-    +'ausgewogenes '
-    +'Chance-Risiko-Profil'
-  );
-
+  return 'Solide Bewertung, ausgewogenes Chance-Risiko-Profil';
 }
 
 
-
-/* ==========================================================
-   FUNDAMENTALDATEN NORMALISIEREN
-   ========================================================== */
-
+/* ================= FUNDAMENTALDATEN NORMALISIEREN ================= */
 
 function normalizeFundamentals(payload){
 
-
   let updated='—';
-
   let regions=[];
 
 
   if(
-    Array.isArray(
-      payload
-    )
+    Array.isArray(payload)
   ){
-
-    regions=
-      payload;
-
+    regions=payload;
   }
-
 
   else if(payload){
 
@@ -2243,13 +1680,11 @@ function normalizeFundamentals(payload){
       payload.as_of ||
       '—';
 
-
     regions=
       payload.regions ||
       payload.fundamentals ||
       payload.markets ||
       [];
-
   }
 
 
@@ -2264,9 +1699,7 @@ function normalizeFundamentals(payload){
 
 
   regions=
-
     regions
-
     .map(
       r=>({
 
@@ -2312,11 +1745,14 @@ function normalizeFundamentals(payload){
 
         field_dates:
           r.field_dates ||
+          {},
+
+        quality:
+          r.quality ||
           {}
 
       })
     )
-
     .filter(
       r=>r.market
     );
@@ -2326,84 +1762,54 @@ function normalizeFundamentals(payload){
     (a,b)=>{
 
       let ia=
-        order.indexOf(
-          a.market
-        );
-
+        order.indexOf(a.market);
 
       let ib=
-        order.indexOf(
-          b.market
-        );
+        order.indexOf(b.market);
 
-
-      return (
-
-        (ia<0 ? 999 : ia)
-
+      return(
+        (ia<0?999:ia)
         -
-
-        (ib<0 ? 999 : ib)
-
+        (ib<0?999:ib)
       );
-
     }
   );
 
 
-  return {
+  return{
     updated,
     regions
   };
-
 }
 
 
-
-/* ==========================================================
-   FUNDAMENTALTABELLE
-   ========================================================== */
-
+/* ================= FUNDAMENTALTABELLE ================= */
 
 function renderValuation(payload){
 
-
-  let {
+  let{
     updated,
     regions:fundamentals
   }=
-  normalizeFundamentals(
-    payload
-  );
+  normalizeFundamentals(payload);
 
 
   let valuationRows=
-    document.getElementById(
-      'valuationRows'
-    );
-
+    document.getElementById('valuationRows');
 
   let snapshotRows=
-    document.getElementById(
-      'snapshotRows'
-    );
-
+    document.getElementById('snapshotRows');
 
   let fundamentalsUpdated=
-    document.getElementById(
-      'fundamentalsUpdated'
-    );
+    document.getElementById('fundamentalsUpdated');
 
 
-  if(
-    fundamentalsUpdated
-  ){
+  if(fundamentalsUpdated){
 
-    fundamentalsUpdated
-      .textContent=
-        'Fundamentaldaten Stand: '
-        + updated;
-
+    fundamentalsUpdated.textContent=
+      'Fundamentaldaten Stand: '
+      +
+      formatSourceDate(updated);
   }
 
 
@@ -2411,70 +1817,43 @@ function renderValuation(payload){
     !valuationRows ||
     !snapshotRows
   ){
-
     return;
-
   }
 
 
-  if(
-    !fundamentals.length
-  ){
+  if(!fundamentals.length){
 
     valuationRows.innerHTML=
-      '<tr>'
-      +'<td colspan="7" class="muted">'
-      +'Keine Bewertungsdaten vorhanden. '
-      +'Bitte data/fundamentals.json prüfen.'
-      +'</td>'
-      +'</tr>';
-
+      '<tr><td colspan="7" class="muted">Keine Bewertungsdaten vorhanden. Bitte data/fundamentals.json prüfen.</td></tr>';
 
     snapshotRows.innerHTML=
-      '<div class="muted">'
-      +'Keine Bewertungsdaten vorhanden. '
-      +'Bitte data/fundamentals.json prüfen.'
-      +'</div>';
-
+      '<div class="muted">Keine Bewertungsdaten vorhanden. Bitte data/fundamentals.json prüfen.</div>';
 
     return;
-
   }
 
 
   valuationRows.innerHTML=
-
     fundamentals
-
     .map(
       r=>`
 
       <tr>
 
-
         <td>
-
-          <b>
-            ${r.market}
-          </b>
-
+          <b>${r.market}</b>
         </td>
 
 
         <td>
 
           ${metricHtml(
-
             'pe',
-
             r.pe,
-
             '',
-
             r.field_sources.pe,
-
-            r.field_dates.pe || updated
-
+            r.field_dates.pe || updated,
+            r.quality.pe
           )}
 
         </td>
@@ -2483,17 +1862,12 @@ function renderValuation(payload){
         <td>
 
           ${metricHtml(
-
             'pe',
-
             r.forward_pe,
-
             '',
-
             r.field_sources.forward_pe,
-
-            r.field_dates.forward_pe || updated
-
+            r.field_dates.forward_pe || updated,
+            r.quality.forward_pe
           )}
 
         </td>
@@ -2502,17 +1876,12 @@ function renderValuation(payload){
         <td>
 
           ${metricHtml(
-
             'pb',
-
             r.pb,
-
             '',
-
             r.field_sources.pb,
-
-            r.field_dates.pb || updated
-
+            r.field_dates.pb || updated,
+            r.quality.pb
           )}
 
         </td>
@@ -2521,18 +1890,12 @@ function renderValuation(payload){
         <td>
 
           ${metricHtml(
-
             'dividend',
-
             r.dividend_yield,
-
             '%',
-
             r.field_sources.dividend_yield,
-
-            r.field_dates.dividend_yield
-              || updated
-
+            r.field_dates.dividend_yield || updated,
+            r.quality.dividend_yield
           )}
 
         </td>
@@ -2541,17 +1904,12 @@ function renderValuation(payload){
         <td>
 
           ${metricHtml(
-
             'roe',
-
             r.roe,
-
             '%',
-
             r.field_sources.roe,
-
-            r.field_dates.roe || updated
-
+            r.field_dates.roe || updated,
+            r.quality.roe
           )}
 
         </td>
@@ -2560,198 +1918,124 @@ function renderValuation(payload){
         <td>
 
           ${metricHtml(
-
             'growth',
-
             r.earnings_growth,
-
             '%',
-
             r.field_sources.earnings_growth,
-
-            r.field_dates.earnings_growth
-              || updated
-
+            r.field_dates.earnings_growth || updated,
+            r.quality.earnings_growth
           )}
 
         </td>
-
 
       </tr>
 
       `
     )
-
     .join('');
 
 
   snapshotRows.innerHTML=
-
     fundamentals
-
     .map(
       r=>`
 
       <div class="snapshotRow">
 
-
         <div class="marketName">
-
           ${r.market}
-
         </div>
-
 
         <div class="snapshotText">
-
           ${valuationComment(r)}
-
         </div>
-
 
         <div class="stars">
-
           ${starRating(r)}
-
         </div>
-
 
       </div>
 
       `
     )
-
     .join('');
-
 }
 
 
-
-/* ==========================================================
-   FUNDAMENTALDATEN LADEN
-   ========================================================== */
-
+/* ================= FUNDAMENTALDATEN LADEN ================= */
 
 async function loadFundamentals(){
 
-
   try{
 
-
     const res=
-
       await fetch(
         'data/fundamentals.json?ts='
-        + Date.now()
+        +
+        Date.now()
       );
 
-
-    if(
-      !res.ok
-    ){
+    if(!res.ok){
 
       throw new Error(
-        'fundamentals.json '
-        +'nicht gefunden'
+        'fundamentals.json nicht gefunden'
       );
-
     }
 
-
-    return (
-      await res.json()
-    );
-
-
+    return await res.json();
   }
-
 
   catch(e){
 
-
     console.warn(e);
 
-
-    return {
-
+    return{
       updated:'—',
-
       regions:[]
-
     };
-
   }
-
 }
 
 
-
-/* ==========================================================
-   PORTFOLIO-CHART
-   ========================================================== */
-
+/* ================= PORTFOLIO CHART ================= */
 
 function drawPortfolioChart(data){
 
-
-  if(!data){
-    return;
-  }
-
+  if(!data)return;
 
   let c=
-    document.getElementById(
-      'portfolioChart'
-    );
+    document.getElementById('portfolioChart');
 
-
-  if(!c){
-    return;
-  }
+  if(!c)return;
 
 
   let assets=
-    data.assets || [];
+    data.assets||[];
 
 
   let items=[
 
     {
       name:'S&P 500',
-
-      asset:
-        assets.find(
-          a=>a.name==='S&P 500'
-        ),
-
+      asset:assets.find(
+        a=>a.name==='S&P 500'
+      ),
       color:'#2eb6ff'
     },
 
-
     {
       name:'STOXX Europe 600',
-
-      asset:
-        assets.find(
-          a=>
-            a.name===
-            'STOXX Europe 600'
-        ),
-
+      asset:assets.find(
+        a=>a.name==='STOXX Europe 600'
+      ),
       color:'#20d37a'
     },
 
-
     {
       name:'Emerging Markets',
-
-      asset:
-        assets.find(
-          a=>
-            a.name===
-            'Emerging Markets'
-        ),
-
+      asset:assets.find(
+        a=>a.name==='Emerging Markets'
+      ),
       color:'#ffcc66'
     }
 
@@ -2759,56 +2043,38 @@ function drawPortfolioChart(data){
 
 
   let series=
-
     items.map(
       i=>({
-
         name:i.name,
-
         color:i.color,
-
         values:
           toPerformanceSeries(
             seriesForPeriod(
-              i.asset || {},
+              i.asset||{},
               portfolioPeriod
             )
           )
-
       })
     );
 
 
   let legend=
-    document.getElementById(
-      'portfolioLegend'
-    );
+    document.getElementById('portfolioLegend');
 
 
   if(legend){
 
-
     legend.innerHTML=
-
       series
-
       .map(
         s=>{
 
-
           let last=
-
             s.values.length
-
-            ? s.values[
-                s.values.length-1
-              ]
-
+            ? s.values[s.values.length-1]
             : null;
 
-
-          return `
-
+          return`
             <span class="legendItem">
 
               <span
@@ -2820,43 +2086,31 @@ function drawPortfolioChart(data){
                 ${s.name}
               </span>
 
-              <span
-                class="${cls(last)} legendPerf"
-              >
-
+              <span class="${cls(last)} legendPerf">
                 ${sign(last)}
                 ${fmt(last,'%')}
-
               </span>
 
             </span>
-
           `;
-
         }
       )
-
       .join('');
-
   }
 
 
   const ctx=
-    c.getContext(
-      '2d'
-    );
-
+    c.getContext('2d');
 
   const w=
     c.width=
-      c.offsetWidth
-      * devicePixelRatio;
-
+      c.offsetWidth*
+      devicePixelRatio;
 
   const h=
     c.height=
-      c.offsetHeight
-      * devicePixelRatio;
+      c.offsetHeight*
+      devicePixelRatio;
 
 
   ctx.clearRect(
@@ -2868,7 +2122,6 @@ function drawPortfolioChart(data){
 
 
   let all=
-
     series.flatMap(
       s=>s.values
     );
@@ -2880,106 +2133,66 @@ function drawPortfolioChart(data){
     )
   ){
 
-    ctx.fillStyle=
-      '#9eb4ca';
-
+    ctx.fillStyle='#9eb4ca';
 
     ctx.font=
-      `${18*devicePixelRatio}px `
-      +'Inter, Segoe UI, Arial';
+      `${18*devicePixelRatio}px Inter, Segoe UI, Arial`;
 
-
-    ctx.textAlign=
-      'center';
-
+    ctx.textAlign='center';
 
     ctx.fillText(
-
       'Keine Daten für '
-      + periodLabel(
-          portfolioPeriod
-        ),
-
+      +
+      periodLabel(portfolioPeriod),
       w/2,
-
       h/2
     );
 
-
     return;
-
   }
 
 
   let rawMin=
-    Math.min(
-      ...all,
-      0
-    );
-
+    Math.min(...all,0);
 
   let rawMax=
-    Math.max(
-      ...all,
-      0
-    );
-
+    Math.max(...all,0);
 
   let step=
-    niceStep(
-      rawMax-rawMin
-    );
+    niceStep(rawMax-rawMin);
 
 
   let yMin=
-    Math.floor(
-      rawMin/step
-    )*step;
-
+    Math.floor(rawMin/step)*step;
 
   let yMax=
-    Math.ceil(
-      rawMax/step
-    )*step;
+    Math.ceil(rawMax/step)*step;
 
 
-  if(
-    yMax===yMin
-  ){
-
-    yMax=
-      yMin+step;
-
+  if(yMax===yMin){
+    yMax=yMin+step;
   }
 
 
   let padL=
     68*devicePixelRatio;
 
-
   let padR=
     24*devicePixelRatio;
 
-
   let padT=
     22*devicePixelRatio;
-
 
   let padB=
     34*devicePixelRatio;
 
 
   ctx.font=
-    `${12*devicePixelRatio}px `
-    +'Inter, Segoe UI, Arial';
+    `${12*devicePixelRatio}px Inter, Segoe UI, Arial`;
 
+  ctx.textAlign='right';
 
-  ctx.textAlign=
-    'right';
-
-
-  ctx.textBaseline=
-    'middle';
+  ctx.textBaseline='middle';
 
 
   for(
@@ -2988,53 +2201,33 @@ function drawPortfolioChart(data){
     val+=step
   ){
 
-
     let y=
-
-      h -
-      padB -
-
-      (
-        (val-yMin) /
-        (yMax-yMin)
-      )
-
-      *
-
-      (
-        h -
-        padT -
-        padB
-      );
+      h-
+      padB-
+      ((val-yMin)/(yMax-yMin))*
+      (h-padT-padB);
 
 
     ctx.strokeStyle=
-
       val===0
-
       ? 'rgba(255,255,255,.28)'
-
       : 'rgba(255,255,255,.10)';
 
 
     ctx.lineWidth=
       1*devicePixelRatio;
 
-
     ctx.beginPath();
-
 
     ctx.moveTo(
       padL,
       y
     );
 
-
     ctx.lineTo(
       w-padR,
       y
     );
-
 
     ctx.stroke();
 
@@ -3042,40 +2235,29 @@ function drawPortfolioChart(data){
     ctx.fillStyle=
       '#9eb4ca';
 
-
     ctx.fillText(
-
       `${val>0?'+':''}${val}%`,
-
-      padL -
-      8*devicePixelRatio,
-
+      padL-8*devicePixelRatio,
       y
     );
-
   }
 
 
   series.forEach(
     s=>{
 
-
       if(
         s.values.length<2
       ){
-
         return;
-
       }
 
 
       ctx.strokeStyle=
         s.color;
 
-
       ctx.lineWidth=
         2.8*devicePixelRatio;
-
 
       ctx.beginPath();
 
@@ -3083,94 +2265,51 @@ function drawPortfolioChart(data){
       s.values.forEach(
         (v,i)=>{
 
-
           let x=
-
-            padL +
-
-            i *
-
-            (
-              w -
-              padL -
-              padR
-            )
-
-            /
-
-            (
-              s.values.length-1
-            );
+            padL+
+            i*
+            (w-padL-padR)/
+            (s.values.length-1);
 
 
           let y=
-
-            h -
-            padB -
-
-            (
-              (v-yMin) /
-              (yMax-yMin)
-            )
-
-            *
-
-            (
-              h -
-              padT -
-              padB
-            );
+            h-
+            padB-
+            ((v-yMin)/(yMax-yMin))*
+            (h-padT-padB);
 
 
           if(i){
-
-            ctx.lineTo(
-              x,
-              y
-            );
-
+            ctx.lineTo(x,y);
           }
 
           else{
-
-            ctx.moveTo(
-              x,
-              y
-            );
-
+            ctx.moveTo(x,y);
           }
-
         }
       );
 
 
       ctx.stroke();
-
     }
   );
-
 }
 
 
-
-/* ==========================================================
-   HAUPTDATEN LADEN
-   ========================================================== */
-
+/* ================= HAUPTDATEN LADEN ================= */
 
 async function load(){
 
-
-  const [
+  const[
     res,
     fundamentalsPayload
   ]=
-
   await Promise.all([
 
     fetch(
       'data/market_data.json?ts='
-      + Date.now()
+      +
+      Date.now()
     ),
 
     loadFundamentals()
@@ -3182,20 +2321,28 @@ async function load(){
     await res.json();
 
 
-  latestData=
-    data;
+  latestData=data;
 
 
   document
-    .getElementById(
-      'updated'
-    )
+    .getElementById('updated')
     .textContent=
       'Zuletzt aktualisiert: '
-      + (
-          data.updated ||
-          '—'
-        );
+      +
+      (data.updated||'—');
+
+
+  const summary=
+    document.getElementById('summary');
+
+  const rows=
+    document.getElementById('rows');
+
+  const heat=
+    document.getElementById('heat');
+
+  const charts=
+    document.getElementById('charts');
 
 
   summary.innerHTML='';
@@ -3203,66 +2350,42 @@ async function load(){
 
   function fa(n){
 
-    return (
-      data.assets ||
+    return(
+      data.assets||
       []
     ).find(
       a=>a.name===n
     );
-
   }
 
 
   let sp=
     fa('S&P 500');
 
-
   let eu=
-    fa(
-      'STOXX Europe 600'
-    );
-
+    fa('STOXX Europe 600');
 
   let em=
-    fa(
-      'Emerging Markets'
-    );
-
+    fa('Emerging Markets');
 
   let oil=
-    fa(
-      'Brent Öl'
-    );
-
+    fa('Brent Öl');
 
   let gold=
-    fa(
-      'Gold'
-    );
-
+    fa('Gold');
 
   let silber=
-    fa(
-      'Silber'
-    );
-
+    fa('Silber');
 
   let btc=
-    fa(
-      'Bitcoin'
-    );
+    fa('Bitcoin');
 
 
-  function groupCard(
-    title,
-    items
-  ){
+  function groupCard(title,items){
 
-
-    return `
+    return`
 
       <div class="card">
-
 
         ${
           title
@@ -3270,26 +2393,20 @@ async function load(){
           : ''
         }
 
-
         <div
           style="
             display:grid;
-            grid-template-columns:
-              repeat(${items.length},1fr);
+            grid-template-columns:repeat(${items.length},1fr);
             gap:14px
           "
         >
 
-
-        ${
-
-          items
-
-          .map(
-            i=>`
+          ${
+            items
+            .map(
+              i=>`
 
               <div>
-
 
                 <div
                   style="
@@ -3299,11 +2416,8 @@ async function load(){
                     white-space:nowrap
                   "
                 >
-
                   ${i.name}
-
                 </div>
-
 
                 <div
                   class="${cls(i.day)}"
@@ -3312,12 +2426,9 @@ async function load(){
                     font-weight:950
                   "
                 >
-
                   ${sign(i.day)}
                   ${fmt(i.day,'%')}
-
                 </div>
-
 
                 <div
                   class="${cls(i.ytd)}"
@@ -3327,31 +2438,22 @@ async function load(){
                     margin-top:6px
                   "
                 >
-
                   YTD
                   ${sign(i.ytd)}
                   ${fmt(i.ytd,'%')}
-
                 </div>
-
 
               </div>
 
-            `
-          )
-
-          .join('')
-
-        }
-
+              `
+            )
+            .join('')
+          }
 
         </div>
 
-
       </div>
-
     `;
-
   }
 
 
@@ -3364,13 +2466,11 @@ async function load(){
           day:sp?.day_pct,
           ytd:sp?.ytd_pct
         },
-
         {
           name:'Europa',
           day:eu?.day_pct,
           ytd:eu?.ytd_pct
         },
-
         {
           name:'Emerging Markets',
           day:em?.day_pct,
@@ -3389,13 +2489,11 @@ async function load(){
           day:oil?.day_pct,
           ytd:oil?.ytd_pct
         },
-
         {
           name:'Gold',
           day:gold?.day_pct,
           ytd:gold?.ytd_pct
         },
-
         {
           name:'Silber',
           day:silber?.day_pct,
@@ -3418,37 +2516,27 @@ async function load(){
     );
 
 
-  /* ========================================================
-     MARKTÜBERSICHT
-     ======================================================== */
-
+  /* Marktübersicht */
 
   rows.innerHTML='';
 
 
   (
-    data.assets ||
+    data.assets||
     []
   )
-
   .forEach(
     a=>{
-
 
       const ma=
         a.ma200_diff_pct;
 
-
       const arrow=
-
         ma==null
         ? ''
-
         : ma>=0
           ? '▲ '
-
-        : '▼ ';
-
+          : '▼ ';
 
       const y1=
         perfByPeriod(
@@ -3461,31 +2549,23 @@ async function load(){
 
         <tr>
 
-
           <td>
 
             <div class="name">
 
-
               <span class="badge">
-
                 ${a.short}
-
               </span>
-
 
               <div>
 
                 ${a.name}
 
                 <span class="isin">
-
-                  ${a.isin || a.symbol}
-
+                  ${a.isin||a.symbol}
                 </span>
 
               </div>
-
 
             </div>
 
@@ -3493,126 +2573,74 @@ async function load(){
 
 
           <td>
-
             ${fmt(
               a.price,
               a.currency
               ? ' '+a.currency
               : ''
             )}
-
           </td>
 
 
           <td class="${cls(a.day_pct)}">
-
             ${sign(a.day_pct)}
-
-            ${fmt(
-              a.day_pct,
-              '%'
-            )}
-
+            ${fmt(a.day_pct,'%')}
           </td>
 
 
           <td class="${cls(a.ytd_pct)}">
-
             ${sign(a.ytd_pct)}
-
-            ${fmt(
-              a.ytd_pct,
-              '%'
-            )}
-
+            ${fmt(a.ytd_pct,'%')}
           </td>
 
 
           <td class="${cls(y1)}">
-
             ${sign(y1)}
-
-            ${fmt(
-              y1,
-              '%'
-            )}
-
+            ${fmt(y1,'%')}
           </td>
 
 
           <td class="${cls(ma)}">
-
             ${arrow}
-
             ${sign(ma)}
-
-            ${fmt(
-              ma,
-              '%'
-            )}
-
+            ${fmt(ma,'%')}
           </td>
 
-
         </tr>
-
       `;
-
     }
   );
 
 
-
-  /* ========================================================
-     HEATMAP
-     ======================================================== */
-
+  /* Heatmap */
 
   heat.innerHTML='';
 
 
   let heatAssets=
-
-    [
-      ...(
-        data.assets ||
-        []
-      )
-    ]
-
+    [...(data.assets||[])]
     .map(
       a=>({
-
         asset:a,
-
-        p:
-          perfByPeriod(
-            a,
-            heatPeriod
-          )
-
+        p:perfByPeriod(
+          a,
+          heatPeriod
+        )
       })
     )
-
     .sort(
       (x,y)=>
-        (y.p ?? -999)
+        (y.p??-999)
         -
-        (x.p ?? -999)
+        (x.p??-999)
     );
 
 
   let maxAbs=
-
     Math.max(
-
       ...heatAssets.map(
-        x=>
-          Math.abs(
-            x.p || 0
-          )
+        x=>Math.abs(x.p||0)
       ),
-
       1
     );
 
@@ -3620,14 +2648,11 @@ async function load(){
   heatAssets.forEach(
     x=>{
 
-
       let a=
         x.asset;
 
-
       let p=
         x.p;
-
 
       let y1=
         perfByPeriod(
@@ -3635,220 +2660,145 @@ async function load(){
           '1y'
         );
 
-
       let factor=
-
-        Math.abs(
-          p || 0
-        )
-
-        /
-
+        Math.abs(p||0)/
         maxAbs;
 
 
       let colSpan=
-
         Math.max(
           2,
           Math.round(
-            2 +
+            2+
             factor*4
           )
         );
 
 
       let h=
-
         Math.round(
-          118 +
+          118+
           factor*44
         );
 
 
       let titleSize=
-
         Math.round(
-          13 +
+          13+
           factor*5
         );
 
 
       let valueSize=
-
         Math.round(
-          22 +
+          22+
           factor*14
         );
 
 
       let detailSize=
-
         Math.round(
-          11 +
+          11+
           factor*2
         );
 
 
       let absoluteValue=
-        formatAbsoluteValue(
-          a
-        );
+        formatAbsoluteValue(a);
 
 
       heat.innerHTML+=`
 
         <div
-
-          class="
-            tile
-            ${heatClass(p)}
-          "
-
+          class="tile ${heatClass(p)}"
           style="
-            grid-column:
-              span ${colSpan};
+            grid-column:span ${colSpan};
             min-height:${h}px
           "
         >
 
-
           <div
             class="tname"
-            style="
-              font-size:
-                ${titleSize}px
-            "
+            style="font-size:${titleSize}px"
           >
-
             ${a.name}
-
           </div>
 
 
           <div class="tpctRow">
 
-
             <div
               class="tpct"
-              style="
-                font-size:
-                  ${valueSize}px
-              "
+              style="font-size:${valueSize}px"
             >
-
               ${sign(p)}
               ${fmt(p,'%')}
-
             </div>
 
 
             <div
               class="absoluteValue"
               style="
-                font-size:
-                  ${Math.max(
-                    13,
-                    Math.round(
-                      valueSize*.52
-                    )
-                  )}px
+                font-size:${Math.max(
+                  13,
+                  Math.round(
+                    valueSize*.52
+                  )
+                )}px
               "
             >
-
               ${absoluteValue}
-
             </div>
 
-
           </div>
 
 
           <div
-            class="
-              ytd
-              ${cls(a.ytd_pct)}
-            "
-
-            style="
-              font-size:
-                ${detailSize}px
-            "
+            class="ytd ${cls(a.ytd_pct)}"
+            style="font-size:${detailSize}px"
           >
-
             YTD
             ${sign(a.ytd_pct)}
-            ${fmt(
-              a.ytd_pct,
-              '%'
-            )}
-
+            ${fmt(a.ytd_pct,'%')}
           </div>
 
 
           <div
-            class="
-              ytd
-              ${cls(y1)}
-            "
-
-            style="
-              font-size:
-                ${detailSize}px
-            "
+            class="ytd ${cls(y1)}"
+            style="font-size:${detailSize}px"
           >
-
             1 Jahr
             ${sign(y1)}
-            ${fmt(
-              y1,
-              '%'
-            )}
-
+            ${fmt(y1,'%')}
           </div>
 
-
         </div>
-
       `;
-
     }
   );
 
 
-
-  /* ========================================================
-     MARKT-CHARTS
-     ======================================================== */
-
+  /* Markt-Charts */
 
   charts.innerHTML='';
 
 
   (
-    data.assets ||
+    data.assets||
     []
   )
-
-  .slice(
-    0,
-    6
-  )
-
+  .slice(0,6)
   .forEach(
     (a,i)=>{
 
-
       let id=
         'c'+i;
-
 
       let vals=
         seriesForPeriod(
           a,
           currentPeriod
         );
-
 
       let perf=
         perfByPeriod(
@@ -3861,7 +2811,6 @@ async function load(){
 
         <div class="mini">
 
-
           <b
             style="
               display:flex;
@@ -3870,55 +2819,34 @@ async function load(){
             "
           >
 
-
             <span>
-
               ${a.name}
-
             </span>
-
 
             <span class="${cls(perf)}">
-
               ${sign(perf)}
               ${fmt(perf,'%')}
-
             </span>
-
 
           </b>
 
-
-          <canvas
-            id="${id}"
-          ></canvas>
-
+          <canvas id="${id}"></canvas>
 
         </div>
-
       `;
 
 
       setTimeout(
         ()=>
           drawSpark(
-
-            document
-              .getElementById(
-                id
-              ),
-
+            document.getElementById(id),
             vals,
-
-            (perf || 0)>=0
+            (perf||0)>=0
             ? '#20d37a'
             : '#ff4d6d'
-
           ),
-
         0
       );
-
     }
   );
 
@@ -3931,15 +2859,10 @@ async function load(){
   drawPortfolioChart(
     data
   );
-
 }
 
 
-
-/* ==========================================================
-   FUNDAMENTAL TOOLTIP
-   ========================================================== */
-
+/* ================= TOOLTIP ================= */
 
 const metricTooltip=
   document.getElementById(
@@ -3947,301 +2870,206 @@ const metricTooltip=
   );
 
 
+function positionMetricTooltip(event){
 
-function escapeHtml(value){
-
-  return String(
-    value ?? '—'
-  )
-
-  .replace(
-    /&/g,
-    '&amp;'
-  )
-
-  .replace(
-    /</g,
-    '&lt;'
-  )
-
-  .replace(
-    />/g,
-    '&gt;'
-  )
-
-  .replace(
-    /"/g,
-    '&quot;'
-  )
-
-  .replace(
-    /'/g,
-    '&#039;'
-  );
-
-}
-
-
-
-function positionMetricTooltip(
-  event
-){
-
-  if(
-    !metricTooltip
-  ){
+  if(!metricTooltip){
     return;
   }
 
-
-  const gap=
-    14;
-
+  const gap=14;
 
   let x=
-    event.clientX
-    + gap;
-
+    event.clientX+
+    gap;
 
   let y=
-    event.clientY
-    + gap;
+    event.clientY+
+    gap;
 
 
   const rect=
     metricTooltip
-      .getBoundingClientRect();
+    .getBoundingClientRect();
 
 
   if(
-    x +
+    x+
     rect.width
     >
-    window.innerWidth -
+    window.innerWidth-
     10
   ){
 
     x=
-
-      event.clientX
-
-      -
-
-      rect.width
-
-      -
-
+      event.clientX-
+      rect.width-
       gap;
-
   }
 
 
   if(
-    y +
+    y+
     rect.height
     >
-    window.innerHeight -
+    window.innerHeight-
     10
   ){
 
     y=
-
-      event.clientY
-
-      -
-
-      rect.height
-
-      -
-
+      event.clientY-
+      rect.height-
       gap;
-
   }
 
 
-  metricTooltip
-    .style
-    .left=
-      x+'px';
+  metricTooltip.style.left=
+    x+'px';
 
-
-  metricTooltip
-    .style
-    .top=
-      y+'px';
-
+  metricTooltip.style.top=
+    y+'px';
 }
-
 
 
 document.addEventListener(
   'mouseover',
   event=>{
 
-
     const metric=
-
       event.target.closest(
         '.metric.hasTooltip'
       );
 
 
-    if(
-      !metric
-    ){
-
+    if(!metric){
       return;
-
     }
 
 
     const source=
-
-      metric.dataset.source
-      ||
+      metric.dataset.source||
       '—';
 
-
     const date=
+      metric.dataset.date||
+      '—';
 
-      metric.dataset.date
-      ||
+    const type=
+      metric.dataset.type||
+      '—';
+
+    const method=
+      metric.dataset.method||
       '—';
 
 
     metricTooltip.innerHTML=`
 
       <div class="tooltipTitle">
-
         Quelle
-
       </div>
-
 
       <div class="tooltipSource">
-
         ${escapeHtml(source)}
-
       </div>
 
+      <div class="tooltipDetails">
 
-      <div class="tooltipDate">
+        <div>
+          <strong>Art:</strong>
+          ${escapeHtml(type)}
+        </div>
 
-        Stand:
-        ${escapeHtml(date)}
+        <div style="margin-top:4px">
+          <strong>Stand:</strong>
+          ${escapeHtml(date)}
+        </div>
+
+        <div style="margin-top:4px">
+          <strong>Methode:</strong>
+          ${escapeHtml(method)}
+        </div>
 
       </div>
-
     `;
 
 
-    metricTooltip
-      .style
-      .display=
-        'block';
+    metricTooltip.style.display=
+      'block';
 
 
     positionMetricTooltip(
       event
     );
-
   }
 );
-
 
 
 document.addEventListener(
   'mousemove',
   event=>{
 
-
     if(
-      metricTooltip
-      &&
-      metricTooltip.style.display
-      ===
-      'block'
+      metricTooltip &&
+      metricTooltip.style.display==='block'
     ){
 
       positionMetricTooltip(
         event
       );
-
     }
-
   }
 );
-
 
 
 document.addEventListener(
   'mouseout',
   event=>{
 
-
     const metric=
-
       event.target.closest(
         '.metric.hasTooltip'
       );
 
 
-    if(
-      !metric
-    ){
-
+    if(!metric){
       return;
-
     }
 
 
     if(
-      event.relatedTarget
-      &&
+      event.relatedTarget &&
       metric.contains(
         event.relatedTarget
       )
     ){
-
       return;
-
     }
 
 
-    metricTooltip
-      .style
-      .display=
-        'none';
-
+    metricTooltip.style.display=
+      'none';
   }
 );
 
 
-
-/* ==========================================================
-   START
-   ========================================================== */
-
+/* ================= START ================= */
 
 load()
-
 .catch(
   e=>{
 
-    updated.textContent=
-      'Fehler beim Laden der Daten.';
+    document
+      .getElementById('updated')
+      .textContent=
+        'Fehler beim Laden der Daten.';
 
     console.error(e);
-
   }
 );
 
 
-
 document
-  .getElementById(
-    'periodSelect'
-  )
+  .getElementById('periodSelect')
   .addEventListener(
     'change',
     e=>{
@@ -4250,16 +3078,12 @@ document
         e.target.value;
 
       load();
-
     }
   );
 
 
-
 document
-  .getElementById(
-    'heatPeriodSelect'
-  )
+  .getElementById('heatPeriodSelect')
   .addEventListener(
     'change',
     e=>{
@@ -4268,16 +3092,12 @@ document
         e.target.value;
 
       load();
-
     }
   );
 
 
-
 document
-  .getElementById(
-    'portfolioPeriodSelect'
-  )
+  .getElementById('portfolioPeriodSelect')
   .addEventListener(
     'change',
     e=>{
@@ -4288,43 +3108,30 @@ document
       drawPortfolioChart(
         latestData
       );
-
     }
   );
 
 
-
 function showTab(tab){
 
-
   document
-    .getElementById(
-      'mainTab'
-    )
-    .style
-    .display=
-
+    .getElementById('mainTab')
+    .style.display=
       tab==='main'
       ? 'block'
       : 'none';
 
 
   document
-    .getElementById(
-      'portfolioTab'
-    )
-    .style
-    .display=
-
+    .getElementById('portfolioTab')
+    .style.display=
       tab==='portfolio'
       ? 'block'
       : 'none';
 
 
   document
-    .querySelectorAll(
-      '.navtab'
-    )
+    .querySelectorAll('.navtab')
     .forEach(
       x=>
         x.classList.remove(
@@ -4333,42 +3140,27 @@ function showTab(tab){
     );
 
 
-  if(
-    tab==='main'
-  ){
+  if(tab==='main'){
 
     document
-      .querySelectorAll(
-        '.navtab'
-      )[0]
+      .querySelectorAll('.navtab')[0]
       .classList
-      .add(
-        'active'
-      );
-
+      .add('active');
   }
-
 
   else{
 
     document
-      .querySelectorAll(
-        '.navtab'
-      )[1]
+      .querySelectorAll('.navtab')[1]
       .classList
-      .add(
-        'active'
-      );
+      .add('active');
 
 
     drawPortfolioChart(
       latestData
     );
-
   }
-
 }
-
 
 
 setInterval(
@@ -4376,10 +3168,7 @@ setInterval(
   30000
 );
 
-
 </script>
 
-
 </body>
-
 </html>
