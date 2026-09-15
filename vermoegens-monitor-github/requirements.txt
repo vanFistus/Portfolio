@@ -2,3 +2,4 @@ pandas>=2.2
 yfinance>=0.2.65
 requests>=2.32
 beautifulsoup4>=4.12
+pypdf>=5.0
