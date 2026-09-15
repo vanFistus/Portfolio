@@ -3,462 +3,290 @@
   "regions": [
     {
       "market": "USA",
-      "pe": 24.1,
+      "pe": 30.1,
       "forward_pe": 22.4,
-      "pb": null,
-      "dividend_yield": 1.4,
-      "roe": 38.4,
+      "pb": 5.6,
+      "dividend_yield": 1.1,
+      "roe": 18.7,
       "earnings_growth": 40.5,
-      "source": "Vorwerte aus fundamentals.json",
+      "source": "iShares IVV für KGV/KBV/Dividendenrendite; Yahoo nur für Forward-KGV",
       "as_of": "15.09.2026",
       "field_sources": {
-        "pe": "Vorwert aus fundamentals.json",
+        "pe": "iShares IVV",
+        "pb": "iShares IVV",
+        "dividend_yield": "iShares IVV – 12m Trailing Yield",
         "forward_pe": "Vorwert aus fundamentals.json",
-        "pb": "Vorwert aus fundamentals.json",
-        "dividend_yield": "Vorwert aus fundamentals.json",
-        "earnings_growth": "Vorwert aus fundamentals.json",
-        "roe": "Vorwert aus fundamentals.json"
+        "roe": "Implizit: 100 × KBV / KGV",
+        "earnings_growth": "Vorwert aus fundamentals.json"
+      },
+      "field_dates": {
+        "pe": "Sep 14, 2026",
+        "pb": "Sep 14, 2026",
+        "dividend_yield": "Aug 31, 2026",
+        "forward_pe": null,
+        "roe": "Sep 14, 2026",
+        "earnings_growth": null
       },
       "quality": {
-        "pe": "carried_forward",
+        "pe": "primary_ishares",
+        "pb": "primary_ishares",
+        "dividend_yield": "primary_ishares",
         "forward_pe": "carried_forward",
-        "pb": "carried_forward",
-        "dividend_yield": "carried_forward",
-        "earnings_growth": "carried_forward",
-        "roe": "carried_forward"
+        "roe": "implied_from_pb_pe",
+        "earnings_growth": "carried_forward"
       },
       "carried_forward": [
-        "pe",
         "forward_pe",
-        "pb",
-        "dividend_yield",
-        "earnings_growth",
-        "roe"
+        "earnings_growth"
       ],
-      "raw_candidates": {
-        "pe": [
-          {
-            "symbol": "SXR8.DE",
-            "value": 0.0
-          },
-          {
-            "symbol": "SPY",
-            "value": 0.0
-          },
-          {
-            "symbol": "IVV",
-            "value": 0.0
-          }
-        ],
-        "forward_pe": [],
-        "pb": [
-          {
-            "symbol": "SXR8.DE",
-            "value": 0.2
-          },
-          {
-            "symbol": "SPY",
-            "value": 0.2
-          },
-          {
-            "symbol": "IVV",
-            "value": 0.2
-          }
-        ],
-        "dividend_yield": [
-          {
-            "symbol": "SPY",
-            "value": 98.0
-          },
-          {
-            "symbol": "IVV",
-            "value": 106.0
-          }
-        ],
-        "earnings_growth": []
+      "raw_primary": {
+        "ticker": "IVV",
+        "pe": 30.1,
+        "pb": 5.6,
+        "dividend_yield": 1.1,
+        "pe_as_of": "Sep 14, 2026",
+        "pb_as_of": "Sep 14, 2026",
+        "dividend_yield_as_of": "Aug 31, 2026"
       }
     },
     {
       "market": "Europa",
-      "pe": 14.2,
+      "pe": 18.6,
       "forward_pe": 13.6,
-      "pb": null,
-      "dividend_yield": 2.8,
-      "roe": 30.4,
+      "pb": 2.4,
+      "dividend_yield": 3.1,
+      "roe": 13.0,
       "earnings_growth": 12.1,
-      "source": "Yahoo Finance ETF/FundData; mehrere Regional-Proxies mit Plausibilitätsprüfung",
+      "source": "iShares IEUR für KGV/KBV/Dividendenrendite; Yahoo nur für Forward-KGV",
       "as_of": "15.09.2026",
       "field_sources": {
-        "pe": "Vorwert aus fundamentals.json",
+        "pe": "iShares IEUR",
+        "pb": "iShares IEUR",
+        "dividend_yield": "iShares IEUR – 12m Trailing Yield",
         "forward_pe": "Vorwert aus fundamentals.json",
-        "pb": "Vorwert aus fundamentals.json",
-        "dividend_yield": "Yahoo Finance ETF quote data (VGK=2.8, IEUR=3.1)",
-        "earnings_growth": "Vorwert aus fundamentals.json",
-        "roe": "Vorwert aus fundamentals.json"
+        "roe": "Implizit: 100 × KBV / KGV",
+        "earnings_growth": "Vorwert aus fundamentals.json"
+      },
+      "field_dates": {
+        "pe": "Sep 11, 2026",
+        "pb": "Sep 11, 2026",
+        "dividend_yield": "Aug 31, 2026",
+        "forward_pe": null,
+        "roe": "Sep 11, 2026",
+        "earnings_growth": null
       },
       "quality": {
-        "pe": "carried_forward",
+        "pe": "primary_ishares",
+        "pb": "primary_ishares",
+        "dividend_yield": "primary_ishares",
         "forward_pe": "carried_forward",
-        "pb": "carried_forward",
-        "dividend_yield": "proxy_median",
-        "earnings_growth": "carried_forward",
-        "roe": "carried_forward"
+        "roe": "implied_from_pb_pe",
+        "earnings_growth": "carried_forward"
       },
       "carried_forward": [
-        "pe",
         "forward_pe",
-        "pb",
-        "earnings_growth",
-        "roe"
+        "earnings_growth"
       ],
-      "raw_candidates": {
-        "pe": [
-          {
-            "symbol": "EXSA.DE",
-            "value": 0.1
-          },
-          {
-            "symbol": "VGK",
-            "value": 0.1
-          },
-          {
-            "symbol": "IEUR",
-            "value": 0.1
-          }
-        ],
-        "forward_pe": [],
-        "pb": [
-          {
-            "symbol": "EXSA.DE",
-            "value": 0.4
-          },
-          {
-            "symbol": "VGK",
-            "value": 0.4
-          },
-          {
-            "symbol": "IEUR",
-            "value": 0.4
-          }
-        ],
-        "dividend_yield": [
-          {
-            "symbol": "EXSA.DE",
-            "value": 2.4
-          },
-          {
-            "symbol": "VGK",
-            "value": 2.8
-          },
-          {
-            "symbol": "IEUR",
-            "value": 3.1
-          }
-        ],
-        "earnings_growth": []
+      "raw_primary": {
+        "ticker": "IEUR",
+        "pe": 18.6,
+        "pb": 2.4,
+        "dividend_yield": 3.1,
+        "pe_as_of": "Sep 11, 2026",
+        "pb_as_of": "Sep 11, 2026",
+        "dividend_yield_as_of": "Aug 31, 2026"
       }
     },
     {
       "market": "Emerging Markets",
-      "pe": 12.8,
+      "pe": 19.3,
       "forward_pe": 12.1,
-      "pb": null,
-      "dividend_yield": 1.9,
-      "roe": 33.0,
+      "pb": 2.5,
+      "dividend_yield": 2.2,
+      "roe": 13.0,
       "earnings_growth": 48.2,
-      "source": "Yahoo Finance ETF/FundData; mehrere Regional-Proxies mit Plausibilitätsprüfung",
+      "source": "iShares IEMG für KGV/KBV/Dividendenrendite; Yahoo nur für Forward-KGV",
       "as_of": "15.09.2026",
       "field_sources": {
-        "pe": "Vorwert aus fundamentals.json",
+        "pe": "iShares IEMG",
+        "pb": "iShares IEMG",
+        "dividend_yield": "iShares IEMG – 12m Trailing Yield",
         "forward_pe": "Vorwert aus fundamentals.json",
-        "pb": "Vorwert aus fundamentals.json",
-        "dividend_yield": "Yahoo Finance ETF quote data (IEMG=2.2, EEM=1.7)",
-        "earnings_growth": "Vorwert aus fundamentals.json",
-        "roe": "Vorwert aus fundamentals.json"
+        "roe": "Implizit: 100 × KBV / KGV",
+        "earnings_growth": "Vorwert aus fundamentals.json"
+      },
+      "field_dates": {
+        "pe": "Sep 14, 2026",
+        "pb": "Sep 14, 2026",
+        "dividend_yield": "Aug 31, 2026",
+        "forward_pe": null,
+        "roe": "Sep 14, 2026",
+        "earnings_growth": null
       },
       "quality": {
-        "pe": "carried_forward",
+        "pe": "primary_ishares",
+        "pb": "primary_ishares",
+        "dividend_yield": "primary_ishares",
         "forward_pe": "carried_forward",
-        "pb": "carried_forward",
-        "dividend_yield": "proxy_median",
-        "earnings_growth": "carried_forward",
-        "roe": "carried_forward"
+        "roe": "implied_from_pb_pe",
+        "earnings_growth": "carried_forward"
       },
       "carried_forward": [
-        "pe",
         "forward_pe",
-        "pb",
-        "earnings_growth",
-        "roe"
+        "earnings_growth"
       ],
-      "raw_candidates": {
-        "pe": [
-          {
-            "symbol": "IQQE.DE",
-            "value": 0.1
-          },
-          {
-            "symbol": "IEMG",
-            "value": 0.1
-          },
-          {
-            "symbol": "EEM",
-            "value": 0.1
-          }
-        ],
-        "forward_pe": [],
-        "pb": [
-          {
-            "symbol": "IQQE.DE",
-            "value": 0.4
-          },
-          {
-            "symbol": "IEMG",
-            "value": 0.5
-          },
-          {
-            "symbol": "EEM",
-            "value": 0.4
-          }
-        ],
-        "dividend_yield": [
-          {
-            "symbol": "IEMG",
-            "value": 2.2
-          },
-          {
-            "symbol": "EEM",
-            "value": 1.7
-          }
-        ],
-        "earnings_growth": []
+      "raw_primary": {
+        "ticker": "IEMG",
+        "pe": 19.3,
+        "pb": 2.5,
+        "dividend_yield": 2.2,
+        "pe_as_of": "Sep 14, 2026",
+        "pb_as_of": "Sep 14, 2026",
+        "dividend_yield_as_of": "Aug 31, 2026"
       }
     },
     {
       "market": "China",
-      "pe": 10.9,
+      "pe": 13.4,
       "forward_pe": 10.2,
-      "pb": 0.9,
+      "pb": 1.6,
       "dividend_yield": 2.0,
-      "roe": 8.2,
+      "roe": 12.2,
       "earnings_growth": -29.6,
-      "source": "Yahoo Finance ETF/FundData; mehrere Regional-Proxies mit Plausibilitätsprüfung",
+      "source": "iShares MCHI für KGV/KBV/Dividendenrendite; Yahoo nur für Forward-KGV",
       "as_of": "15.09.2026",
       "field_sources": {
-        "pe": "Vorwert aus fundamentals.json",
+        "pe": "iShares MCHI",
+        "pb": "iShares MCHI",
+        "dividend_yield": "iShares MCHI – 12m Trailing Yield",
         "forward_pe": "Vorwert aus fundamentals.json",
-        "pb": "Yahoo Finance FundData (IQQC.DE=0.9, FXI=0.9)",
-        "dividend_yield": "Yahoo Finance ETF quote data (MCHI=2.0, FXI=1.9)",
-        "earnings_growth": "Vorwert aus fundamentals.json",
-        "roe": "Berechnet aus Yahoo FundData: 100 × KBV / KGV"
+        "roe": "Implizit: 100 × KBV / KGV",
+        "earnings_growth": "Vorwert aus fundamentals.json"
+      },
+      "field_dates": {
+        "pe": "Sep 14, 2026",
+        "pb": "Sep 14, 2026",
+        "dividend_yield": "Aug 31, 2026",
+        "forward_pe": null,
+        "roe": "Sep 14, 2026",
+        "earnings_growth": null
       },
       "quality": {
-        "pe": "carried_forward",
+        "pe": "primary_ishares",
+        "pb": "primary_ishares",
+        "dividend_yield": "primary_ishares",
         "forward_pe": "carried_forward",
-        "pb": "proxy_median",
-        "dividend_yield": "proxy_median",
-        "earnings_growth": "carried_forward",
-        "roe": "implied_from_pb_pe"
+        "roe": "implied_from_pb_pe",
+        "earnings_growth": "carried_forward"
       },
       "carried_forward": [
-        "pe",
         "forward_pe",
         "earnings_growth"
       ],
-      "raw_candidates": {
-        "pe": [
-          {
-            "symbol": "IQQC.DE",
-            "value": 0.1
-          },
-          {
-            "symbol": "MCHI",
-            "value": 0.1
-          },
-          {
-            "symbol": "FXI",
-            "value": 0.1
-          }
-        ],
-        "forward_pe": [],
-        "pb": [
-          {
-            "symbol": "IQQC.DE",
-            "value": 0.9
-          },
-          {
-            "symbol": "MCHI",
-            "value": 0.7
-          },
-          {
-            "symbol": "FXI",
-            "value": 0.9
-          }
-        ],
-        "dividend_yield": [
-          {
-            "symbol": "MCHI",
-            "value": 2.0
-          },
-          {
-            "symbol": "FXI",
-            "value": 1.9
-          }
-        ],
-        "earnings_growth": []
+      "raw_primary": {
+        "ticker": "MCHI",
+        "pe": 13.4,
+        "pb": 1.6,
+        "dividend_yield": 2.0,
+        "pe_as_of": "Sep 14, 2026",
+        "pb_as_of": "Sep 14, 2026",
+        "dividend_yield_as_of": "Aug 31, 2026"
       }
     },
     {
       "market": "Indien",
-      "pe": 27.4,
+      "pe": 22.4,
       "forward_pe": 25.8,
-      "pb": null,
-      "dividend_yield": null,
-      "roe": 17.9,
+      "pb": 3.2,
+      "dividend_yield": 0.0,
+      "roe": 14.5,
       "earnings_growth": 11.6,
-      "source": "Vorwerte aus fundamentals.json",
+      "source": "iShares INDA für KGV/KBV/Dividendenrendite; Yahoo nur für Forward-KGV",
       "as_of": "15.09.2026",
       "field_sources": {
-        "pe": "Vorwert aus fundamentals.json",
+        "pe": "iShares INDA",
+        "pb": "iShares INDA",
+        "dividend_yield": "iShares INDA – 12m Trailing Yield",
         "forward_pe": "Vorwert aus fundamentals.json",
-        "pb": "Vorwert aus fundamentals.json",
-        "dividend_yield": "Vorwert aus fundamentals.json",
-        "earnings_growth": "Vorwert aus fundamentals.json",
-        "roe": "Vorwert aus fundamentals.json"
+        "roe": "Implizit: 100 × KBV / KGV",
+        "earnings_growth": "Vorwert aus fundamentals.json"
+      },
+      "field_dates": {
+        "pe": "Sep 14, 2026",
+        "pb": "Sep 14, 2026",
+        "dividend_yield": "Aug 31, 2026",
+        "forward_pe": null,
+        "roe": "Sep 14, 2026",
+        "earnings_growth": null
       },
       "quality": {
-        "pe": "carried_forward",
+        "pe": "primary_ishares",
+        "pb": "primary_ishares",
+        "dividend_yield": "primary_ishares",
         "forward_pe": "carried_forward",
-        "pb": "carried_forward",
-        "dividend_yield": "carried_forward",
-        "earnings_growth": "carried_forward",
-        "roe": "carried_forward"
+        "roe": "implied_from_pb_pe",
+        "earnings_growth": "carried_forward"
       },
       "carried_forward": [
-        "pe",
         "forward_pe",
-        "pb",
-        "dividend_yield",
-        "earnings_growth",
-        "roe"
+        "earnings_growth"
       ],
-      "raw_candidates": {
-        "pe": [
-          {
-            "symbol": "QDV5.DE",
-            "value": 0.0
-          },
-          {
-            "symbol": "INDA",
-            "value": 0.0
-          },
-          {
-            "symbol": "FLIN",
-            "value": 0.0
-          }
-        ],
-        "forward_pe": [],
-        "pb": [
-          {
-            "symbol": "QDV5.DE",
-            "value": 0.3
-          },
-          {
-            "symbol": "INDA",
-            "value": 0.3
-          },
-          {
-            "symbol": "FLIN",
-            "value": 0.3
-          }
-        ],
-        "dividend_yield": [
-          {
-            "symbol": "INDA",
-            "value": 0.0
-          },
-          {
-            "symbol": "FLIN",
-            "value": 42.0
-          }
-        ],
-        "earnings_growth": []
+      "raw_primary": {
+        "ticker": "INDA",
+        "pe": 22.4,
+        "pb": 3.2,
+        "dividend_yield": 0.0,
+        "pe_as_of": "Sep 14, 2026",
+        "pb_as_of": "Sep 14, 2026",
+        "dividend_yield_as_of": "Aug 31, 2026"
       }
     },
     {
       "market": "Japan",
-      "pe": 16.8,
+      "pe": 19.2,
       "forward_pe": 15.7,
-      "pb": null,
-      "dividend_yield": 4.1,
-      "roe": 22.8,
+      "pb": 2.0,
+      "dividend_yield": 3.7,
+      "roe": 10.7,
       "earnings_growth": 54.5,
-      "source": "Yahoo Finance ETF/FundData; mehrere Regional-Proxies mit Plausibilitätsprüfung",
+      "source": "iShares EWJ für KGV/KBV/Dividendenrendite; Yahoo nur für Forward-KGV",
       "as_of": "15.09.2026",
       "field_sources": {
-        "pe": "Vorwert aus fundamentals.json",
+        "pe": "iShares EWJ",
+        "pb": "iShares EWJ",
+        "dividend_yield": "iShares EWJ – 12m Trailing Yield",
         "forward_pe": "Vorwert aus fundamentals.json",
-        "pb": "Vorwert aus fundamentals.json",
-        "dividend_yield": "Yahoo Finance ETF quote data (EWJ=3.7, BBJP=4.6)",
-        "earnings_growth": "Vorwert aus fundamentals.json",
-        "roe": "Vorwert aus fundamentals.json"
+        "roe": "Implizit: 100 × KBV / KGV",
+        "earnings_growth": "Vorwert aus fundamentals.json"
+      },
+      "field_dates": {
+        "pe": "Sep 11, 2026",
+        "pb": "Sep 11, 2026",
+        "dividend_yield": "Aug 31, 2026",
+        "forward_pe": null,
+        "roe": "Sep 11, 2026",
+        "earnings_growth": null
       },
       "quality": {
-        "pe": "carried_forward",
+        "pe": "primary_ishares",
+        "pb": "primary_ishares",
+        "dividend_yield": "primary_ishares",
         "forward_pe": "carried_forward",
-        "pb": "carried_forward",
-        "dividend_yield": "proxy_median",
-        "earnings_growth": "carried_forward",
-        "roe": "carried_forward"
+        "roe": "implied_from_pb_pe",
+        "earnings_growth": "carried_forward"
       },
       "carried_forward": [
-        "pe",
         "forward_pe",
-        "pb",
-        "earnings_growth",
-        "roe"
+        "earnings_growth"
       ],
-      "raw_candidates": {
-        "pe": [
-          {
-            "symbol": "SJPA.L",
-            "value": 0.1
-          },
-          {
-            "symbol": "EWJ",
-            "value": 0.1
-          },
-          {
-            "symbol": "BBJP",
-            "value": 0.1
-          }
-        ],
-        "forward_pe": [],
-        "pb": [
-          {
-            "symbol": "SJPA.L",
-            "value": 0.6
-          },
-          {
-            "symbol": "EWJ",
-            "value": 0.5
-          },
-          {
-            "symbol": "BBJP",
-            "value": 0.5
-          }
-        ],
-        "dividend_yield": [
-          {
-            "symbol": "EWJ",
-            "value": 3.7
-          },
-          {
-            "symbol": "BBJP",
-            "value": 4.6
-          }
-        ],
-        "earnings_growth": []
+      "raw_primary": {
+        "ticker": "EWJ",
+        "pe": 19.2,
+        "pb": 2.0,
+        "dividend_yield": 3.7,
+        "pe_as_of": "Sep 11, 2026",
+        "pb_as_of": "Sep 11, 2026",
+        "dividend_yield_as_of": "Aug 31, 2026"
       }
     }
   ]
