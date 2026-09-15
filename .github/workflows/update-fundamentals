@@ -1,1 +1,58 @@
+name: Update fundamentals
 
+on:
+  schedule:
+    # 05:45 UTC
+    # Sommerzeit Deutschland: 07:45 Uhr
+    # Winterzeit Deutschland: 06:45 Uhr
+    - cron: "45 5 * * *"
+
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fundamentals-update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+          cache-dependency-path: vermoegens-monitor-github/requirements.txt
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+        working-directory: vermoegens-monitor-github
+
+      - name: Update fundamentals
+        run: python fetch_fundamentals.py
+        working-directory: vermoegens-monitor-github
+
+      - name: Commit updated fundamentals
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add vermoegens-monitor-github/data/fundamentals.json
+
+          if git diff --cached --quiet; then
+            echo "No fundamental data changes to commit."
+            exit 0
+          fi
+
+          git commit -m "Update fundamentals"
+          git push
