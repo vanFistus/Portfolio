@@ -4,12 +4,13 @@ import os
 import re
 import time
 from datetime import datetime
+from io import BytesIO
 from zoneinfo import ZoneInfo
 
 import requests
 import yfinance as yf
 from bs4 import BeautifulSoup
-
+from pypdf import PdfReader
 
 OUTPUT_FILE = "data/fundamentals.json"
 BERLIN = ZoneInfo("Europe/Berlin")
@@ -23,26 +24,6 @@ HEADERS = {
     "Accept-Language": "en-US,en;q=0.9",
 }
 
-
-# Cache für dynamisch gerenderte Seiten.
-# Dadurch wird MSCI India pro Workflow-Lauf nur einmal über Jina geladen.
-_RENDERED_TEXT_CACHE = {}
-
-
-# Primärquelle für KGV / KBV / Dividendenrendite bleibt iShares.
-# Forward-KGV:
-#   1. Yahoo Finance
-#   2. institutioneller Fallback (State Street / MSCI)
-#
-# ROE wird aus KBV/KGV abgeleitet.
-#
-# EPS-Wachstum:
-# - USA / Europa / EM / China:
-#   State Street, "Est. 3-5 Year EPS Growth"
-#
-# - Indien / Japan:
-#   Morningstar, "Long-Term Projected Earnings Growth"
-#   jeweils Benchmark-Wert.
 REGIONS = [
     {
         "market": "USA",
@@ -50,7 +31,9 @@ REGIONS = [
         "ishares_url":
             "https://www.ishares.com/us/products/239726/ishares-core-sp-500-etf",
 
-        "eps_provider": "state_street",
+        "eps_provider":
+            "state_street",
+
         "eps_url":
             "https://www.ssga.com/us/en/individual/etfs/state-street-spdr-sp-500-etf-trust-spy",
 
@@ -74,7 +57,8 @@ REGIONS = [
         "ishares_url":
             "https://www.ishares.com/us/products/264617/ishares-core-msci-europe-etf",
 
-        "eps_provider": "state_street",
+        "eps_provider":
+            "state_street",
 
         "eps_url":
             "https://www.ssga.com/us/en/individual/etfs/state-street-spdr-portfolio-europe-etf-speu",
@@ -164,22 +148,19 @@ REGIONS = [
             "Morningstar / India Benchmark",
 
         "forward_fallback_provider":
-            "msci_india",
-
-        "forward_fallback_url":
-            "https://www.msci.com/indexes/index/935600/msci-india-index",
+            "msci_india_pdf",
 
         "forward_fallback_name":
-            "MSCI India Index",
+            "MSCI India Index Factsheet",
 
         "regional_dividend_provider":
-            "msci_india",
-
-        "regional_dividend_url":
-            "https://www.msci.com/indexes/index/935600/msci-india-index",
+            "msci_india_pdf",
 
         "regional_dividend_name":
-            "MSCI India Index",
+            "MSCI India Index Factsheet",
+
+        "msci_pdf_url":
+            "https://www.msci.com/documents/10199/255599/msci-india-index-inr-gross.pdf",
     },
 
     {
@@ -223,6 +204,9 @@ LIMITS = {
 }
 
 
+_MSCI_PDF_CACHE = {}
+
+
 def finite_number(value):
 
     try:
@@ -232,40 +216,69 @@ def finite_number(value):
 
         value = float(value)
 
-        return value if math.isfinite(value) else None
+        return (
+            value
+            if math.isfinite(value)
+            else None
+        )
 
-    except (TypeError, ValueError):
+    except (
+        TypeError,
+        ValueError
+    ):
 
         return None
 
 
 def round1(value):
 
-    value = finite_number(value)
+    value = finite_number(
+        value
+    )
 
-    return None if value is None else round(value, 1)
+    return (
+        None
+        if value is None
+        else round(
+            value,
+            1
+        )
+    )
 
 
-def is_valid(field, value):
+def is_valid(
+    field,
+    value
+):
 
-    value = finite_number(value)
+    value = finite_number(
+        value
+    )
 
     if value is None:
+
         return False
 
-    lo, hi = LIMITS[field]
+    lo, hi = LIMITS[
+        field
+    ]
 
-    return lo <= value <= hi
+    return (
+        lo <= value <= hi
+    )
 
 
 def read_existing():
 
-    if not os.path.exists(OUTPUT_FILE):
+    if not os.path.exists(
+        OUTPUT_FILE
+    ):
 
         return {
             "updated": "—",
             "regions": []
         }
+
 
     try:
 
@@ -275,16 +288,26 @@ def read_existing():
             encoding="utf-8"
         ) as handle:
 
-            payload = json.load(handle)
+            payload = json.load(
+                handle
+            )
 
-        if isinstance(payload, list):
+
+        if isinstance(
+            payload,
+            list
+        ):
 
             return {
                 "updated": "—",
                 "regions": payload
             }
 
-        if isinstance(payload, dict):
+
+        if isinstance(
+            payload,
+            dict
+        ):
 
             payload.setdefault(
                 "regions",
@@ -293,6 +316,7 @@ def read_existing():
 
             return payload
 
+
     except Exception as exc:
 
         print(
@@ -300,31 +324,39 @@ def read_existing():
             f"{OUTPUT_FILE}: {exc}"
         )
 
+
     return {
         "updated": "—",
         "regions": []
     }
 
 
-def existing_by_market(payload):
+def existing_by_market(
+    payload
+):
 
-    result = {}
+    return {
 
-    for row in payload.get(
-        "regions",
-        []
-    ):
+        row["market"]:
+            row
+
+        for row
+        in payload.get(
+            "regions",
+            []
+        )
 
         if (
-            isinstance(row, dict)
-            and row.get("market")
-        ):
-
-            result[
-                row["market"]
-            ] = row
-
-    return result
+            isinstance(
+                row,
+                dict
+            )
+            and
+            row.get(
+                "market"
+            )
+        )
+    }
 
 
 def fetch_response(
@@ -333,6 +365,7 @@ def fetch_response(
 ):
 
     last_error = None
+
 
     for attempt in range(
         attempts
@@ -343,34 +376,44 @@ def fetch_response(
             response = requests.get(
                 url,
                 headers=HEADERS,
-                timeout=35,
+                timeout=35
             )
 
             response.raise_for_status()
+
 
             if len(
                 response.text
             ) < 500:
 
                 raise RuntimeError(
-                    "Provider returned too little HTML"
+                    "Provider returned "
+                    "too little HTML"
                 )
 
+
             return response
+
 
         except Exception as exc:
 
             last_error = exc
 
-            if attempt < attempts - 1:
+
+            if (
+                attempt
+                < attempts - 1
+            ):
 
                 time.sleep(
                     2.0 *
                     (attempt + 1)
                 )
 
+
     raise RuntimeError(
-        f"Could not load {url}: "
+        f"Could not load "
+        f"{url}: "
         f"{last_error}"
     )
 
@@ -385,105 +428,20 @@ def fetch_text(
         attempts=attempts
     )
 
+
     soup = BeautifulSoup(
         response.text,
         "html.parser"
     )
 
-    text = soup.get_text(
-        " ",
-        strip=True
-    )
 
     return re.sub(
         r"\s+",
         " ",
-        text
-    )
-
-
-def fetch_rendered_text(url):
-    """
-    Für dynamische Webseiten wie MSCI.
-
-    Die Seite wird über Jina Reader
-    serverseitig gerendert und als
-    lesbarer Text zurückgegeben.
-
-    Gleichzeitig wird das Ergebnis
-    während eines Workflow-Laufs gecacht.
-    """
-
-    if url in _RENDERED_TEXT_CACHE:
-
-        return _RENDERED_TEXT_CACHE[url]
-
-    reader_url = (
-        "https://r.jina.ai/"
-        + url
-    )
-
-    last_error = None
-
-    for attempt in range(3):
-
-        try:
-
-            response = requests.get(
-                reader_url,
-                headers={
-                    "User-Agent":
-                        HEADERS["User-Agent"],
-
-                    "Accept":
-                        "text/plain",
-
-                    "X-Timeout":
-                        "20",
-                },
-                timeout=45,
-            )
-
-            response.raise_for_status()
-
-            text = re.sub(
-                r"\s+",
-                " ",
-                response.text
-            )
-
-            if len(text) < 500:
-
-                raise RuntimeError(
-                    "Rendered page returned "
-                    "too little text"
-                )
-
-            _RENDERED_TEXT_CACHE[
-                url
-            ] = text
-
-            print(
-                f"  Rendered page loaded: "
-                f"{url}"
-            )
-
-            return text
-
-        except Exception as exc:
-
-            last_error = exc
-
-            if attempt < 2:
-
-                time.sleep(
-                    2.0 *
-                    (attempt + 1)
-                )
-
-    raise RuntimeError(
-        f"Could not render {url}: "
-        f"{last_error}"
+        soup.get_text(
+            " ",
+            strip=True
+        )
     )
 
 
@@ -493,17 +451,22 @@ def parse_ishares_metric(
     percent=False
 ):
 
-    escaped = re.escape(
-        label
+    pattern = (
+
+        rf"{re.escape(label)}\s*"
+
+        rf"([-+]?\d+(?:[.,]\d+)?)"
+
+        rf"\s*"
+        rf"{'%' if percent else ''}"
+
+        rf"\s*as of\s*"
+
+        rf"([A-Za-z]{{3}}"
+        rf"\s+\d{{1,2}},"
+        rf"\s+\d{{4}})"
     )
 
-    pattern = (
-        rf"{escaped}\s*"
-        rf"([-+]?\d+(?:[.,]\d+)?)"
-        rf"\s*{'%' if percent else ''}"
-        rf"\s*as of\s*"
-        rf"([A-Za-z]{{3}}\s+\d{{1,2}},\s+\d{{4}})"
-    )
 
     match = re.search(
         pattern,
@@ -511,20 +474,27 @@ def parse_ishares_metric(
         flags=re.IGNORECASE
     )
 
+
     if not match:
 
-        return None, None
-
-    value = finite_number(
-        match.group(1).replace(
-            ",",
-            "."
+        return (
+            None,
+            None
         )
+
+
+    return (
+        finite_number(
+            match
+            .group(1)
+            .replace(
+                ",",
+                "."
+            )
+        ),
+
+        match.group(2)
     )
-
-    as_of = match.group(2)
-
-    return value, as_of
 
 
 def yahoo_forward_pe(
@@ -533,11 +503,13 @@ def yahoo_forward_pe(
 
     try:
 
-        ticker = yf.Ticker(
-            ticker_symbol
+        info = (
+            yf.Ticker(
+                ticker_symbol
+            )
+            .get_info()
         )
 
-        info = ticker.get_info()
 
         for key in (
             "forwardPE",
@@ -545,8 +517,11 @@ def yahoo_forward_pe(
         ):
 
             value = finite_number(
-                info.get(key)
+                info.get(
+                    key
+                )
             )
+
 
             if is_valid(
                 "forward_pe",
@@ -555,13 +530,16 @@ def yahoo_forward_pe(
 
                 return value
 
+
     except Exception as exc:
 
         print(
             f"  Yahoo forward P/E "
             f"failed for "
-            f"{ticker_symbol}: {exc}"
+            f"{ticker_symbol}: "
+            f"{exc}"
         )
+
 
     return None
 
@@ -572,257 +550,459 @@ def safe_old(
 ):
 
     value = finite_number(
-        previous.get(field)
+        previous.get(
+            field
+        )
     )
+
 
     return (
         value
+
         if is_valid(
             field,
             value
         )
+
         else None
     )
 
 
-def parse_state_street_fy1(text):
-    """
-    Price/Earnings Ratio FY1 =
-    erwartetes KGV für das
-    nächste Geschäftsjahr.
-    """
+def parse_state_street_fy1(
+    text
+):
 
     section = text
     as_of = None
 
+
     index_match = re.search(
-        r"Index Characteristics\s+as of\s+"
-        r"([A-Za-z]{3}\s+\d{1,2}\s+\d{4})"
-        r"(.*?)(?:Index Statistics|Yields|Fund Market Price|$)",
+
+        r"Index Characteristics"
+        r"\s+as of\s+"
+
+        r"([A-Za-z]{3}"
+        r"\s+\d{1,2}"
+        r"\s+\d{4})"
+
+        r"(.*?)"
+
+        r"(?:Index Statistics|"
+        r"Yields|"
+        r"Fund Market Price|$)",
+
         text,
+
         flags=(
             re.IGNORECASE |
             re.DOTALL
-        ),
+        )
     )
+
 
     if index_match:
 
-        as_of = index_match.group(1)
+        as_of = (
+            index_match
+            .group(1)
+        )
 
-        section = index_match.group(2)
+        section = (
+            index_match
+            .group(2)
+        )
+
 
     else:
 
         fund_match = re.search(
-            r"Fund Characteristics\s+as of\s+"
-            r"(\d{1,2}\s+[A-Za-z]{3}\s+\d{4})"
-            r"(.*?)(?:Index Characteristics|Fund Market Price|$)",
+
+            r"Fund Characteristics"
+            r"\s+as of\s+"
+
+            r"(\d{1,2}"
+            r"\s+[A-Za-z]{3}"
+            r"\s+\d{4})"
+
+            r"(.*?)"
+
+            r"(?:Index Characteristics|"
+            r"Fund Market Price|$)",
+
             text,
+
             flags=(
                 re.IGNORECASE |
                 re.DOTALL
-            ),
+            )
         )
+
 
         if fund_match:
 
-            as_of = fund_match.group(1)
+            as_of = (
+                fund_match
+                .group(1)
+            )
 
-            section = fund_match.group(2)
+            section = (
+                fund_match
+                .group(2)
+            )
+
 
     match = re.search(
+
         r"Price/Earnings Ratio FY1"
         r"\s*\|?\s*"
+
         r"([-+]?\d+(?:[.,]\d+)?)",
+
         section,
-        flags=re.IGNORECASE,
+
+        flags=re.IGNORECASE
     )
+
 
     if not match:
 
-        return None, as_of
+        return (
+            None,
+            as_of
+        )
+
 
     return (
+
         finite_number(
-            match.group(1).replace(
+            match
+            .group(1)
+            .replace(
                 ",",
                 "."
             )
         ),
+
         as_of
     )
 
 
-def parse_msci_india_metrics(text):
-    """
-    MSCI India Index Profile.
+def fetch_msci_india_pdf_metrics(
+    region
+):
 
-    Erwartete Kennzahlen:
+    """
+    Liest aus dem offiziellen MSCI India Factsheet:
 
     Div Yld (%)
     P/E
     P/E Fwd
     P/BV
 
-    Funktioniert sowohl mit normalem
-    HTML-Text als auch mit dem von
-    Jina Reader gerenderten Text.
+    Die erste Zahlenzeile nach der Überschrift
+    gehört zum MSCI India Index.
     """
 
-    clean = re.sub(
-        r"\s+",
-        " ",
-        text
+
+    url = region.get(
+        "msci_pdf_url"
     )
 
-    def find_value(patterns):
 
-        for pattern in patterns:
+    if not url:
 
-            match = re.search(
-                pattern,
+        raise RuntimeError(
+            "Keine MSCI India "
+            "PDF-URL definiert"
+        )
+
+
+    if url in _MSCI_PDF_CACHE:
+
+        return (
+            _MSCI_PDF_CACHE[
+                url
+            ]
+        )
+
+
+    last_error = None
+
+
+    pdf_headers = dict(
+        HEADERS
+    )
+
+
+    pdf_headers.update(
+        {
+            "Accept":
+                "application/pdf,"
+                "*/*;q=0.8",
+
+            "Referer":
+                "https://www.msci.com/"
+        }
+    )
+
+
+    for attempt in range(3):
+
+        try:
+
+            response = requests.get(
+                url,
+                headers=pdf_headers,
+                timeout=45
+            )
+
+
+            response.raise_for_status()
+
+
+            content = (
+                response.content
+            )
+
+
+            if not content.startswith(
+                b"%PDF"
+            ):
+
+                raise RuntimeError(
+                    "MSCI-Antwort ist "
+                    "keine gültige PDF-Datei"
+                )
+
+
+            reader = PdfReader(
+                BytesIO(
+                    content
+                )
+            )
+
+
+            text = " ".join(
+
+                page.extract_text()
+                or ""
+
+                for page
+                in reader.pages[:2]
+            )
+
+
+            clean = re.sub(
+                r"\s+",
+                " ",
+                text
+            )
+
+
+            date_match = re.search(
+
+                r"FUNDAMENTALS"
+                r"\s*\(([^)]+)\)",
+
                 clean,
+
                 flags=re.IGNORECASE
             )
 
-            if match:
 
-                value = finite_number(
-                    match.group(1)
-                    .replace(
-                        ",",
-                        "."
-                    )
-                )
+            as_of = (
 
-                if value is not None:
+                date_match
+                .group(1)
+                .strip()
 
-                    return value
+                if date_match
 
-        return None
-
-
-    dividend_yield = find_value([
-        (
-            r"Div\s*Yld\s*\(%\)"
-            r"[^\d+-]{0,150}"
-            r"([-+]?\d+(?:[.,]\d+)?)"
-        ),
-
-        (
-            r"Dividend\s*Yield"
-            r"[^\d+-]{0,150}"
-            r"([-+]?\d+(?:[.,]\d+)?)"
-        ),
-    ])
-
-
-    forward_pe = find_value([
-        (
-            r"P/E\s*Fwd"
-            r"[^\d+-]{0,150}"
-            r"([-+]?\d+(?:[.,]\d+)?)"
-        ),
-
-        (
-            r"Forward\s*P/E"
-            r"[^\d+-]{0,150}"
-            r"([-+]?\d+(?:[.,]\d+)?)"
-        ),
-    ])
-
-
-    pe = find_value([
-        (
-            r"P/E"
-            r"(?!\s*Fwd)"
-            r"[^\d+-]{0,150}"
-            r"([-+]?\d+(?:[.,]\d+)?)"
-        )
-    ])
-
-
-    pb = find_value([
-        (
-            r"P/BV"
-            r"[^\d+-]{0,150}"
-            r"([-+]?\d+(?:[.,]\d+)?)"
-        ),
-
-        (
-            r"P/B"
-            r"[^\d+-]{0,150}"
-            r"([-+]?\d+(?:[.,]\d+)?)"
-        ),
-    ])
-
-
-    date_match = re.search(
-        r"Data\s+as\s+of"
-        r"[^\w]{0,30}"
-        r"([A-Za-z]{3}\.?"
-        r"\s+\d{1,2},"
-        r"\s+\d{4})",
-        clean,
-        flags=re.IGNORECASE
-    )
-
-    as_of = (
-        date_match.group(1)
-        if date_match
-        else None
-    )
-
-
-    print(
-        "  MSCI India parsed:",
-        f"Div={dividend_yield},",
-        f"FwdPE={forward_pe},",
-        f"PE={pe},",
-        f"PB={pb},",
-        f"Date={as_of}"
-    )
-
-
-    if (
-        dividend_yield is None
-        or forward_pe is None
-    ):
-
-        pos = clean.lower().find(
-            "div yld"
-        )
-
-        if pos >= 0:
-
-            snippet = clean[
-                max(0, pos - 100):
-                pos + 500
-            ]
-
-            print(
-                "  MSCI India debug snippet:",
-                snippet
+                else None
             )
 
 
-    return {
-        "dividend_yield":
-            dividend_yield,
+            section_match = re.search(
 
-        "forward_pe":
-            forward_pe,
+                r"FUNDAMENTALS"
+                r"\s*\([^)]+\)"
 
-        "pe":
-            pe,
+                r"(.*?)"
 
-        "pb":
-            pb,
+                r"(?:INDEX RISK|"
+                r"RISK AND RETURN)",
 
-        "as_of":
-            as_of,
-    }
+                clean,
+
+                flags=(
+                    re.IGNORECASE |
+                    re.DOTALL
+                )
+            )
+
+
+            section = (
+
+                section_match
+                .group(1)
+
+                if section_match
+
+                else clean
+            )
+
+
+            metrics_match = re.search(
+
+                r"Div\s*Yld\s*\(%\)\s*"
+
+                r"P/E\s*"
+
+                r"P/E\s*Fwd\s*"
+
+                r"P/BV\s*"
+
+                r"([-+]?\d+(?:[.,]\d+)?)\s+"
+
+                r"([-+]?\d+(?:[.,]\d+)?)\s+"
+
+                r"([-+]?\d+(?:[.,]\d+)?)\s+"
+
+                r"([-+]?\d+(?:[.,]\d+)?)",
+
+                section,
+
+                flags=(
+                    re.IGNORECASE |
+                    re.DOTALL
+                )
+            )
+
+
+            if not metrics_match:
+
+                pos = (
+                    section
+                    .lower()
+                    .find(
+                        "div yld"
+                    )
+                )
+
+
+                if pos >= 0:
+
+                    print(
+                        "  MSCI PDF "
+                        "debug snippet:",
+
+                        section[
+                            pos:
+                            pos + 600
+                        ]
+                    )
+
+
+                raise RuntimeError(
+                    "MSCI India Fundamentals "
+                    "konnten im PDF nicht "
+                    "erkannt werden"
+                )
+
+
+            result = {
+
+                "dividend_yield":
+                    finite_number(
+                        metrics_match
+                        .group(1)
+                        .replace(
+                            ",",
+                            "."
+                        )
+                    ),
+
+                "pe":
+                    finite_number(
+                        metrics_match
+                        .group(2)
+                        .replace(
+                            ",",
+                            "."
+                        )
+                    ),
+
+                "forward_pe":
+                    finite_number(
+                        metrics_match
+                        .group(3)
+                        .replace(
+                            ",",
+                            "."
+                        )
+                    ),
+
+                "pb":
+                    finite_number(
+                        metrics_match
+                        .group(4)
+                        .replace(
+                            ",",
+                            "."
+                        )
+                    ),
+
+                "as_of":
+                    as_of
+            }
+
+
+            print(
+                "  MSCI India PDF parsed:",
+
+                f"Div="
+                f"{result['dividend_yield']},",
+
+                f"PE="
+                f"{result['pe']},",
+
+                f"FwdPE="
+                f"{result['forward_pe']},",
+
+                f"PB="
+                f"{result['pb']},",
+
+                f"Date="
+                f"{result['as_of']}"
+            )
+
+
+            _MSCI_PDF_CACHE[
+                url
+            ] = result
+
+
+            return result
+
+
+        except Exception as exc:
+
+            last_error = exc
+
+
+            if attempt < 2:
+
+                time.sleep(
+                    2.0 *
+                    (attempt + 1)
+                )
+
+
+    raise RuntimeError(
+        "MSCI India PDF konnte "
+        "nicht gelesen werden: "
+        f"{last_error}"
+    )
 
 
 def fetch_forward_fallback(
@@ -833,48 +1013,63 @@ def fetch_forward_fallback(
         "forward_fallback_provider"
     )
 
-    url = region.get(
-        "forward_fallback_url"
-    )
 
-    if not provider or not url:
+    if not provider:
 
-        return None, None
+        return (
+            None,
+            None
+        )
+
 
     try:
 
-        if provider == "msci_india":
-
-            text = fetch_rendered_text(
-                url
-            )
-
-        else:
-
-            text = fetch_text(
-                url
-            )
-
-
         if provider == "state_street":
 
-            return parse_state_street_fy1(
-                text
+            url = region.get(
+                "forward_fallback_url"
             )
 
 
-        if provider == "msci_india":
+            if not url:
 
-            metrics = (
-                parse_msci_india_metrics(
-                    text
+                return (
+                    None,
+                    None
+                )
+
+
+            return (
+                parse_state_street_fy1(
+                    fetch_text(
+                        url
+                    )
                 )
             )
 
-            return (
-                metrics["forward_pe"],
-                metrics["as_of"]
+
+        if (
+            provider
+            == "msci_india_pdf"
+        ):
+
+            metrics = (
+                fetch_msci_india_pdf_metrics(
+                    region
+                )
             )
+
+
+            return (
+                metrics[
+                    "forward_pe"
+                ],
+
+                metrics[
+                    "as_of"
+                ]
+            )
+
 
     except Exception as exc:
 
@@ -885,7 +1080,11 @@ def fetch_forward_fallback(
             f"{exc}"
         )
 
-    return None, None
+
+    return (
+        None,
+        None
+    )
 
 
 def fetch_india_regional_dividend(
@@ -896,24 +1095,23 @@ def fetch_india_regional_dividend(
         region.get(
             "regional_dividend_provider"
         )
-        != "msci_india"
+        != "msci_india_pdf"
     ):
 
-        return None, None
+        return (
+            None,
+            None
+        )
+
 
     try:
 
-        text = fetch_rendered_text(
-            region[
-                "regional_dividend_url"
-            ]
-        )
-
         metrics = (
-            parse_msci_india_metrics(
-                text
+            fetch_msci_india_pdf_metrics(
+                region
             )
         )
+
 
         return (
             metrics[
@@ -925,6 +1123,7 @@ def fetch_india_regional_dividend(
             ]
         )
 
+
     except Exception as exc:
 
         print(
@@ -932,93 +1131,115 @@ def fetch_india_regional_dividend(
             f"fallback failed: {exc}"
         )
 
-    return None, None
 
+    return (
+        None,
+        None
+    )
 
-# ------------------------------------------------------------
-# EPS GROWTH
-# ------------------------------------------------------------
 
 def parse_state_street_eps_growth(
     text
 ):
 
-    """
-    Verwendet den INDEX-Wert,
-    nicht nur den ETF-Fund-Wert.
-    """
-
     section_match = re.search(
-        r"Index Characteristics\s+as of\s+"
-        r"([A-Za-z]{3}\s+\d{1,2}\s+\d{4})"
-        r"(.*?)(?:Index Statistics|Yields|Fund Market Price|$)",
+
+        r"Index Characteristics"
+        r"\s+as of\s+"
+
+        r"([A-Za-z]{3}"
+        r"\s+\d{1,2}"
+        r"\s+\d{4})"
+
+        r"(.*?)"
+
+        r"(?:Index Statistics|"
+        r"Yields|"
+        r"Fund Market Price|$)",
+
         text,
+
         flags=(
             re.IGNORECASE |
             re.DOTALL
-        ),
+        )
     )
+
 
     if not section_match:
 
-        return None, None
+        return (
+            None,
+            None
+        )
 
 
-    as_of = section_match.group(1)
+    as_of = (
+        section_match
+        .group(1)
+    )
 
-    section = section_match.group(2)
+
+    section = (
+        section_match
+        .group(2)
+    )
 
 
     value_match = re.search(
+
         r"Est\.?"
         r"\s*3\s*-\s*5"
-        r"\s*Year\s*EPS\s*Growth"
+        r"\s*Year"
+        r"\s*EPS"
+        r"\s*Growth"
+
         r".{0,700}?"
+
         r"([-+]?\d+(?:[.,]\d+)?)"
         r"\s*%",
+
         section,
+
         flags=(
             re.IGNORECASE |
             re.DOTALL
-        ),
+        )
     )
 
 
     if not value_match:
 
-        return None, None
-
-
-    value = finite_number(
-        value_match
-        .group(1)
-        .replace(
-            ",",
-            "."
+        return (
+            None,
+            None
         )
+
+
+    return (
+
+        finite_number(
+            value_match
+            .group(1)
+            .replace(
+                ",",
+                "."
+            )
+        ),
+
+        as_of
     )
-
-
-    return value, as_of
 
 
 def parse_morningstar_eps_growth(
     response
 ):
 
-    """
-    Morningstar-Tabelle:
-
-    Long-Term Projected Earnings Growth
-
-    Es wird der Benchmark-Wert
-    = letzte Spalte verwendet.
-    """
-
     soup = BeautifulSoup(
         response.text,
         "html.parser"
     )
+
 
     page_text = re.sub(
         r"\s+",
@@ -1031,16 +1252,22 @@ def parse_morningstar_eps_growth(
 
 
     date_match = re.search(
+
         r"Valuations and Growth Rates"
         r"\s+(\d{2}/\d{2}/\d{4})",
+
         page_text,
-        flags=re.IGNORECASE,
+
+        flags=re.IGNORECASE
     )
 
 
     as_of = (
+
         date_match.group(1)
+
         if date_match
+
         else None
     )
 
@@ -1050,6 +1277,7 @@ def parse_morningstar_eps_growth(
     ):
 
         cells = [
+
             re.sub(
                 r"\s+",
                 " ",
@@ -1058,6 +1286,7 @@ def parse_morningstar_eps_growth(
                     strip=True
                 )
             )
+
             for cell
             in row.find_all(
                 ["th", "td"]
@@ -1065,12 +1294,9 @@ def parse_morningstar_eps_growth(
         ]
 
 
-        if not cells:
-
-            continue
-
-
         if (
+            cells
+            and
             "long-term projected earnings growth"
             in cells[0].lower()
         ):
@@ -1089,7 +1315,8 @@ def parse_morningstar_eps_growth(
                 if match:
 
                     value = finite_number(
-                        match.group(0)
+                        match
+                        .group(0)
                         .replace(
                             ",",
                             "."
@@ -1113,63 +1340,72 @@ def parse_morningstar_eps_growth(
 
 
     match = re.search(
+
         r"Long-Term Projected Earnings Growth"
+
         r"\s*\|?\s*"
         r"([-+]?\d+(?:[.,]\d+)?)"
+
         r"\s*\|?\s*"
         r"([-+]?\d+(?:[.,]\d+)?)"
+
         r"\s*\|?\s*"
         r"([-+]?\d+(?:[.,]\d+)?)",
+
         page_text,
-        flags=re.IGNORECASE,
+
+        flags=re.IGNORECASE
     )
 
 
     if match:
 
-        benchmark = finite_number(
-            match.group(3)
-            .replace(
-                ",",
-                "."
-            )
-        )
-
         return (
-            benchmark,
+
+            finite_number(
+                match
+                .group(3)
+                .replace(
+                    ",",
+                    "."
+                )
+            ),
+
             as_of
         )
 
 
-    return None, as_of
+    return (
+        None,
+        as_of
+    )
 
 
 def fetch_eps_growth(
     region
 ):
 
-    provider = region[
-        "eps_provider"
-    ]
-
-    url = region[
-        "eps_url"
-    ]
-
-
     try:
 
         response = fetch_response(
-            url
+            region[
+                "eps_url"
+            ]
         )
 
 
-        if provider == "state_street":
+        if (
+            region[
+                "eps_provider"
+            ]
+            == "state_street"
+        ):
 
             soup = BeautifulSoup(
                 response.text,
                 "html.parser"
             )
+
 
             text = re.sub(
                 r"\s+",
@@ -1180,6 +1416,7 @@ def fetch_eps_growth(
                 )
             )
 
+
             value, as_of = (
                 parse_state_street_eps_growth(
                     text
@@ -1187,7 +1424,12 @@ def fetch_eps_growth(
             )
 
 
-        elif provider == "morningstar":
+        elif (
+            region[
+                "eps_provider"
+            ]
+            == "morningstar"
+        ):
 
             value, as_of = (
                 parse_morningstar_eps_growth(
@@ -1200,7 +1442,7 @@ def fetch_eps_growth(
 
             raise ValueError(
                 "Unknown EPS provider: "
-                f"{provider}"
+                f"{region['eps_provider']}"
             )
 
 
@@ -1209,7 +1451,10 @@ def fetch_eps_growth(
             value
         ):
 
-            return value, as_of
+            return (
+                value,
+                as_of
+            )
 
 
         print(
@@ -1229,7 +1474,10 @@ def fetch_eps_growth(
         )
 
 
-    return None, None
+    return (
+        None,
+        None
+    )
 
 
 def fetch_region(
@@ -1245,34 +1493,26 @@ def fetch_region(
         "ticker"
     ]
 
-    ishares_url = region[
-        "ishares_url"
-    ]
-
 
     print(
-        f"\n=== {market} / "
+        f"\n=== "
+        f"{market} / "
         f"{ticker} ==="
     )
 
 
     field_sources = {}
-
     field_dates = {}
-
     quality = {}
-
     carried_forward = []
 
-
-    # --------------------------------------------------------
-    # iShares
-    # --------------------------------------------------------
 
     try:
 
         page_text = fetch_text(
-            ishares_url
+            region[
+                "ishares_url"
+            ]
         )
 
 
@@ -1292,11 +1532,14 @@ def fetch_region(
         )
 
 
-        dividend_yield, div_date = (
+        (
+            dividend_yield,
+            div_date
+        ) = (
             parse_ishares_metric(
                 page_text,
                 "12m Trailing Yield",
-                percent=True,
+                percent=True
             )
         )
 
@@ -1308,7 +1551,6 @@ def fetch_region(
             f"failed: {exc}"
         )
 
-
         pe = None
         pb = None
         dividend_yield = None
@@ -1317,10 +1559,6 @@ def fetch_region(
         pb_date = None
         div_date = None
 
-
-    # --------------------------------------------------------
-    # KGV
-    # --------------------------------------------------------
 
     if is_valid(
         "pe",
@@ -1331,7 +1569,10 @@ def fetch_region(
 
         field_sources[
             "pe"
-        ] = f"iShares {ticker}"
+        ] = (
+            f"iShares "
+            f"{ticker}"
+        )
 
         field_dates[
             "pe"
@@ -1378,10 +1619,6 @@ def fetch_region(
         )
 
 
-    # --------------------------------------------------------
-    # KBV
-    # --------------------------------------------------------
-
     if is_valid(
         "pb",
         pb
@@ -1391,7 +1628,10 @@ def fetch_region(
 
         field_sources[
             "pb"
-        ] = f"iShares {ticker}"
+        ] = (
+            f"iShares "
+            f"{ticker}"
+        )
 
         field_dates[
             "pb"
@@ -1439,20 +1679,15 @@ def fetch_region(
 
 
     # --------------------------------------------------------
-    # Dividendenrendite
+    # DIVIDENDENRENDITE
     # --------------------------------------------------------
-
-    # INDA weist offiziell teilweise 0,00 %
-    # 12m Trailing Yield aus.
-    #
-    # Für die regionale Bewertung wird
-    # deshalb bei 0 / nahe 0 der offizielle
-    # MSCI India Index Dividend Yield genutzt.
 
     if (
         market == "Indien"
-        and dividend_yield is not None
-        and dividend_yield <= 0.05
+        and
+        dividend_yield is not None
+        and
+        dividend_yield <= 0.05
     ):
 
         (
@@ -1470,7 +1705,8 @@ def fetch_region(
                 "dividend_yield",
                 regional_dividend
             )
-            and regional_dividend > 0.05
+            and
+            regional_dividend > 0.05
         ):
 
             selected_dividend = (
@@ -1480,8 +1716,8 @@ def fetch_region(
             field_sources[
                 "dividend_yield"
             ] = (
-                "MSCI India Index – "
-                "Div Yld (%)"
+                "MSCI India Index "
+                "Factsheet – Div Yld (%)"
             )
 
             field_dates[
@@ -1492,15 +1728,12 @@ def fetch_region(
 
             quality[
                 "dividend_yield"
-            ] = "regional_index_msci"
+            ] = (
+                "regional_index_msci_pdf"
+            )
 
 
         else:
-
-            # Falls MSCI wider Erwarten
-            # nicht erreichbar ist:
-            # vorhandenen sinnvollen Vorwert
-            # verwenden, sofern > 0.
 
             previous_dividend = (
                 safe_old(
@@ -1513,7 +1746,8 @@ def fetch_region(
             if (
                 previous_dividend
                 is not None
-                and previous_dividend > 0.05
+                and
+                previous_dividend > 0.05
             ):
 
                 selected_dividend = (
@@ -1542,9 +1776,7 @@ def fetch_region(
 
                 quality[
                     "dividend_yield"
-                ] = (
-                    "carried_forward"
-                )
+                ] = "carried_forward"
 
                 carried_forward.append(
                     "dividend_yield"
@@ -1570,9 +1802,7 @@ def fetch_region(
 
                 quality[
                     "dividend_yield"
-                ] = (
-                    "primary_ishares"
-                )
+                ] = "primary_ishares"
 
 
     elif is_valid(
@@ -1602,11 +1832,9 @@ def fetch_region(
 
     else:
 
-        selected_dividend = (
-            safe_old(
-                previous,
-                "dividend_yield"
-            )
+        selected_dividend = safe_old(
+            previous,
+            "dividend_yield"
         )
 
         field_sources[
@@ -1639,7 +1867,7 @@ def fetch_region(
 
 
     # --------------------------------------------------------
-    # Forward-KGV
+    # FORWARD-KGV
     # --------------------------------------------------------
 
     forward_pe = yahoo_forward_pe(
@@ -1667,7 +1895,9 @@ def fetch_region(
             "forward_pe"
         ] = (
             datetime
-            .now(BERLIN)
+            .now(
+                BERLIN
+            )
             .strftime(
                 "%d.%m.%Y"
             )
@@ -1716,13 +1946,16 @@ def fetch_region(
                 "forward_pe"
             ] = (
                 "state_street_fy1"
-                if region[
-                    "forward_fallback_provider"
-                ]
-                == "state_street"
+
+                if (
+                    region[
+                        "forward_fallback_provider"
+                    ]
+                    == "state_street"
+                )
 
                 else
-                "msci_forward_pe"
+                "msci_forward_pe_pdf"
             )
 
 
@@ -1859,7 +2092,7 @@ def fetch_region(
 
 
     # --------------------------------------------------------
-    # EPS Growth
+    # EPS GROWTH
     # --------------------------------------------------------
 
     (
@@ -1895,12 +2128,15 @@ def fetch_region(
         quality[
             "earnings_growth"
         ] = (
+
             "projected_3_5y_state_street"
 
-            if region[
-                "eps_provider"
-            ]
-            == "state_street"
+            if (
+                region[
+                    "eps_provider"
+                ]
+                == "state_street"
+            )
 
             else
             "long_term_projected_"
@@ -1942,9 +2178,7 @@ def fetch_region(
 
             quality[
                 "earnings_growth"
-            ] = (
-                "carried_forward"
-            )
+            ] = "carried_forward"
 
             carried_forward.append(
                 "earnings_growth"
@@ -1969,20 +2203,20 @@ def fetch_region(
             ] = "unavailable"
 
 
-    # --------------------------------------------------------
-    # Debug-/Quelleninformationen
-    # --------------------------------------------------------
-
     raw_primary = {
 
         "ticker":
             ticker,
 
         "pe":
-            round1(pe),
+            round1(
+                pe
+            ),
 
         "pb":
-            round1(pb),
+            round1(
+                pb
+            ),
 
         "dividend_yield":
             round1(
@@ -2022,10 +2256,6 @@ def fetch_region(
             ),
     }
 
-
-    # --------------------------------------------------------
-    # Ergebnis
-    # --------------------------------------------------------
 
     return {
 
@@ -2075,7 +2305,9 @@ def fetch_region(
 
         "as_of":
             datetime
-            .now(BERLIN)
+            .now(
+                BERLIN
+            )
             .strftime(
                 "%d.%m.%Y"
             ),
@@ -2107,22 +2339,20 @@ def main():
         )
     )
 
+
     regions = []
 
 
     for region in REGIONS:
 
-        market = region[
-            "market"
-        ]
-
-
         row = fetch_region(
             region,
             previous.get(
-                market,
+                region[
+                    "market"
+                ],
                 {}
-            ),
+            )
         )
 
 
@@ -2132,14 +2362,15 @@ def main():
 
 
         print(
-            f"{market}: "
+            f"{row['market']}: "
             f"KGV={row['pe']}, "
             f"Fwd.KGV="
             f"{row['forward_pe']}, "
             f"KBV={row['pb']}, "
             f"Div="
             f"{row['dividend_yield']}%, "
-            f"ROE={row['roe']}%, "
+            f"ROE="
+            f"{row['roe']}%, "
             f"EPS Growth="
             f"{row['earnings_growth']}%"
         )
@@ -2162,7 +2393,9 @@ def main():
 
         "updated":
             datetime
-            .now(BERLIN)
+            .now(
+                BERLIN
+            )
             .strftime(
                 "%d.%m.%Y"
             ),
