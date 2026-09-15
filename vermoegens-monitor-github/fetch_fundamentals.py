@@ -288,23 +288,95 @@ def parse_state_street_fy1(text):
 
 
 def parse_msci_india_metrics(text):
-    """Liest Forward-KGV und Dividendenrendite von der MSCI-India-Indexseite."""
-    def metric(pattern):
-        m = re.search(pattern, text, flags=re.IGNORECASE)
-        return finite_number(m.group(1).replace(",", ".")) if m else None
+    """
+    MSCI India Index Profile.
 
-    div_yield = metric(r"Div\s*Yld\s*\(\%\)\s*\|?\s*([-+]?\d+(?:[.,]\d+)?)")
-    forward_pe = metric(r"P/E\s*Fwd\s*\|?\s*([-+]?\d+(?:[.,]\d+)?)")
+    Die MSCI-Seite veröffentlicht direkt:
+      Div Yld (%)
+      P/E
+      P/E Fwd
+      P/BV
 
-    dm = re.search(
-        r"Data as of\s+([A-Za-z]{3}\.?\s+\d{1,2},\s+\d{4})",
-        text,
-        flags=re.IGNORECASE,
+    Der Parser ist bewusst tolerant gegenüber Leerzeichen,
+    Zeilenumbrüchen, Pipes und HTML-bedingten Trennzeichen.
+    """
+
+    # Leerzeichen / Zeilenumbrüche vereinheitlichen
+    clean = re.sub(r"\s+", " ", text)
+
+    def find_value(patterns):
+        for pattern in patterns:
+            match = re.search(
+                pattern,
+                clean,
+                flags=re.IGNORECASE
+            )
+
+            if match:
+                value = finite_number(
+                    match.group(1).replace(",", ".")
+                )
+
+                if value is not None:
+                    return value
+
+        return None
+
+
+    dividend_yield = find_value([
+        r"Div\s*Yld\s*\(%\)[^\d+-]{0,100}([-+]?\d+(?:[.,]\d+)?)",
+        r"Dividend\s*Yield[^\d+-]{0,100}([-+]?\d+(?:[.,]\d+)?)",
+    ])
+
+
+    forward_pe = find_value([
+        r"P/E\s*Fwd[^\d+-]{0,100}([-+]?\d+(?:[.,]\d+)?)",
+        r"Forward\s*P/E[^\d+-]{0,100}([-+]?\d+(?:[.,]\d+)?)",
+    ])
+
+
+    # Optional zusätzlich für Debugging / spätere Nutzung
+    pe = find_value([
+        r"P/E(?!\s*Fwd)[^\d+-]{0,100}([-+]?\d+(?:[.,]\d+)?)"
+    ])
+
+
+    pb = find_value([
+        r"P/BV[^\d+-]{0,100}([-+]?\d+(?:[.,]\d+)?)",
+        r"P/B[^\d+-]{0,100}([-+]?\d+(?:[.,]\d+)?)",
+    ])
+
+
+    date_match = re.search(
+        r"Data\s+as\s+of[^\w]{0,20}"
+        r"([A-Za-z]{3}\.?\s+\d{1,2},\s+\d{4})",
+        clean,
+        flags=re.IGNORECASE
     )
+
+    as_of = (
+        date_match.group(1)
+        if date_match
+        else None
+    )
+
+
+    print(
+        "  MSCI India parsed:",
+        f"Div={dividend_yield},",
+        f"FwdPE={forward_pe},",
+        f"PE={pe},",
+        f"PB={pb},",
+        f"Date={as_of}"
+    )
+
+
     return {
-        "dividend_yield": div_yield,
+        "dividend_yield": dividend_yield,
         "forward_pe": forward_pe,
-        "as_of": dm.group(1) if dm else None,
+        "pe": pe,
+        "pb": pb,
+        "as_of": as_of,
     }
 
 
