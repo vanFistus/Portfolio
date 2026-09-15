@@ -18,6 +18,95 @@ table{width:100%;border-collapse:collapse}th{color:#b8c9dc;font-size:13px;text-a
 
 .metricTable{width:100%;table-layout:fixed}.metricTable th,.metricTable td{white-space:nowrap;text-align:center}.metricTable th:first-child,.metricTable td:first-child{width:18%;text-align:left}.metricTable th:not(:first-child),.metricTable td:not(:first-child){width:13.666%}.metric{display:inline-flex;align-items:center;gap:7px;justify-content:center}.metric.hasTooltip{cursor:help}.metric.hasTooltip:hover{filter:brightness(1.15)}.dot{width:10px;height:10px;border-radius:50%;display:inline-block;box-shadow:0 0 10px rgba(255,255,255,.12)}.dot.good{background:var(--green)}.dot.mid{background:#ffcc66}.dot.bad{background:var(--red)}.snapshot{padding:18px}.snapshotRow{display:grid;grid-template-columns:20% 60% 20%;gap:0;align-items:center;padding:14px 4px;border-top:1px solid rgba(91,126,160,.35)}.snapshotRow:first-child{border-top:0}.marketName{font-weight:900;text-align:left}.snapshotText{text-align:center}.stars{text-align:right;color:#ffcc66;font-size:18px;letter-spacing:1px}.fundamentalDate{font-size:13px;color:var(--muted);font-weight:700}.tpctRow{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}.absoluteValue{font-size:.53em;font-weight:800;color:rgba(255,255,255,.78);white-space:nowrap}#metricTooltip{position:fixed;z-index:99999;display:none;pointer-events:none;min-width:255px;max-width:390px;padding:12px 14px;background:#16283b;border:1px solid #45637f;border-radius:9px;color:#f4f7fb;font-size:12px;font-weight:500;line-height:1.5;box-shadow:0 10px 30px rgba(0,0,0,.45),0 0 0 1px rgba(255,255,255,.03)}#metricTooltip.pinned{pointer-events:auto;border-color:#66a3d2;box-shadow:0 12px 34px rgba(0,0,0,.55),0 0 0 1px rgba(102,163,210,.16)}#metricTooltip .tooltipSource{font-weight:700;color:#f4f7fb}#metricTooltip .tooltipSource a{color:#7ec8ff;text-decoration:underline;text-underline-offset:2px;font-weight:850;cursor:pointer}#metricTooltip .tooltipSource a:hover{text-decoration:underline}#metricTooltip .tooltipDetails{margin-top:8px;padding-top:8px;border-top:1px solid rgba(158,180,202,.2);color:#b8c9dc}#metricTooltip .tooltipDetails strong{color:#dce8f3} @media(max-width:760px){.snapshotRow{grid-template-columns:1fr;gap:8px}.snapshotText{text-align:left}.stars{text-align:left}.metricTableWrap{overflow-x:auto}.metricTable{min-width:900px}}
 @media(max-width:1100px){.grid,.cards{grid-template-columns:1fr}.heat{grid-template-columns:repeat(2,1fr)}}@media(max-width:620px){.wrap{padding:14px}.heat{grid-template-columns:1fr}.clock{display:none}h1{font-size:28px}}
+
+
+/* ================= INTERAKTIVER INDEX-VERGLEICH ================= */
+.portfolioControlRow{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:18px;
+  flex-wrap:wrap;
+  margin-bottom:14px;
+}
+
+#portfolioLegend{
+  display:flex;
+  flex-wrap:wrap;
+  gap:9px;
+  align-items:center;
+  flex:1 1 760px;
+}
+
+.indexToggle{
+  appearance:none;
+  border:1px solid rgba(91,126,160,.42);
+  background:#0b1726;
+  color:#a8bfd5;
+  border-radius:999px;
+  padding:8px 11px;
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  font:inherit;
+  font-size:13px;
+  font-weight:800;
+  cursor:pointer;
+  transition:background .16s ease,border-color .16s ease,transform .16s ease,color .16s ease;
+}
+
+.indexToggle:hover{
+  border-color:#5e87aa;
+  color:#edf6ff;
+  transform:translateY(-1px);
+}
+
+.indexToggle.active{
+  background:rgba(21,45,68,.92);
+  border-color:var(--series-color,#5e87aa);
+  color:#f4f7fb;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.025);
+}
+
+.indexToggle .legendDot{
+  width:11px;
+  height:11px;
+  border-radius:50%;
+  display:inline-block;
+  flex:none;
+  background:transparent;
+  border:2px solid var(--series-color,#9eb4ca);
+}
+
+.indexToggle.active .legendDot{
+  background:var(--series-color,#9eb4ca);
+  border-color:var(--series-color,#9eb4ca);
+}
+
+.indexToggle .indexPerf{
+  color:#8198ae;
+  font-weight:900;
+}
+
+.indexToggle.active .indexPerf.pos{color:var(--green)}
+.indexToggle.active .indexPerf.neg{color:var(--red)}
+.indexToggle.active .indexPerf.muted{color:var(--muted)}
+
+.portfolioRange{
+  color:#9eb4ca;
+  font-size:12px;
+  font-weight:700;
+  white-space:nowrap;
+  padding-top:9px;
+  flex:0 0 auto;
+}
+
+@media(max-width:760px){
+  .portfolioControlRow{gap:10px}
+  .portfolioRange{width:100%;padding-top:0}
+  .indexToggle{font-size:12px;padding:7px 9px}
+}
+
 </style>
 </head>
 <body>
@@ -49,7 +138,10 @@ table{width:100%;border-collapse:collapse}th{color:#b8c9dc;font-size:13px;text-a
 </select>
 </h2>
 <div style="padding:18px">
-<div id="portfolioLegend" style="display:flex;flex-wrap:wrap;gap:18px;margin-bottom:14px;color:#d9e7f5;font-weight:800"></div>
+<div class="portfolioControlRow">
+<div id="portfolioLegend"></div>
+<div id="portfolioRange" class="portfolioRange">Zeitraum: —</div>
+</div>
 <canvas id="portfolioChart" style="width:100%;height:420px"></canvas>
 </div>
 </div>
@@ -96,6 +188,21 @@ let heatPeriod='day';
 let portfolioPeriod='ytd';
 let latestData=null;
 
+const portfolioUniverse=[
+{name:'S&P 500',color:'#2eb6ff'},
+{name:'STOXX Europe 600',color:'#20d37a'},
+{name:'Emerging Markets',color:'#ffcc66'},
+{name:'China',color:'#b486ff'},
+{name:'Indien',color:'#ff8a5b'},
+{name:'Japan',color:'#f472b6'}
+];
+
+const portfolioSelected=new Set([
+'S&P 500',
+'STOXX Europe 600',
+'Emerging Markets'
+]);
+
 function perfByPeriod(a,p){
 let v=p==='5d'?a.history_1w:p==='1mo'?a.history_1m:p==='ytd'?a.history_ytd:p==='1y'?a.history_1y:p==='3y'?a.history_3y:p==='5y'?a.history_5y:p==='10y'?a.history_10y:null;
 if(p==='day')return a.day_pct;
@@ -115,6 +222,95 @@ return v.map(x=>x?((x/v[0]-1)*100):null).filter(x=>x!=null)
 
 function periodLabel(p){
 return p==='day'?'Tag':p==='5d'?'1 Woche':p==='1mo'?'1 Monat':p==='ytd'?'YTD':p==='1y'?'1 Jahr':p==='3y'?'3 Jahre':p==='5y'?'5 Jahre':p==='10y'?'10 Jahre':p==='ma200'?'200 days':p;
+}
+
+
+function seriesDataForPeriod(a,p){
+if(p==='day')return{values:a.history_intraday||[],dates:a.history_dates_intraday||[]};
+if(p==='5d')return{values:a.history_1w||[],dates:a.history_dates_1w||[]};
+if(p==='1mo')return{values:a.history_1m||[],dates:a.history_dates_1m||[]};
+if(p==='ytd')return{values:a.history_ytd||[],dates:a.history_dates_ytd||[]};
+if(p==='1y')return{values:a.history_1y||[],dates:a.history_dates_1y||[]};
+if(p==='3y')return{values:a.history_3y||[],dates:a.history_dates_3y||[]};
+if(p==='5y')return{values:a.history_5y||[],dates:a.history_dates_5y||[]};
+if(p==='10y')return{values:a.history_10y||[],dates:a.history_dates_10y||[]};
+return{values:a.history_ytd||[],dates:a.history_dates_ytd||[]};
+}
+
+function parseChartDate(value){
+if(!value)return null;
+const s=String(value);
+let m=s.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+if(m)return new Date(Number(m[1]),Number(m[2])-1,Number(m[3]));
+const d=new Date(s);
+return Number.isNaN(d.getTime())?null:d;
+}
+
+function performancePoints(values,dates){
+if(!Array.isArray(values)||values.length<2)return[];
+let base=null;
+for(const v of values){
+if(v!=null&&Number.isFinite(Number(v))&&Number(v)!==0){base=Number(v);break;}
+}
+if(base==null)return[];
+const out=[];
+for(let i=0;i<values.length;i++){
+const raw=values[i];
+if(raw==null||!Number.isFinite(Number(raw)))continue;
+const date=parseChartDate(dates?.[i]);
+if(!date)continue;
+out.push({ts:date.getTime(),date,value:(Number(raw)/base-1)*100});
+}
+return out;
+}
+
+function formatChartAxisDate(date,period){
+if(!date)return'';
+if(period==='day')return date.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'});
+if(period==='5d'||period==='1mo')return date.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'});
+if(period==='ytd'||period==='1y')return date.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'});
+if(period==='3y'||period==='5y')return date.toLocaleDateString('de-DE',{month:'2-digit',year:'2-digit'});
+return date.toLocaleDateString('de-DE',{year:'numeric'});
+}
+
+function formatChartRangeDate(date,period){
+if(!date)return'—';
+if(period==='day'){
+return date.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'})+' '+date.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'});
+}
+return date.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'});
+}
+
+function chartTickCount(period){
+if(period==='day')return 6;
+if(period==='5d')return 6;
+if(period==='1mo')return 6;
+if(period==='ytd')return 7;
+if(period==='1y')return 7;
+if(period==='3y')return 7;
+if(period==='5y')return 6;
+return 6;
+}
+
+function renderPortfolioLegend(allSeries){
+const legend=document.getElementById('portfolioLegend');
+if(!legend)return;
+legend.innerHTML=allSeries.map(s=>{
+const active=portfolioSelected.has(s.name);
+const last=s.points.length?s.points[s.points.length-1].value:null;
+const perfText=last==null?'—':`${sign(last)}${fmt(last,'%',2)}`;
+return `<button type="button" class="indexToggle ${active?'active':''}" style="--series-color:${s.color}" aria-pressed="${active?'true':'false'}" onclick="togglePortfolioIndex('${s.name.replace(/'/g,"\\'")}')"><span class="legendDot"></span><span>${s.name}</span><span class="indexPerf ${cls(last)}">${active?perfText:'+'}</span></button>`;
+}).join('');
+}
+
+function togglePortfolioIndex(name){
+if(portfolioSelected.has(name)){
+if(portfolioSelected.size===1)return;
+portfolioSelected.delete(name);
+}else{
+portfolioSelected.add(name);
+}
+drawPortfolioChart(latestData);
 }
 
 function drawSpark(c,values,color){
@@ -265,70 +461,113 @@ return {updated:'—',regions:[]};
 
 function drawPortfolioChart(data){
 if(!data)return;
-let c=document.getElementById('portfolioChart');
-if(!c)return;
+const c=document.getElementById('portfolioChart');
+if(!c||c.offsetWidth===0)return;
 
-let assets=data.assets||[];
-let items=[
-{name:'S&P 500',asset:assets.find(a=>a.name==='S&P 500'),color:'#2eb6ff'},
-{name:'STOXX Europe 600',asset:assets.find(a=>a.name==='STOXX Europe 600'),color:'#20d37a'},
-{name:'Emerging Markets',asset:assets.find(a=>a.name==='Emerging Markets'),color:'#ffcc66'}
-];
+const assets=data.assets||[];
+const allSeries=portfolioUniverse.map(cfg=>{
+const asset=assets.find(a=>a.name===cfg.name);
+const raw=seriesDataForPeriod(asset||{},portfolioPeriod);
+return{name:cfg.name,color:cfg.color,asset,points:performancePoints(raw.values,raw.dates)};
+});
 
-let series=items.map(i=>({name:i.name,color:i.color,values:toPerformanceSeries(seriesForPeriod(i.asset||{},portfolioPeriod))}));
-let legend=document.getElementById('portfolioLegend');
-if(legend){
-legend.innerHTML=series.map(s=>{
-let last=s.values.length?s.values[s.values.length-1]:null;
-return `<span class="legendItem"><span class="legendDot" style="background:${s.color}"></span><span>${s.name}</span><span class="${cls(last)} legendPerf">${sign(last)}${fmt(last,'%')}</span></span>`
-}).join('');
-}
+renderPortfolioLegend(allSeries);
 
-const ctx=c.getContext('2d'),w=c.width=c.offsetWidth*devicePixelRatio,h=c.height=c.offsetHeight*devicePixelRatio;
+const selectedSeries=allSeries.filter(s=>portfolioSelected.has(s.name)&&s.points.length>=2);
+const rangeEl=document.getElementById('portfolioRange');
+
+const ctx=c.getContext('2d');
+const dpr=window.devicePixelRatio||1;
+const w=c.width=c.offsetWidth*dpr;
+const h=c.height=c.offsetHeight*dpr;
 ctx.clearRect(0,0,w,h);
 
-let all=series.flatMap(s=>s.values);
-if(series.every(s=>s.values.length<2)){
+if(!selectedSeries.length){
+if(rangeEl)rangeEl.textContent='Zeitraum: —';
 ctx.fillStyle='#9eb4ca';
-ctx.font=`${18*devicePixelRatio}px Inter, Segoe UI, Arial`;
+ctx.font=`${18*dpr}px Inter, Segoe UI, Arial`;
 ctx.textAlign='center';
+ctx.textBaseline='middle';
 ctx.fillText('Keine Daten für '+periodLabel(portfolioPeriod),w/2,h/2);
 return;
 }
 
-let rawMin=Math.min(...all,0),rawMax=Math.max(...all,0);
+const allPoints=selectedSeries.flatMap(s=>s.points);
+const xMin=Math.min(...allPoints.map(p=>p.ts));
+const xMax=Math.max(...allPoints.map(p=>p.ts));
+const allValues=allPoints.map(p=>p.value);
+let rawMin=Math.min(...allValues,0);
+let rawMax=Math.max(...allValues,0);
 let step=niceStep(rawMax-rawMin);
-
 let yMin=Math.floor(rawMin/step)*step;
 let yMax=Math.ceil(rawMax/step)*step;
-if(yMax===yMin){yMax=yMin+step}
+if(yMax===yMin)yMax=yMin+step;
 
-let padL=68*devicePixelRatio,padR=24*devicePixelRatio,padT=22*devicePixelRatio,padB=34*devicePixelRatio;
-
-ctx.font=`${12*devicePixelRatio}px Inter, Segoe UI, Arial`;
-ctx.textAlign='right';
-ctx.textBaseline='middle';
-
-for(let val=yMin;val<=yMax+0.0001;val+=step){
-let y=h-padB-((val-yMin)/(yMax-yMin))*(h-padT-padB);
-ctx.strokeStyle=val===0?'rgba(255,255,255,.28)':'rgba(255,255,255,.10)';
-ctx.lineWidth=1*devicePixelRatio;
-ctx.beginPath();ctx.moveTo(padL,y);ctx.lineTo(w-padR,y);ctx.stroke();
-ctx.fillStyle='#9eb4ca';
-ctx.fillText(`${val>0?'+':''}${val}%`,padL-8*devicePixelRatio,y);
+const startDate=new Date(xMin);
+const endDate=new Date(xMax);
+if(rangeEl){
+rangeEl.textContent='Zeitraum: '+formatChartRangeDate(startDate,portfolioPeriod)+' – '+formatChartRangeDate(endDate,portfolioPeriod);
 }
 
-series.forEach(s=>{
-if(s.values.length<2)return;
+const padL=70*dpr;
+const padR=28*dpr;
+const padT=18*dpr;
+const padB=54*dpr;
+const plotW=w-padL-padR;
+const plotH=h-padT-padB;
+const xSpan=Math.max(1,xMax-xMin);
+
+function xFor(ts){return padL+((ts-xMin)/xSpan)*plotW}
+function yFor(value){return h-padB-((value-yMin)/(yMax-yMin))*plotH}
+
+/* Horizontales Raster + Prozentachse */
+ctx.font=`${12*dpr}px Inter, Segoe UI, Arial`;
+ctx.textAlign='right';
+ctx.textBaseline='middle';
+for(let val=yMin;val<=yMax+0.0001;val+=step){
+const y=yFor(val);
+ctx.strokeStyle=val===0?'rgba(255,255,255,.32)':'rgba(255,255,255,.095)';
+ctx.lineWidth=(val===0?1.25:1)*dpr;
+ctx.beginPath();ctx.moveTo(padL,y);ctx.lineTo(w-padR,y);ctx.stroke();
+ctx.fillStyle=val===0?'#c8d8e8':'#9eb4ca';
+ctx.fillText(`${val>0?'+':''}${Math.round(val*10)/10}%`,padL-9*dpr,y);
+}
+
+/* Zeitachse + vertikales Raster */
+const ticks=chartTickCount(portfolioPeriod);
+ctx.textAlign='center';
+ctx.textBaseline='top';
+ctx.font=`${11.5*dpr}px Inter, Segoe UI, Arial`;
+for(let i=0;i<ticks;i++){
+const ratio=ticks===1?0:i/(ticks-1);
+const ts=xMin+ratio*xSpan;
+const x=xFor(ts);
+const d=new Date(ts);
+ctx.strokeStyle='rgba(255,255,255,.065)';
+ctx.lineWidth=1*dpr;
+ctx.beginPath();ctx.moveTo(x,padT);ctx.lineTo(x,h-padB);ctx.stroke();
+ctx.fillStyle='#9eb4ca';
+ctx.fillText(formatChartAxisDate(d,portfolioPeriod),x,h-padB+11*dpr);
+}
+
+/* Linien */
+selectedSeries.forEach(s=>{
 ctx.strokeStyle=s.color;
-ctx.lineWidth=2.8*devicePixelRatio;
+ctx.lineWidth=2.7*dpr;
+ctx.lineJoin='round';
+ctx.lineCap='round';
 ctx.beginPath();
-s.values.forEach((v,i)=>{
-let x=padL+i*(w-padL-padR)/(s.values.length-1);
-let y=h-padB-((v-yMin)/(yMax-yMin))*(h-padT-padB);
-i?ctx.lineTo(x,y):ctx.moveTo(x,y);
+s.points.forEach((p,i)=>{
+const x=xFor(p.ts),y=yFor(p.value);
+if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
 });
 ctx.stroke();
+
+const last=s.points[s.points.length-1];
+ctx.fillStyle=s.color;
+ctx.beginPath();
+ctx.arc(xFor(last.ts),yFor(last.value),3.2*dpr,0,Math.PI*2);
+ctx.fill();
 });
 }
 
