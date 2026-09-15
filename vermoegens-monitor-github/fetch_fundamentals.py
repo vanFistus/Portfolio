@@ -39,6 +39,9 @@ REGIONS = [
         "eps_provider": "state_street",
         "eps_url": "https://www.ssga.com/us/en/individual/etfs/state-street-spdr-sp-500-etf-trust-spy",
         "eps_source_name": "State Street SPY / S&P 500 Index",
+        "forward_fallback_provider": "state_street",
+        "forward_fallback_url": "https://www.ssga.com/us/en/individual/etfs/state-street-spdr-sp-500-etf-trust-spy",
+        "forward_fallback_name": "State Street SPY / S&P 500 Index",
     },
     {
         "market": "Europa",
@@ -47,6 +50,9 @@ REGIONS = [
         "eps_provider": "state_street",
         "eps_url": "https://www.ssga.com/us/en/individual/etfs/state-street-spdr-portfolio-europe-etf-speu",
         "eps_source_name": "State Street SPEU / Europe Index",
+        "forward_fallback_provider": "state_street",
+        "forward_fallback_url": "https://www.ssga.com/us/en/individual/etfs/state-street-spdr-portfolio-europe-etf-speu",
+        "forward_fallback_name": "State Street SPEU / Europe Index",
     },
     {
         "market": "Emerging Markets",
@@ -55,6 +61,9 @@ REGIONS = [
         "eps_provider": "state_street",
         "eps_url": "https://www.ssga.com/us/en/individual/etfs/state-street-spdr-portfolio-emerging-markets-etf-spem",
         "eps_source_name": "State Street SPEM / Emerging Markets Index",
+        "forward_fallback_provider": "state_street",
+        "forward_fallback_url": "https://www.ssga.com/us/en/individual/etfs/state-street-spdr-portfolio-emerging-markets-etf-spem",
+        "forward_fallback_name": "State Street SPEM / Emerging Markets Index",
     },
     {
         "market": "China",
@@ -63,6 +72,9 @@ REGIONS = [
         "eps_provider": "state_street",
         "eps_url": "https://www.ssga.com/us/en/intermediary/etfs/state-street-spdr-sp-china-etf-gxc",
         "eps_source_name": "State Street GXC / S&P China BMI Index",
+        "forward_fallback_provider": "state_street",
+        "forward_fallback_url": "https://www.ssga.com/us/en/intermediary/etfs/state-street-spdr-sp-china-etf-gxc",
+        "forward_fallback_name": "State Street GXC / S&P China BMI Index",
     },
     {
         "market": "Indien",
@@ -75,6 +87,12 @@ REGIONS = [
             "&SecurityToken=0P0001HV9D%5D22%5D0%5DETEXG%24XLON&tab=3"
         ),
         "eps_source_name": "Morningstar / India Benchmark",
+        "forward_fallback_provider": "msci_india",
+        "forward_fallback_url": "https://www.msci.com/indexes/index/935600/msci-india-index",
+        "forward_fallback_name": "MSCI India Index",
+        "regional_dividend_provider": "msci_india",
+        "regional_dividend_url": "https://www.msci.com/indexes/index/935600/msci-india-index",
+        "regional_dividend_name": "MSCI India Index",
     },
     {
         "market": "Japan",
@@ -87,6 +105,9 @@ REGIONS = [
             "&SecurityToken=0P00012NWR%5D22%5D0%5DETEXG%24XLON&tab=3"
         ),
         "eps_source_name": "Morningstar / Japan Benchmark",
+        "forward_fallback_provider": "state_street",
+        "forward_fallback_url": "https://www.ssga.com/de/en_gb/institutional/etfs/state-street-spdr-msci-japan-ucits-etf-zpdj-gy",
+        "forward_fallback_name": "State Street ZPDJ / MSCI Japan",
     },
 ]
 
@@ -226,6 +247,96 @@ def yahoo_forward_pe(ticker_symbol):
 def safe_old(previous, field):
     value = finite_number(previous.get(field))
     return value if is_valid(field, value) else None
+
+
+def parse_state_street_fy1(text):
+    """Price/Earnings Ratio FY1 = erwartetes KGV für das nächste Geschäftsjahr."""
+    section = text
+    as_of = None
+
+    index_match = re.search(
+        r"Index Characteristics\s+as of\s+"
+        r"([A-Za-z]{3}\s+\d{1,2}\s+\d{4})"
+        r"(.*?)(?:Index Statistics|Yields|Fund Market Price|$)",
+        text,
+        flags=re.IGNORECASE | re.DOTALL,
+    )
+    if index_match:
+        as_of = index_match.group(1)
+        section = index_match.group(2)
+    else:
+        fund_match = re.search(
+            r"Fund Characteristics\s+as of\s+"
+            r"(\d{1,2}\s+[A-Za-z]{3}\s+\d{4})"
+            r"(.*?)(?:Index Characteristics|Fund Market Price|$)",
+            text,
+            flags=re.IGNORECASE | re.DOTALL,
+        )
+        if fund_match:
+            as_of = fund_match.group(1)
+            section = fund_match.group(2)
+
+    match = re.search(
+        r"Price/Earnings Ratio FY1\s*\|?\s*([-+]?\d+(?:[.,]\d+)?)",
+        section,
+        flags=re.IGNORECASE,
+    )
+    if not match:
+        return None, as_of
+
+    return finite_number(match.group(1).replace(",", ".")), as_of
+
+
+def parse_msci_india_metrics(text):
+    """Liest Forward-KGV und Dividendenrendite von der MSCI-India-Indexseite."""
+    def metric(pattern):
+        m = re.search(pattern, text, flags=re.IGNORECASE)
+        return finite_number(m.group(1).replace(",", ".")) if m else None
+
+    div_yield = metric(r"Div\s*Yld\s*\(\%\)\s*\|?\s*([-+]?\d+(?:[.,]\d+)?)")
+    forward_pe = metric(r"P/E\s*Fwd\s*\|?\s*([-+]?\d+(?:[.,]\d+)?)")
+
+    dm = re.search(
+        r"Data as of\s+([A-Za-z]{3}\.?\s+\d{1,2},\s+\d{4})",
+        text,
+        flags=re.IGNORECASE,
+    )
+    return {
+        "dividend_yield": div_yield,
+        "forward_pe": forward_pe,
+        "as_of": dm.group(1) if dm else None,
+    }
+
+
+def fetch_forward_fallback(region):
+    provider = region.get("forward_fallback_provider")
+    url = region.get("forward_fallback_url")
+    if not provider or not url:
+        return None, None
+
+    try:
+        text = fetch_text(url)
+        if provider == "state_street":
+            return parse_state_street_fy1(text)
+        if provider == "msci_india":
+            metrics = parse_msci_india_metrics(text)
+            return metrics["forward_pe"], metrics["as_of"]
+    except Exception as exc:
+        print(f"  Forward P/E fallback failed for {region['market']}: {exc}")
+
+    return None, None
+
+
+def fetch_india_regional_dividend(region):
+    if region.get("regional_dividend_provider") != "msci_india":
+        return None, None
+    try:
+        text = fetch_text(region["regional_dividend_url"])
+        metrics = parse_msci_india_metrics(text)
+        return metrics["dividend_yield"], metrics["as_of"]
+    except Exception as exc:
+        print(f"  India regional dividend fallback failed: {exc}")
+    return None, None
 
 
 # -------------------------------------------------------------------
@@ -403,7 +514,22 @@ def fetch_region(region, previous):
         quality["pb"] = "carried_forward"
         carried_forward.append("pb")
 
-    if is_valid("dividend_yield", dividend_yield):
+    # Indien: INDA weist offiziell 0,00 % 12m Trailing Yield aus. Für die
+    # regionale Bewertung verwenden wir bei 0/nahe 0 stattdessen den
+    # offiziellen Div Yld des MSCI India Index.
+    if market == "Indien" and dividend_yield is not None and dividend_yield <= 0.05:
+        regional_dividend, regional_dividend_date = fetch_india_regional_dividend(region)
+        if is_valid("dividend_yield", regional_dividend) and regional_dividend > 0.05:
+            selected_dividend = regional_dividend
+            field_sources["dividend_yield"] = "MSCI India Index – Div Yld (%)"
+            field_dates["dividend_yield"] = regional_dividend_date
+            quality["dividend_yield"] = "regional_index_msci"
+        else:
+            selected_dividend = dividend_yield
+            field_sources["dividend_yield"] = f"iShares {ticker} – 12m Trailing Yield"
+            field_dates["dividend_yield"] = div_date
+            quality["dividend_yield"] = "primary_ishares"
+    elif is_valid("dividend_yield", dividend_yield):
         selected_dividend = dividend_yield
         field_sources["dividend_yield"] = f"iShares {ticker} – 12m Trailing Yield"
         field_dates["dividend_yield"] = div_date
@@ -415,6 +541,8 @@ def fetch_region(region, previous):
         quality["dividend_yield"] = "carried_forward"
         carried_forward.append("dividend_yield")
 
+    # Forward-KGV: Yahoo zuerst. Falls Yahoo bei ETFs keinen Wert liefert,
+    # wird auf eine institutionelle Quelle ausgewichen.
     forward_pe = yahoo_forward_pe(ticker)
 
     if is_valid("forward_pe", forward_pe):
@@ -423,11 +551,22 @@ def fetch_region(region, previous):
         field_dates["forward_pe"] = datetime.now(BERLIN).strftime("%d.%m.%Y")
         quality["forward_pe"] = "yahoo_quote"
     else:
-        selected_forward_pe = safe_old(previous, "forward_pe")
-        field_sources["forward_pe"] = "Vorwert aus fundamentals.json"
-        field_dates["forward_pe"] = previous.get("field_dates", {}).get("forward_pe")
-        quality["forward_pe"] = "carried_forward"
-        carried_forward.append("forward_pe")
+        fallback_forward, fallback_date = fetch_forward_fallback(region)
+        if is_valid("forward_pe", fallback_forward):
+            selected_forward_pe = fallback_forward
+            field_sources["forward_pe"] = region["forward_fallback_name"]
+            field_dates["forward_pe"] = fallback_date
+            quality["forward_pe"] = (
+                "state_street_fy1"
+                if region["forward_fallback_provider"] == "state_street"
+                else "msci_forward_pe"
+            )
+        else:
+            selected_forward_pe = safe_old(previous, "forward_pe")
+            field_sources["forward_pe"] = "Vorwert aus fundamentals.json"
+            field_dates["forward_pe"] = previous.get("field_dates", {}).get("forward_pe")
+            quality["forward_pe"] = "carried_forward"
+            carried_forward.append("forward_pe")
 
     implied_roe = None
 
@@ -485,6 +624,8 @@ def fetch_region(region, previous):
         "earnings_growth": round1(eps_growth),
         "earnings_growth_as_of": eps_date,
         "earnings_growth_source": region["eps_source_name"],
+        "selected_forward_pe": round1(selected_forward_pe),
+        "selected_dividend_yield": round1(selected_dividend),
     }
 
     return {
@@ -497,7 +638,7 @@ def fetch_region(region, previous):
         "earnings_growth": round1(selected_growth),
         "source": (
             f"iShares {ticker}: KGV/KBV/Div.; "
-            f"Yahoo Finance: Forward-KGV; "
+            f"Forward-KGV: Yahoo Finance mit Provider-Fallback; "
             f"ROE: KBV/KGV; "
             f"{region['eps_source_name']}: EPS-Wachstum"
         ),
