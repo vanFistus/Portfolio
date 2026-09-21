@@ -1,16 +1,16 @@
 {
-  "updated": "20.09.2026",
+  "updated": "21.09.2026",
   "regions": [
     {
       "market": "USA",
-      "pe": 29.9,
+      "pe": 30.2,
       "forward_pe": 21.1,
-      "pb": 5.6,
+      "pb": 5.7,
       "dividend_yield": 1.1,
       "roe": 18.8,
       "earnings_growth": 23.2,
       "source": "iShares IVV: KGV/KBV/Div.; Forward-KGV: Yahoo Finance mit Provider-Fallback; ROE: KBV/KGV; State Street SPY / S&P 500 Index: EPS-Wachstum",
-      "as_of": "20.09.2026",
+      "as_of": "21.09.2026",
       "field_sources": {
         "pe": "iShares IVV",
         "pb": "iShares IVV",
@@ -20,11 +20,11 @@
         "earnings_growth": "State Street SPY / S&P 500 Index"
       },
       "field_dates": {
-        "pe": "Sep 17, 2026",
-        "pb": "Sep 17, 2026",
+        "pe": "Sep 18, 2026",
+        "pb": "Sep 18, 2026",
         "dividend_yield": "Aug 31, 2026",
         "forward_pe": "Sep 17 2026",
-        "roe": "Sep 17, 2026",
+        "roe": "Sep 18, 2026",
         "earnings_growth": "Sep 17 2026"
       },
       "field_urls": {
@@ -46,11 +46,11 @@
       "carried_forward": [],
       "raw_primary": {
         "ticker": "IVV",
-        "pe": 29.9,
-        "pb": 5.6,
+        "pe": 30.2,
+        "pb": 5.7,
         "dividend_yield": 1.1,
-        "pe_as_of": "Sep 17, 2026",
-        "pb_as_of": "Sep 17, 2026",
+        "pe_as_of": "Sep 18, 2026",
+        "pb_as_of": "Sep 18, 2026",
         "dividend_yield_as_of": "Aug 31, 2026",
         "earnings_growth": 23.2,
         "earnings_growth_as_of": "Sep 17 2026",
@@ -61,14 +61,14 @@
     },
     {
       "market": "Europa",
-      "pe": 18.6,
-      "forward_pe": 15.0,
-      "pb": 2.4,
+      "pe": 18.8,
+      "forward_pe": 14.8,
+      "pb": 2.5,
       "dividend_yield": 3.1,
-      "roe": 13.0,
-      "earnings_growth": 13.1,
+      "roe": 13.1,
+      "earnings_growth": 13.2,
       "source": "iShares IEUR: KGV/KBV/Div.; Forward-KGV: Yahoo Finance mit Provider-Fallback; ROE: KBV/KGV; State Street SPEU / Europe Index: EPS-Wachstum",
-      "as_of": "20.09.2026",
+      "as_of": "21.09.2026",
       "field_sources": {
         "pe": "iShares IEUR",
         "pb": "iShares IEUR",
@@ -78,12 +78,12 @@
         "earnings_growth": "State Street SPEU / Europe Index"
       },
       "field_dates": {
-        "pe": "Sep 17, 2026",
-        "pb": "Sep 17, 2026",
+        "pe": "Sep 18, 2026",
+        "pb": "Sep 18, 2026",
         "dividend_yield": "Aug 31, 2026",
-        "forward_pe": "Sep 17 2026",
-        "roe": "Sep 17, 2026",
-        "earnings_growth": "Sep 17 2026"
+        "forward_pe": "Sep 18 2026",
+        "roe": "Sep 18, 2026",
+        "earnings_growth": "Sep 18 2026"
       },
       "field_urls": {
         "pe": "https://www.ishares.com/us/products/264617/ishares-core-msci-europe-etf",
@@ -104,29 +104,29 @@
       "carried_forward": [],
       "raw_primary": {
         "ticker": "IEUR",
-        "pe": 18.6,
-        "pb": 2.4,
+        "pe": 18.8,
+        "pb": 2.5,
         "dividend_yield": 3.1,
-        "pe_as_of": "Sep 17, 2026",
-        "pb_as_of": "Sep 17, 2026",
+        "pe_as_of": "Sep 18, 2026",
+        "pb_as_of": "Sep 18, 2026",
         "dividend_yield_as_of": "Aug 31, 2026",
-        "earnings_growth": 13.1,
-        "earnings_growth_as_of": "Sep 17 2026",
+        "earnings_growth": 13.2,
+        "earnings_growth_as_of": "Sep 18 2026",
         "earnings_growth_source": "State Street SPEU / Europe Index",
-        "selected_forward_pe": 15.0,
+        "selected_forward_pe": 14.8,
         "selected_dividend_yield": 3.1
       }
     },
     {
       "market": "Emerging Markets",
-      "pe": 19.1,
+      "pe": 19.3,
       "forward_pe": 14.4,
       "pb": 2.5,
       "dividend_yield": 2.2,
       "roe": 13.1,
       "earnings_growth": 25.1,
       "source": "iShares IEMG: KGV/KBV/Div.; Forward-KGV: Yahoo Finance mit Provider-Fallback; ROE: KBV/KGV; State Street SPEM / Emerging Markets Index: EPS-Wachstum",
-      "as_of": "20.09.2026",
+      "as_of": "21.09.2026",
       "field_sources": {
         "pe": "iShares IEMG",
         "pb": "iShares IEMG",
@@ -136,11 +136,11 @@
         "earnings_growth": "State Street SPEM / Emerging Markets Index"
       },
       "field_dates": {
-        "pe": "Sep 17, 2026",
-        "pb": "Sep 17, 2026",
+        "pe": "Sep 18, 2026",
+        "pb": "Sep 18, 2026",
         "dividend_yield": "Aug 31, 2026",
         "forward_pe": "Sep 17 2026",
-        "roe": "Sep 17, 2026",
+        "roe": "Sep 18, 2026",
         "earnings_growth": "Sep 17 2026"
       },
       "field_urls": {
@@ -162,11 +162,11 @@
       "carried_forward": [],
       "raw_primary": {
         "ticker": "IEMG",
-        "pe": 19.1,
+        "pe": 19.3,
         "pb": 2.5,
         "dividend_yield": 2.2,
-        "pe_as_of": "Sep 17, 2026",
-        "pb_as_of": "Sep 17, 2026",
+        "pe_as_of": "Sep 18, 2026",
+        "pb_as_of": "Sep 18, 2026",
         "dividend_yield_as_of": "Aug 31, 2026",
         "earnings_growth": 25.1,
         "earnings_growth_as_of": "Sep 17 2026",
@@ -177,14 +177,14 @@
     },
     {
       "market": "China",
-      "pe": 13.4,
-      "forward_pe": 10.8,
+      "pe": 13.3,
+      "forward_pe": 10.9,
       "pb": 1.6,
       "dividend_yield": 2.0,
-      "roe": 12.1,
-      "earnings_growth": 12.1,
+      "roe": 12.2,
+      "earnings_growth": 12.2,
       "source": "iShares MCHI: KGV/KBV/Div.; Forward-KGV: Yahoo Finance mit Provider-Fallback; ROE: KBV/KGV; State Street GXC / S&P China BMI Index: EPS-Wachstum",
-      "as_of": "20.09.2026",
+      "as_of": "21.09.2026",
       "field_sources": {
         "pe": "iShares MCHI",
         "pb": "iShares MCHI",
@@ -194,12 +194,12 @@
         "earnings_growth": "State Street GXC / S&P China BMI Index"
       },
       "field_dates": {
-        "pe": "Sep 17, 2026",
-        "pb": "Sep 17, 2026",
+        "pe": "Sep 18, 2026",
+        "pb": "Sep 18, 2026",
         "dividend_yield": "Aug 31, 2026",
-        "forward_pe": "Sep 17 2026",
-        "roe": "Sep 17, 2026",
-        "earnings_growth": "Sep 17 2026"
+        "forward_pe": "Sep 18 2026",
+        "roe": "Sep 18, 2026",
+        "earnings_growth": "Sep 18 2026"
       },
       "field_urls": {
         "pe": "https://www.ishares.com/us/products/239619/ishares-msci-china-etf",
@@ -220,29 +220,29 @@
       "carried_forward": [],
       "raw_primary": {
         "ticker": "MCHI",
-        "pe": 13.4,
+        "pe": 13.3,
         "pb": 1.6,
         "dividend_yield": 2.0,
-        "pe_as_of": "Sep 17, 2026",
-        "pb_as_of": "Sep 17, 2026",
+        "pe_as_of": "Sep 18, 2026",
+        "pb_as_of": "Sep 18, 2026",
         "dividend_yield_as_of": "Aug 31, 2026",
-        "earnings_growth": 12.1,
-        "earnings_growth_as_of": "Sep 17 2026",
+        "earnings_growth": 12.2,
+        "earnings_growth_as_of": "Sep 18 2026",
         "earnings_growth_source": "State Street GXC / S&P China BMI Index",
-        "selected_forward_pe": 10.8,
+        "selected_forward_pe": 10.9,
         "selected_dividend_yield": 2.0
       }
     },
     {
       "market": "Indien",
-      "pe": 22.1,
+      "pe": 22.2,
       "forward_pe": 19.9,
       "pb": 3.2,
       "dividend_yield": 1.3,
       "roe": 14.5,
       "earnings_growth": 11.7,
       "source": "iShares INDA: KGV/KBV/Div.; Forward-KGV: Yahoo Finance mit Provider-Fallback; ROE: KBV/KGV; Morningstar / India Benchmark: EPS-Wachstum",
-      "as_of": "20.09.2026",
+      "as_of": "21.09.2026",
       "field_sources": {
         "pe": "iShares INDA",
         "pb": "iShares INDA",
@@ -252,11 +252,11 @@
         "earnings_growth": "Morningstar / India Benchmark"
       },
       "field_dates": {
-        "pe": "Sep 17, 2026",
-        "pb": "Sep 17, 2026",
+        "pe": "Sep 18, 2026",
+        "pb": "Sep 18, 2026",
         "dividend_yield": "AUG 31, 2026",
         "forward_pe": "AUG 31, 2026",
-        "roe": "Sep 17, 2026",
+        "roe": "Sep 18, 2026",
         "earnings_growth": "18/09/2026"
       },
       "field_urls": {
@@ -278,11 +278,11 @@
       "carried_forward": [],
       "raw_primary": {
         "ticker": "INDA",
-        "pe": 22.1,
+        "pe": 22.2,
         "pb": 3.2,
         "dividend_yield": 0.0,
-        "pe_as_of": "Sep 17, 2026",
-        "pb_as_of": "Sep 17, 2026",
+        "pe_as_of": "Sep 18, 2026",
+        "pb_as_of": "Sep 18, 2026",
         "dividend_yield_as_of": "Aug 31, 2026",
         "earnings_growth": 11.7,
         "earnings_growth_as_of": "18/09/2026",
@@ -293,14 +293,14 @@
     },
     {
       "market": "Japan",
-      "pe": 19.1,
+      "pe": 19.4,
       "forward_pe": 16.2,
-      "pb": 2.0,
+      "pb": 2.1,
       "dividend_yield": 3.7,
       "roe": 10.7,
       "earnings_growth": 11.8,
       "source": "iShares EWJ: KGV/KBV/Div.; Forward-KGV: Yahoo Finance mit Provider-Fallback; ROE: KBV/KGV; Morningstar / Japan Benchmark: EPS-Wachstum",
-      "as_of": "20.09.2026",
+      "as_of": "21.09.2026",
       "field_sources": {
         "pe": "iShares EWJ",
         "pb": "iShares EWJ",
@@ -310,11 +310,11 @@
         "earnings_growth": "Morningstar / Japan Benchmark"
       },
       "field_dates": {
-        "pe": "Sep 17, 2026",
-        "pb": "Sep 17, 2026",
+        "pe": "Sep 18, 2026",
+        "pb": "Sep 18, 2026",
         "dividend_yield": "Aug 31, 2026",
-        "forward_pe": "17 Sep 2026",
-        "roe": "Sep 17, 2026",
+        "forward_pe": "18 Sep 2026",
+        "roe": "Sep 18, 2026",
         "earnings_growth": "18/09/2026"
       },
       "field_urls": {
@@ -336,11 +336,11 @@
       "carried_forward": [],
       "raw_primary": {
         "ticker": "EWJ",
-        "pe": 19.1,
-        "pb": 2.0,
+        "pe": 19.4,
+        "pb": 2.1,
         "dividend_yield": 3.7,
-        "pe_as_of": "Sep 17, 2026",
-        "pb_as_of": "Sep 17, 2026",
+        "pe_as_of": "Sep 18, 2026",
+        "pb_as_of": "Sep 18, 2026",
         "dividend_yield_as_of": "Aug 31, 2026",
         "earnings_growth": 11.8,
         "earnings_growth_as_of": "18/09/2026",
