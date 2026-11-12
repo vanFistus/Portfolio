@@ -1,16 +1,16 @@
 {
-  "updated": "11.11.2026",
+  "updated": "12.11.2026",
   "regions": [
     {
       "market": "USA",
-      "pe": 27.8,
+      "pe": 28.3,
       "forward_pe": 19.8,
-      "pb": 5.4,
+      "pb": 5.5,
       "dividend_yield": 1.1,
       "roe": 19.5,
       "earnings_growth": 20.7,
       "source": "iShares IVV: KGV/KBV/Div.; Forward-KGV: Yahoo Finance mit Provider-Fallback; ROE: KBV/KGV; State Street SPY / S&P 500 Index: EPS-Wachstum",
-      "as_of": "11.11.2026",
+      "as_of": "12.11.2026",
       "field_sources": {
         "pe": "iShares IVV",
         "pb": "iShares IVV",
@@ -20,11 +20,11 @@
         "earnings_growth": "State Street SPY / S&P 500 Index"
       },
       "field_dates": {
-        "pe": "Nov 09, 2026",
-        "pb": "Nov 09, 2026",
-        "dividend_yield": "Sep 30, 2026",
+        "pe": "Nov 11, 2026",
+        "pb": "Nov 11, 2026",
+        "dividend_yield": "Oct 31, 2026",
         "forward_pe": "Nov 10 2026",
-        "roe": "Nov 09, 2026",
+        "roe": "Nov 11, 2026",
         "earnings_growth": "Nov 10 2026"
       },
       "field_urls": {
@@ -46,12 +46,12 @@
       "carried_forward": [],
       "raw_primary": {
         "ticker": "IVV",
-        "pe": 27.8,
-        "pb": 5.4,
+        "pe": 28.3,
+        "pb": 5.5,
         "dividend_yield": 1.1,
-        "pe_as_of": "Nov 09, 2026",
-        "pb_as_of": "Nov 09, 2026",
-        "dividend_yield_as_of": "Sep 30, 2026",
+        "pe_as_of": "Nov 11, 2026",
+        "pb_as_of": "Nov 11, 2026",
+        "dividend_yield_as_of": "Oct 31, 2026",
         "earnings_growth": 20.7,
         "earnings_growth_as_of": "Nov 10 2026",
         "earnings_growth_source": "State Street SPY / S&P 500 Index",
@@ -61,14 +61,14 @@
     },
     {
       "market": "Europa",
-      "pe": 18.7,
+      "pe": 19.0,
       "forward_pe": 14.9,
-      "pb": 2.4,
+      "pb": 2.5,
       "dividend_yield": 3.2,
       "roe": 13.0,
       "earnings_growth": 13.7,
       "source": "iShares IEUR: KGV/KBV/Div.; Forward-KGV: Yahoo Finance mit Provider-Fallback; ROE: KBV/KGV; State Street SPEU / Europe Index: EPS-Wachstum",
-      "as_of": "11.11.2026",
+      "as_of": "12.11.2026",
       "field_sources": {
         "pe": "iShares IEUR",
         "pb": "iShares IEUR",
@@ -78,11 +78,11 @@
         "earnings_growth": "State Street SPEU / Europe Index"
       },
       "field_dates": {
-        "pe": "Nov 09, 2026",
-        "pb": "Nov 09, 2026",
-        "dividend_yield": "Sep 30, 2026",
+        "pe": "Nov 10, 2026",
+        "pb": "Nov 10, 2026",
+        "dividend_yield": "Oct 31, 2026",
         "forward_pe": "Nov 10 2026",
-        "roe": "Nov 09, 2026",
+        "roe": "Nov 10, 2026",
         "earnings_growth": "Nov 10 2026"
       },
       "field_urls": {
@@ -104,12 +104,12 @@
       "carried_forward": [],
       "raw_primary": {
         "ticker": "IEUR",
-        "pe": 18.7,
-        "pb": 2.4,
+        "pe": 19.0,
+        "pb": 2.5,
         "dividend_yield": 3.2,
-        "pe_as_of": "Nov 09, 2026",
-        "pb_as_of": "Nov 09, 2026",
-        "dividend_yield_as_of": "Sep 30, 2026",
+        "pe_as_of": "Nov 10, 2026",
+        "pb_as_of": "Nov 10, 2026",
+        "dividend_yield_as_of": "Oct 31, 2026",
         "earnings_growth": 13.7,
         "earnings_growth_as_of": "Nov 10 2026",
         "earnings_growth_source": "State Street SPEU / Europe Index",
@@ -119,14 +119,14 @@
     },
     {
       "market": "Emerging Markets",
-      "pe": 17.3,
+      "pe": 17.9,
       "forward_pe": 13.9,
       "pb": 2.3,
-      "dividend_yield": 2.2,
+      "dividend_yield": 2.4,
       "roe": 13.1,
       "earnings_growth": 25.7,
       "source": "iShares IEMG: KGV/KBV/Div.; Forward-KGV: Yahoo Finance mit Provider-Fallback; ROE: KBV/KGV; State Street SPEM / Emerging Markets Index: EPS-Wachstum",
-      "as_of": "11.11.2026",
+      "as_of": "12.11.2026",
       "field_sources": {
         "pe": "iShares IEMG",
         "pb": "iShares IEMG",
@@ -136,11 +136,11 @@
         "earnings_growth": "State Street SPEM / Emerging Markets Index"
       },
       "field_dates": {
-        "pe": "Nov 09, 2026",
-        "pb": "Nov 09, 2026",
-        "dividend_yield": "Sep 30, 2026",
+        "pe": "Nov 11, 2026",
+        "pb": "Nov 11, 2026",
+        "dividend_yield": "Oct 31, 2026",
         "forward_pe": "Nov 10 2026",
-        "roe": "Nov 09, 2026",
+        "roe": "Nov 11, 2026",
         "earnings_growth": "Nov 10 2026"
       },
       "field_urls": {
@@ -162,17 +162,17 @@
       "carried_forward": [],
       "raw_primary": {
         "ticker": "IEMG",
-        "pe": 17.3,
+        "pe": 17.9,
         "pb": 2.3,
-        "dividend_yield": 2.2,
-        "pe_as_of": "Nov 09, 2026",
-        "pb_as_of": "Nov 09, 2026",
-        "dividend_yield_as_of": "Sep 30, 2026",
+        "dividend_yield": 2.4,
+        "pe_as_of": "Nov 11, 2026",
+        "pb_as_of": "Nov 11, 2026",
+        "dividend_yield_as_of": "Oct 31, 2026",
         "earnings_growth": 25.7,
         "earnings_growth_as_of": "Nov 10 2026",
         "earnings_growth_source": "State Street SPEM / Emerging Markets Index",
         "selected_forward_pe": 13.9,
-        "selected_dividend_yield": 2.2
+        "selected_dividend_yield": 2.4
       }
     },
     {
@@ -180,11 +180,11 @@
       "pe": 13.1,
       "forward_pe": 11.1,
       "pb": 1.6,
-      "dividend_yield": 2.1,
-      "roe": 12.2,
+      "dividend_yield": 2.2,
+      "roe": 12.1,
       "earnings_growth": 11.0,
       "source": "iShares MCHI: KGV/KBV/Div.; Forward-KGV: Yahoo Finance mit Provider-Fallback; ROE: KBV/KGV; State Street GXC / S&P China BMI Index: EPS-Wachstum",
-      "as_of": "11.11.2026",
+      "as_of": "12.11.2026",
       "field_sources": {
         "pe": "iShares MCHI",
         "pb": "iShares MCHI",
@@ -194,11 +194,11 @@
         "earnings_growth": "State Street GXC / S&P China BMI Index"
       },
       "field_dates": {
-        "pe": "Nov 09, 2026",
-        "pb": "Nov 09, 2026",
-        "dividend_yield": "Sep 30, 2026",
+        "pe": "Nov 10, 2026",
+        "pb": "Nov 10, 2026",
+        "dividend_yield": "Oct 31, 2026",
         "forward_pe": "Nov 10 2026",
-        "roe": "Nov 09, 2026",
+        "roe": "Nov 10, 2026",
         "earnings_growth": "Nov 10 2026"
       },
       "field_urls": {
@@ -222,15 +222,15 @@
         "ticker": "MCHI",
         "pe": 13.1,
         "pb": 1.6,
-        "dividend_yield": 2.1,
-        "pe_as_of": "Nov 09, 2026",
-        "pb_as_of": "Nov 09, 2026",
-        "dividend_yield_as_of": "Sep 30, 2026",
+        "dividend_yield": 2.2,
+        "pe_as_of": "Nov 10, 2026",
+        "pb_as_of": "Nov 10, 2026",
+        "dividend_yield_as_of": "Oct 31, 2026",
         "earnings_growth": 11.0,
         "earnings_growth_as_of": "Nov 10 2026",
         "earnings_growth_source": "State Street GXC / S&P China BMI Index",
         "selected_forward_pe": 11.1,
-        "selected_dividend_yield": 2.1
+        "selected_dividend_yield": 2.2
       }
     },
     {
@@ -242,7 +242,7 @@
       "roe": 14.5,
       "earnings_growth": 12.9,
       "source": "iShares INDA: KGV/KBV/Div.; Forward-KGV: Yahoo Finance mit Provider-Fallback; ROE: KBV/KGV; Morningstar / India Benchmark: EPS-Wachstum",
-      "as_of": "11.11.2026",
+      "as_of": "12.11.2026",
       "field_sources": {
         "pe": "iShares INDA",
         "pb": "iShares INDA",
@@ -252,11 +252,11 @@
         "earnings_growth": "Morningstar / India Benchmark"
       },
       "field_dates": {
-        "pe": "Nov 10, 2026",
-        "pb": "Nov 10, 2026",
+        "pe": "Nov 11, 2026",
+        "pb": "Nov 11, 2026",
         "dividend_yield": "OCT 30, 2026",
         "forward_pe": "OCT 30, 2026",
-        "roe": "Nov 10, 2026",
+        "roe": "Nov 11, 2026",
         "earnings_growth": "09/11/2026"
       },
       "field_urls": {
@@ -281,9 +281,9 @@
         "pe": 23.3,
         "pb": 3.4,
         "dividend_yield": 0.0,
-        "pe_as_of": "Nov 10, 2026",
-        "pb_as_of": "Nov 10, 2026",
-        "dividend_yield_as_of": "Sep 30, 2026",
+        "pe_as_of": "Nov 11, 2026",
+        "pb_as_of": "Nov 11, 2026",
+        "dividend_yield_as_of": "Oct 31, 2026",
         "earnings_growth": 12.9,
         "earnings_growth_as_of": "09/11/2026",
         "earnings_growth_source": "Morningstar / India Benchmark",
@@ -293,14 +293,14 @@
     },
     {
       "market": "Japan",
-      "pe": 17.3,
-      "forward_pe": 15.1,
+      "pe": 17.7,
+      "forward_pe": 15.3,
       "pb": 1.9,
-      "dividend_yield": 3.6,
-      "roe": 10.7,
+      "dividend_yield": 3.8,
+      "roe": 10.9,
       "earnings_growth": 13.8,
       "source": "iShares EWJ: KGV/KBV/Div.; Forward-KGV: Yahoo Finance mit Provider-Fallback; ROE: KBV/KGV; Morningstar / Japan Benchmark: EPS-Wachstum",
-      "as_of": "11.11.2026",
+      "as_of": "12.11.2026",
       "field_sources": {
         "pe": "iShares EWJ",
         "pb": "iShares EWJ",
@@ -310,11 +310,11 @@
         "earnings_growth": "Morningstar / Japan Benchmark"
       },
       "field_dates": {
-        "pe": "Nov 09, 2026",
-        "pb": "Nov 09, 2026",
-        "dividend_yield": "Sep 30, 2026",
-        "forward_pe": "10 Nov 2026",
-        "roe": "Nov 09, 2026",
+        "pe": "Nov 10, 2026",
+        "pb": "Nov 10, 2026",
+        "dividend_yield": "Oct 31, 2026",
+        "forward_pe": "11 Nov 2026",
+        "roe": "Nov 10, 2026",
         "earnings_growth": "09/11/2026"
       },
       "field_urls": {
@@ -336,17 +336,17 @@
       "carried_forward": [],
       "raw_primary": {
         "ticker": "EWJ",
-        "pe": 17.3,
+        "pe": 17.7,
         "pb": 1.9,
-        "dividend_yield": 3.6,
-        "pe_as_of": "Nov 09, 2026",
-        "pb_as_of": "Nov 09, 2026",
-        "dividend_yield_as_of": "Sep 30, 2026",
+        "dividend_yield": 3.8,
+        "pe_as_of": "Nov 10, 2026",
+        "pb_as_of": "Nov 10, 2026",
+        "dividend_yield_as_of": "Oct 31, 2026",
         "earnings_growth": 13.8,
         "earnings_growth_as_of": "09/11/2026",
         "earnings_growth_source": "Morningstar / Japan Benchmark",
-        "selected_forward_pe": 15.1,
-        "selected_dividend_yield": 3.6
+        "selected_forward_pe": 15.3,
+        "selected_dividend_yield": 3.8
       }
     }
   ]
